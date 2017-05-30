@@ -32,7 +32,7 @@ public class Start extends HttpServlet {
 
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
 
-    static ReadOnDir rod;
+    ReadOnDir rod;// = new ReadOnDir();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -41,14 +41,15 @@ public class Start extends HttpServlet {
         rod.interrupt();
         System.out.println("---------------------------");
         rod.start();
-//        rod.run();
-        System.out.println("+++++++++++++++++++++++++++");
+        System.out.println("ReadOnDir "+rod);
+        System.out.println("+++++++rod.getName()++++++++++++++++++++"+rod.getName());
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType(CONTENT_TYPE);
         request.getSession();
+        
         request.getRequestDispatcher("index.html").forward(request, response);
     }
 }

@@ -18,9 +18,14 @@ public class SessionListener implements HttpSessionListener {
 
     private HttpSession session = null;
     private int totalSess = 0;
-static ReadOnDir rod;
+    ReadOnDir rod;
+
     @Override
     public void sessionCreated(HttpSessionEvent event) {
+//        System.out.println("+++++++++++++++++++++");
+//        rod.start();
+//        System.out.println("+++++++++++++++++++++");
+
         session = event.getSession();
         totalSess++;
         System.out.println("Total Session ----> " + totalSess);
@@ -29,7 +34,12 @@ static ReadOnDir rod;
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
         session = event.getSession();
-        rod.interrupt();
+
+        System.out.println("----------------------");
+//        System.out.println("rod.getName()--- "+rod.getName());
+        System.out.println("ReadOnDir list"+rod);
+//        rod.interrupt();
+        System.out.println("----------------------");
         totalSess--;
         System.out.println("Total Session ----> " + totalSess);
     }

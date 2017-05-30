@@ -35,9 +35,12 @@ public class ReadOnDir extends Thread {
      */
     static String p = "c:\\testFolder\\in";
 
+    @Override
     public void run() {
         System.out.println("thread!!!");
-        pathListener();
+//        if (Thread.currentThread().isInterrupted()) {
+            pathListener();
+//        }
     }
 
     private static void pathListener() {
@@ -76,23 +79,11 @@ public class ReadOnDir extends Thread {
 
         String str = null;
         Matcher m = null;
-//        File file = new File(path);
-//        System.out.println(">>>>> " + file.exists());
         try (FileReader reader = new FileReader(path)) {
-//            int c;
-//            while ((c = reader.read()) != -1) {
-//                System.out.print((char) c);
-//            }
-//            System.out.println("");
             LineNumberReader lnr = new LineNumberReader(new BufferedReader(reader));
             Pattern p1 = Pattern.compile("\\D*:(\\d+)(.*)");
-
-//            System.out.format("00000  %s \n",lnr.readLine());
-//            String line = lnr.readLine();
             while ((str = lnr.readLine()) != null) {
-//                System.out.println("-------------------------------------");
                 m = p1.matcher(str);
-//                m = p1.matcher(line);
                 if (m.find()) {
                     System.out.println("Message Code : " + m.group(1));
                     System.out.println("" + m.group());
@@ -102,7 +93,6 @@ public class ReadOnDir extends Thread {
             }
 
         } catch (IOException ex) {
-//            Logger.getLogger(ReadOnDir.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
 
