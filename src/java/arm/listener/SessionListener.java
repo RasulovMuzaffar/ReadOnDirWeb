@@ -35,11 +35,11 @@ public class SessionListener implements HttpSessionListener {
     public void sessionDestroyed(HttpSessionEvent event) {
         session = event.getSession();
 
-        System.out.println("----------------------");
-//        System.out.println("rod.getName()--- "+rod.getName());
-        System.out.println("ReadOnDir list"+rod);
-//        rod.interrupt();
-        System.out.println("----------------------");
+//        System.out.println("----------------------");
+////        System.out.println("rod.getName()--- "+rod.getName());
+//        System.out.println("ReadOnDir list"+rod);
+////        rod.interrupt();
+//        System.out.println("----------------------");
         totalSess--;
         System.out.println("Total Session ----> " + totalSess);
     }

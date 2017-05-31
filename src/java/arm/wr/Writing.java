@@ -27,10 +27,17 @@ public class Writing extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType(CONTENT_TYPE);
-        String mess = null;
-        mess = request.getParameter("mess");
-        
-        createFile(mess);
+//        String mess = null;
+//        mess = request.getParameter("mess");
+        String kod = null;
+        String q = null;
+        String kodDok = null;
+        String object = null;
+        kod = request.getParameter("kod");
+        q = request.getParameter("q");
+        kodDok = request.getParameter("kodDok");
+        object = request.getParameter("object");
+        createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
     }
 
     static String path = "c:\\testFolder\\out";

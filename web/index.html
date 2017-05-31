@@ -13,8 +13,24 @@ and open the template in the editor.
     <body>
         <div>
             <form action="writing" method="GET">
-                <label>Введите сообщение</label>
-                <input type="text" name="mess"/>
+                <!--                <label>Введите сообщение</label>
+                                <input type="text" name="mess"/>-->
+                <input type="hidden" value="0" name="q"/>
+                <label>Код сообщение</label>
+                <select name="kod">
+                    <option value="212">212</option>
+                    <option value="213">213</option>
+                </select>
+                <label>форма документа</label>
+                <select name="kodDok">
+                    <option value="93">93</option>
+                    <option value="94">94</option>
+                </select>
+                <label>объект</label>
+                <select name="object">
+                    <option value="7200">Чукурсай</option>
+                    <option value="8200">Хаваст</option>
+                </select>
                 <input type="submit" value="submit"/>
             </form>
         </div>

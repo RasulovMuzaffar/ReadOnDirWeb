@@ -38,11 +38,11 @@ public class Start extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         rod = new ReadOnDir();
-        rod.interrupt();
-        System.out.println("---------------------------");
+//        System.out.println("---------------------------");
+        rod.setDaemon(true);
         rod.start();
-        System.out.println("ReadOnDir "+rod);
-        System.out.println("+++++++rod.getName()++++++++++++++++++++"+rod.getName());
+//        System.out.println("ReadOnDir "+rod);
+//        System.out.println("+++++++rod.getName()++++++++++++++++++++"+rod.getName());
     }
 
     @Override
