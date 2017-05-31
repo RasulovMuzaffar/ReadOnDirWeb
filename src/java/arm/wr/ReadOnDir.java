@@ -88,7 +88,7 @@ public class ReadOnDir extends Thread {
                     System.out.println("Message Code : " + m.group(1));
                     System.out.println("" + m.group());
                 } else {
-                    System.out.println("" + str);
+                    System.out.println(new String(new String(str.getBytes(),"Cp866").getBytes(),"Cp1251"));
                 }
             }
 

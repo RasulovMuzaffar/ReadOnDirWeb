@@ -51,7 +51,8 @@ public class Writing extends HttpServlet {
     private static void writingFile(String pth, String text) {
         try (FileWriter writer = new FileWriter(pth, false)) {
             writer.write(text);
-
+            writer.append("\nB– “T€     93 31.05 13-46 B– 73");
+            writer.append("\n" + new String("B– “T€     93 31.05 13-46 B– 73".getBytes(), "Cp866"));
         } catch (Exception e) {
             System.out.println("Exception in writingFile " + e);
         }
