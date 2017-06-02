@@ -32,7 +32,8 @@ public class Writing extends HttpServlet {
         q = request.getParameter("q");
         kodDok = request.getParameter("kodDok");
         object = request.getParameter("object");
-        createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
+//        createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
+        createFile("(:140:)");
     }
 
 //    static String path = "c:\\testFolder\\out";
@@ -61,6 +62,6 @@ public class Writing extends HttpServlet {
         if (m.find()) {
             fileName = m.group(1);
         }
-        return fileName;
+        return "0102"+fileName;
     }
 }
