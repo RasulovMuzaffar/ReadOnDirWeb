@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package arm.wr;
 
 import java.io.BufferedReader;
@@ -33,7 +29,8 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-    static String p = "c:\\testFolder\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "d:\\soob\\in";
 
     @Override
     public void run() {
@@ -96,7 +93,7 @@ public class ReadOnDir extends Thread {
             ex.printStackTrace();
         }
 
-        deletingFile(path);
+//        deletingFile(path);
     }
 
     private static void deletingFile(String path) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arm.wr;
 
 import java.io.FileWriter;
@@ -40,7 +35,8 @@ public class Writing extends HttpServlet {
         createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
     }
 
-    static String path = "c:\\testFolder\\out";
+//    static String path = "c:\\testFolder\\out";
+    static String path = "d:\\soob\\out";
 
     public void createFile(String text) {
         System.out.println("--------------->>> " + text);
@@ -50,9 +46,9 @@ public class Writing extends HttpServlet {
 
     private static void writingFile(String pth, String text) {
         try (FileWriter writer = new FileWriter(pth, false)) {
-            writer.write(text);
-            writer.append("\nB– “T€     93 31.05 13-46 B– 73");
-            writer.append("\n" + new String("B– “T€     93 31.05 13-46 B– 73".getBytes(), "Cp866"));
+            writer.write(new String (text.getBytes(),"Cp866"));
+//            writer.append("\nB– “T€     93 31.05 13-46 B– 73");
+//            writer.append("\n" + new String("B– “T€     93 31.05 13-46 B– 73".getBytes(), "Cp866"));
         } catch (Exception e) {
             System.out.println("Exception in writingFile " + e);
         }
