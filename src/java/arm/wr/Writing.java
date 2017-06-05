@@ -47,7 +47,8 @@ public class Writing extends HttpServlet {
 
     private static void writingFile(String pth, String text) {
         try (FileWriter writer = new FileWriter(pth, false)) {
-            writer.write(new String (text.getBytes(),"Cp866"));
+            writer.write(text);
+//            writer.write(new String (text.getBytes(),"Cp866"));
 //            writer.append("\nB– “T€     93 31.05 13-46 B– 73");
 //            writer.append("\n" + new String("B– “T€     93 31.05 13-46 B– 73".getBytes(), "Cp866"));
         } catch (Exception e) {
@@ -62,6 +63,6 @@ public class Writing extends HttpServlet {
         if (m.find()) {
             fileName = m.group(1);
         }
-        return "0102"+fileName;
+        return "0102w"+fileName;
     }
 }

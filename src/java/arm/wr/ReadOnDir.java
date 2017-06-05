@@ -1,8 +1,8 @@
-
 package arm.wr;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -36,7 +36,7 @@ public class ReadOnDir extends Thread {
     public void run() {
         System.out.println("thread!!!");
 //        if (Thread.currentThread().isInterrupted()) {
-            pathListener();
+        pathListener();
 //        }
     }
 
@@ -74,23 +74,39 @@ public class ReadOnDir extends Thread {
 
     private static void readingFile(String path) {
 
-        String str = null;
-        Matcher m = null;
-        try (FileReader reader = new FileReader(path)) {
-            LineNumberReader lnr = new LineNumberReader(new BufferedReader(reader));
-            Pattern p1 = Pattern.compile("\\D*:(\\d+)(.*)");
-            while ((str = lnr.readLine()) != null) {
-                m = p1.matcher(str);
-                if (m.find()) {
-                    System.out.println("Message Code : " + m.group(1));
-                    System.out.println("" + m.group());
-                } else {
-                    System.out.println(new String(new String(str.getBytes(),"Cp866").getBytes(),"Cp1251"));
-                }
-            }
+//        String str = null;
+//        Matcher m = null;
+//        try (FileReader reader = new FileReader(path)) {
+//            LineNumberReader lnr = new LineNumberReader(new BufferedReader(reader));
+//            Pattern p1 = Pattern.compile("\\D*:(\\d+)(.*)");
+//            while ((str = lnr.readLine()) != null) {
+//                m = p1.matcher(str);
+//                if (m.find()) {
+//                    System.out.println("Message Code : " + m.group(1));
+//                    System.out.println("" + m.group());
+//                } else {
+////                    System.out.println(new String(new String(str.getBytes("Cp866"),"Cp1251").getBytes(),"utf-8"));
+//                    System.out.println(str);
+//                }
+//            }
+//
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+        try (FileInputStream fin = new FileInputStream(path)) {
+            System.out.println("Размер файла: " + fin.available() + " байт(а)");
 
+            byte[] buffer = new byte[fin.available()];
+// считаем файл в буфер
+            fin.read(buffer, 0, fin.available());
+
+            System.out.println("Содержимое файла:");
+            for (int i = 0; i < buffer.length; i++) {
+                System.out.print(new String(new String(buffer,"cp866").getBytes("cp1251"),"UTF-8"));
+            }
         } catch (IOException ex) {
-            ex.printStackTrace();
+
+            System.out.println(ex.getMessage());
         }
 
 //        deletingFile(path);
