@@ -85,14 +85,35 @@ public class ReadOnDir extends Thread {
 //                    System.out.println("Message Code : " + m.group(1));
 //                    System.out.println("" + m.group());
 //                } else {
-////                    System.out.println(new String(new String(str.getBytes("Cp866"),"Cp1251").getBytes(),"utf-8"));
-//                    System.out.println(str);
+////                    System.out.println(new String(str.getBytes("Cp1251"), "CP866"));
+//                    
 //                }
 //            }
 //
 //        } catch (IOException ex) {
 //            ex.printStackTrace();
 //        }
+
+//try (FileInputStream fin = new FileInputStream("C:\\testFolder\\01020000.00I")) {
+//            byte[] buffer = new byte[fin.available()];
+//            fin.read(buffer, 0, fin.available());
+//            String sss = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//            System.out.println(sss);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//        try (FileReader reader = new FileReader("C:\\testFolder\\01020000.00I")) {
+//            LineNumberReader lnr = new LineNumberReader(new BufferedReader(reader));
+//            String str;
+//            while ((str = lnr.readLine()) != null) {
+//                System.out.println(new String(str.getBytes("Cp1251"), "CP866"));
+//            }
+//
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+
+
         try (FileInputStream fin = new FileInputStream(path)) {
             System.out.println("Размер файла: " + fin.available() + " байт(а)");
 
@@ -101,9 +122,11 @@ public class ReadOnDir extends Thread {
             fin.read(buffer, 0, fin.available());
 
             System.out.println("Содержимое файла:");
-            for (int i = 0; i < buffer.length; i++) {
-                System.out.print(new String(new String(buffer,"cp866").getBytes("cp1251"),"UTF-8"));
-            }
+            String sss = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            System.out.println(sss);
+//            for (int i = 0; i < buffer.length; i++) {
+//                System.out.print(new String(new String(buffer,"cp866").getBytes("cp1251"),"UTF-8"));
+//            }
         } catch (IOException ex) {
 
             System.out.println(ex.getMessage());
