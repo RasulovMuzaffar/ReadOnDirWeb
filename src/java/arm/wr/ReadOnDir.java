@@ -13,6 +13,12 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,8 +35,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-//    static String p = "c:\\testFolder\\in";
-    static String p = "d:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "d:\\soob\\in";
+
+    private static final String URL = "jdbc:mysql://localhost:3306/testarm";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -72,7 +82,7 @@ public class ReadOnDir extends Thread {
         }
     }
 
-    private static void readingFile(String path) {
+    private static void readingFile(String path) throws ClassNotFoundException {
 
 //        String str = null;
 //        Matcher m = null;
@@ -93,7 +103,6 @@ public class ReadOnDir extends Thread {
 //        } catch (IOException ex) {
 //            ex.printStackTrace();
 //        }
-
 //try (FileInputStream fin = new FileInputStream("C:\\testFolder\\01020000.00I")) {
 //            byte[] buffer = new byte[fin.available()];
 //            fin.read(buffer, 0, fin.available());
@@ -112,25 +121,47 @@ public class ReadOnDir extends Thread {
 //        } catch (IOException ex) {
 //            ex.printStackTrace();
 //        }
+        boolean d;
+        do {
+            try (FileInputStream fin = new FileInputStream(path)) {
+                d = true;
+                System.out.println("Размер файла: " + fin.available() + " байт(а)");
 
-
-        try (FileInputStream fin = new FileInputStream(path)) {
-            System.out.println("Размер файла: " + fin.available() + " байт(а)");
-
-            byte[] buffer = new byte[fin.available()];
+                byte[] buffer = new byte[fin.available()];
 // считаем файл в буфер
-            fin.read(buffer, 0, fin.available());
+                fin.read(buffer, 0, fin.available());
 
-            System.out.println("Содержимое файла:");
-            String sss = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-            System.out.println(sss);
+                System.out.println("Содержимое файла:");
+                String sss = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+                System.out.println(sss);
 //            for (int i = 0; i < buffer.length; i++) {
 //                System.out.print(new String(new String(buffer,"cp866").getBytes("cp1251"),"UTF-8"));
 //            }
-        } catch (IOException ex) {
 
-            System.out.println(ex.getMessage());
-        }
+                String[] text = sss.split("\\u000d\\u000a\\u000d\\u000a");
+                System.out.println("Заголовок ");
+                System.out.println(text[0]);
+                System.out.println("Тело ");
+                System.out.println(text[1]);
+
+                Class.forName("com.mysql.jdbc.Driver");
+                try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                        CallableStatement proc = con.prepareCall("{call insertMessage('" + text[0] + "','" + text[1] + "')}");) {
+
+                    proc.execute();
+//                        Statement stmt = con.createStatement();) {
+//                    String sql = "INSERT INTO inm (in_header, in_body) VALUES ('" + text[0] + "', '" + text[1] + "')";
+////                String sql = "INSERT INTO inm (in_header, in_body) VALUES (123,1111)";
+//                    stmt.execute(sql);
+                } catch (SQLException ex) {
+                    System.out.println("ошибка!!! в SQLException!!!");
+                    System.out.println(Arrays.toString(ex.getStackTrace()));
+                }
+            } catch (IOException ex) {
+                System.out.println("файл занят");
+                d = false;
+            }
+        } while (!d);
 
 //        deletingFile(path);
     }

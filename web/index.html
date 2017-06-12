@@ -33,6 +33,28 @@ and open the template in the editor.
                 </select>
                 <input type="submit" value="submit"/>
             </form>
+            <input type="text" id="ttt"/><button id="xxx" onclick="www();">qwe</button>
+            <textarea id="messagesTextArea" rows="50" cols="50"></textarea>
         </div>
+        <script type="text/javascript">
+            function www() {
+                webSocket.send(document.getElementById('ttt').value);
+            }
+            var webSocket = new WebSocket("ws://localhost:8080/MessageToASOUP//ws");
+            var messagesTextArea = document.getElementById("messagesTextArea");
+            webSocket.onopen = function (message) {
+                processOpen(message);
+            };
+            webSocket.onmessage = function (message) {
+                processMessage(message);
+            };
+            function processOpen(message) {
+                messagesTextArea.value += "Server connected...";
+            }
+            function processMessage(message) {
+                console.log(message);
+            }
+
+        </script>
     </body>
 </html>
