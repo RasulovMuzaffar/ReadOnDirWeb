@@ -28,12 +28,14 @@ public class Writing extends HttpServlet {
         String q = null;
         String kodDok = null;
         String object = null;
+        int id_user = 0;
         kod = request.getParameter("kod");
         q = request.getParameter("q");
         kodDok = request.getParameter("kodDok");
         object = request.getParameter("object");
-//        createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
-        createFile("(:140:)");
+        id_user = Integer.parseInt(request.getParameter("id_user"));
+        createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
+//        createFile("(:140:)");
     }
 
 //    static String path = "c:\\testFolder\\out";

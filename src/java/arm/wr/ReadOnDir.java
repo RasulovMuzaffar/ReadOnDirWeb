@@ -1,11 +1,8 @@
 package arm.wr;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,14 +14,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -139,10 +131,10 @@ public class ReadOnDir extends Thread {
 //            }
 
                 String[] text = sss.split("\\u000d\\u000a\\u000d\\u000a");
-                System.out.println("Заголовок ");
-                System.out.println(text[0]);
-                System.out.println("Тело ");
-                System.out.println(text[1]);
+//                System.out.println("Заголовок ");
+//                System.out.println(text[0]);
+//                System.out.println("Тело ");
+//                System.out.println(text[1]);
 
                 Class.forName("com.mysql.jdbc.Driver");
                 try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);

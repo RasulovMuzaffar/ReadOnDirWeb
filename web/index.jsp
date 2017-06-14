@@ -1,14 +1,15 @@
+<%-- 
+    Document   : newjsp
+    Created on : 14.06.2017, 16:20:26
+    Author     : Muzaffar
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
     </head>
     <body>
         <div>
@@ -33,6 +34,8 @@ and open the template in the editor.
                 </select>
                 <input type="submit" value="submit"/>
             </form>
+            <b>${pageContext.session.id}</b><br/>
+            <b>${user}</b>
             <input type="text" id="ttt"/><button id="xxx" onclick="www();">qwe</button>
             <textarea id="messagesTextArea" rows="50" cols="50"></textarea>
         </div>
@@ -53,8 +56,8 @@ and open the template in the editor.
             }
             function processMessage(message) {
                 console.log(message);
+                messagesTextArea.value += message;
             }
 
         </script>
     </body>
-</html>
