@@ -1,5 +1,6 @@
 package arm.wr;
 
+import arm.ent.Users;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Writing extends HttpServlet {
 
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
+    static String autoNo;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,16 +36,23 @@ public class Writing extends HttpServlet {
         kodDok = request.getParameter("kodDok");
         object = request.getParameter("object");
         id_user = Integer.parseInt(request.getParameter("id_user"));
+//        autoNo = request.getSession().getAttributeNames();
+        System.out.println("autoNo " + request.getSession().getAttributeNames().nextElement());
+
+        Users u = (Users) request.getSession().getAttribute("user");
+        autoNo = u.getAutoNo();
+
         createFile("(:" + kod + " " + q + " " + object + ":" + kodDok + ":)");
 //        createFile("(:140:)");
     }
 
-//    static String path = "c:\\testFolder\\out";
-    static String path = "d:\\soob\\out";
+    static String path = "c:\\testFolder\\out";
+//    static String path = "d:\\soob\\out";
 
     public void createFile(String text) {
         System.out.println("--------------->>> " + text);
-        writingFile(path + "\\" + reading(text) + ".txt", text);
+
+        writingFile(path + "\\" + autoNo + "a" + reading(text) + ".txt", text);
         System.out.println("Message is sending!");
     }
 
@@ -65,6 +74,6 @@ public class Writing extends HttpServlet {
         if (m.find()) {
             fileName = m.group(1);
         }
-        return "0102w"+fileName;
+        return fileName;
     }
 }

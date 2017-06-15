@@ -32,10 +32,11 @@
                     <option value="7200">Чукурсай</option>
                     <option value="8200">Хаваст</option>
                 </select>
+                <input type="hidden" name="id_user" value="${user.id}"/>
                 <input type="submit" value="submit"/>
             </form>
             <b>${pageContext.session.id}</b><br/>
-            <b>${user}</b>
+            <b>${user.autoNo}</b>
             <input type="text" id="ttt"/><button id="xxx" onclick="www();">qwe</button>
             <textarea id="messagesTextArea" rows="50" cols="50"></textarea>
         </div>
