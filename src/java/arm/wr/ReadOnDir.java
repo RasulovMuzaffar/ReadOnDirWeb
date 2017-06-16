@@ -27,12 +27,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-    static String p = "c:\\testFolder\\in";
-//    static String p = "d:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "d:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/testarm";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -64,7 +64,7 @@ public class ReadOnDir extends Thread {
                     Path eventPath = (Path) event.context();
                     System.out.println(eventDir + " : " + kind + " : " + eventPath);
 
-                    readingFile(eventDir + "\\" + eventPath);
+                    readingFile(eventDir + "\\" + eventPath, "" + eventPath);
 
                 }
             } while (watchKey.reset());
@@ -74,7 +74,7 @@ public class ReadOnDir extends Thread {
         }
     }
 
-    private static void readingFile(String path) throws ClassNotFoundException {
+    private static void readingFile(String path, String fileName) throws ClassNotFoundException {
 
 //        String str = null;
 //        Matcher m = null;
@@ -118,7 +118,12 @@ public class ReadOnDir extends Thread {
             try (FileInputStream fin = new FileInputStream(path)) {
                 d = true;
                 System.out.println("Размер файла: " + fin.available() + " байт(а)");
-
+                char[] fn = fileName.toCharArray();
+                String s = "";
+                for (int i = 0; i < 4; i++) {
+                    s += fn[i];
+                }
+                System.out.println("111   " + s);
                 byte[] buffer = new byte[fin.available()];
 // считаем файл в буфер
                 fin.read(buffer, 0, fin.available());
@@ -131,22 +136,16 @@ public class ReadOnDir extends Thread {
 //            }
 
                 String[] text = sss.split("\\u000d\\u000a\\u000d\\u000a");
-//                System.out.println("Заголовок ");
-//                System.out.println(text[0]);
-//                System.out.println("Тело ");
-//                System.out.println(text[1]);
 
                 Class.forName("com.mysql.jdbc.Driver");
                 try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-                        CallableStatement proc = con.prepareCall("{call insertMessage('" + text[0] + "','" + text[1] + "')}");) {
+                        CallableStatement proc = con.prepareCall("{call insertMessage('" + text[0] + "','" + text[1] + "','" + s + "')}");) {
 
                     proc.execute();
-//                        Statement stmt = con.createStatement();) {
-//                    String sql = "INSERT INTO inm (in_header, in_body) VALUES ('" + text[0] + "', '" + text[1] + "')";
-////                String sql = "INSERT INTO inm (in_header, in_body) VALUES (123,1111)";
-//                    stmt.execute(sql);
+
                 } catch (SQLException ex) {
                     System.out.println("ошибка!!! в SQLException!!!");
+                    System.out.println("" + ex);
                     System.out.println(Arrays.toString(ex.getStackTrace()));
                 }
             } catch (IOException ex) {

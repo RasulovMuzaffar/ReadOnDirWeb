@@ -46,20 +46,20 @@ public class Writing extends HttpServlet {
 //        createFile("(:140:)");
     }
 
-    static String path = "c:\\testFolder\\out";
-//    static String path = "d:\\soob\\out";
+//    static String path = "c:\\testFolder\\out";
+    static String path = "d:\\soob\\out";
 
     public void createFile(String text) {
         System.out.println("--------------->>> " + text);
 
-        writingFile(path + "\\" + autoNo + "a" + reading(text) + ".txt", text);
+        writingFile(path + "\\" + autoNo + "a0" + reading(text) + ".txt", text);
         System.out.println("Message is sending!");
     }
 
     private static void writingFile(String pth, String text) {
         try (FileWriter writer = new FileWriter(pth, false)) {
-            writer.write(text);
-//            writer.write(new String (text.getBytes(),"Cp866"));
+//            writer.write(text);
+            writer.write(new String (text.getBytes(),"Cp866"));
 //            writer.append("\nB– “T€     93 31.05 13-46 B– 73");
 //            writer.append("\n" + new String("B– “T€     93 31.05 13-46 B– 73".getBytes(), "Cp866"));
         } catch (Exception e) {

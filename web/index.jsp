@@ -32,7 +32,7 @@
                     <option value="7200">Чукурсай</option>
                     <option value="8200">Хаваст</option>
                 </select>
-                <input type="hidden" name="id_user" value="${user.id}"/>
+                <input type="text" name="id_user" value="${user.id}"/>
                 <input type="submit" value="submit"/>
             </form>
             <b>${pageContext.session.id}</b><br/>
