@@ -46,8 +46,8 @@ public class Writing extends HttpServlet {
 //        createFile("(:140:)");
     }
 
-    static String path = "c:\\testFolder\\out";
-//    static String path = "d:\\soob\\out";
+//    static String path = "c:\\testFolder\\out";
+    static String path = "d:\\soob\\out";
 
     public void createFile(String text) {
         System.out.println("--------------->>> " + text);

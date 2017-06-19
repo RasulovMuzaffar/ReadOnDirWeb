@@ -14,7 +14,9 @@ import java.nio.file.WatchService;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +31,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-    static String p = "c:\\testFolder\\in";
-//    static String p = "d:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "d:\\soob\\in";
 
     private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -138,17 +140,26 @@ public class ReadOnDir extends Thread {
 //            }
 
                 String[] text = sss.split("\\u000d\\u000a\\u000d\\u000a");
-
+                
                 Class.forName("com.mysql.jdbc.Driver");
                 try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                         CallableStatement proc = con.prepareCall("{call insertMessage('" + text[0] + "','" + text[1] + "','" + s + "')}");) {
 
                     proc.execute();
+                    try (Statement stmt = con.createStatement();
+                            ResultSet rs = stmt.executeQuery("select * from in_messages where header='" + text[0] + "'");) {
 
-                    for (Session peer : PEERS) {
-//                        if (peer.equals(0)) {
-                            peer.getBasicRemote().sendText("--" + "qwerty" + "--<br>");
-//                        }
+                        while (rs.next()) {
+//                            System.out.println(rs.getString("header") + "-- \n --" + rs.getString("body"));
+                            for (Session peer : PEERS) {
+                                System.out.println("peeeeeeer " + peer.getId());
+//                                if (peer.equals(0)) {
+                                peer.getBasicRemote().sendText(rs.getString("header") + "\n\n" + rs.getString("body"));
+//                                }
+                            }
+//                            
+                        }
+
                     }
                 } catch (SQLException ex) {
                     System.out.println("ошибка!!! в SQLException!!!");

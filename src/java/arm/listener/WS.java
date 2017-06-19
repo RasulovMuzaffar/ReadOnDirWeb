@@ -7,10 +7,13 @@ package arm.listener;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -26,6 +29,7 @@ import javax.websocket.server.ServerEndpoint;
 public class WS {
 
     public static final Set<Session> PEERS = Collections.synchronizedSet(new HashSet<Session>());
+    public static final Map<String, Session> p = Collections.synchronizedMap(new HashMap<>());
 
     @OnMessage
     public void onMessage(String message, Session session) {
@@ -37,7 +41,9 @@ public class WS {
     @OnOpen
     public void onOpen(Session peer) {
         PEERS.add(peer);
-        System.out.println(peer.getId());
+        p.put("user", peer);
+        System.out.println("======>" + peer.getId());
+        System.out.println("======>" + p.get("user").getId());
     }
 
     @OnError
