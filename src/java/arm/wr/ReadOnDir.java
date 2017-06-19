@@ -1,5 +1,6 @@
 package arm.wr;
 
+import static arm.listener.WS.PEERS;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import javax.websocket.Session;
 
 /**
  *
@@ -27,12 +29,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-//    static String p = "c:\\testFolder\\in";
-    static String p = "d:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "d:\\soob\\in";
 
     private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -143,6 +145,11 @@ public class ReadOnDir extends Thread {
 
                     proc.execute();
 
+                    for (Session peer : PEERS) {
+//                        if (peer.equals(0)) {
+                            peer.getBasicRemote().sendText("--" + "qwerty" + "--<br>");
+//                        }
+                    }
                 } catch (SQLException ex) {
                     System.out.println("ошибка!!! в SQLException!!!");
                     System.out.println("" + ex);
@@ -163,4 +170,5 @@ public class ReadOnDir extends Thread {
         file.delete();
         System.out.println("File deleting!!!");
     }
+
 }

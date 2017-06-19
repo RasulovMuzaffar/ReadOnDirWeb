@@ -48,11 +48,14 @@
             var messagesTextArea = document.getElementById("messagesTextArea");
             webSocket.onopen = function (message) {
                 processOpen(message);
+                console.log(message);
             };
             webSocket.onmessage = function (message) {
                 processMessage(message);
+                console.log(message);
             };
             function processOpen(message) {
+                console.log(message);
                 messagesTextArea.value += "Server connected...";
             }
             function processMessage(message) {
