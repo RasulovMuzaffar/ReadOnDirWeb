@@ -173,7 +173,7 @@
 //                    function www() {
 //                        webSocket.send(document.getElementById('ttt').value);
 //                    }
-            var webSocket = new WebSocket("ws://localhost:8080/MessageToASOUP//ws");
+            var webSocket = new WebSocket("ws://192.168.42.195:8080/MessageToASOUP//ws");
 //                    var messagesTextArea = document.getElementById("messagesTextArea");
             webSocket.onopen = function (message) {
                 processOpen(message);

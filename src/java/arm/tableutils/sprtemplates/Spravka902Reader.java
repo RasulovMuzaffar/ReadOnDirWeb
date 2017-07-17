@@ -19,17 +19,16 @@ import java.util.regex.Pattern;
  *
  * @author Muzaffar
  */
-public class Spravka02Reader implements TableReaderInterface {
+public class Spravka902Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "(?<dcode>\\d{2})\\s+"
+    final static String regexDocHead = "(?<dcode>\\d{3})\\s+"
             + "(?<dst>\\d{4,5})\\s+"
             + "(?<dnp>\\d{4})\\s+"
-            + "(?<dindx>\\d{4}\\s\\d{2,3}\\s\\d{4})\\s+"
-            + "(?<dediz>\\d{1})\\s+"
-            + "(?<ddate>\\d{2} \\d{2})\\s+"
+            + "(?<dindx>\\d{4}\\s\\d{3,4}\\s\\d{4})\\s+"
+            + "(?<dediz>\\d{1})\\s+(?<ddate>\\d{2} \\d{2})\\s+"
             + "(?<dtime>\\d{2} \\d{2})\\s+"
-            + "(?<duddl>\\d{2,3})\\s+"
-            + "(?<dxz1>\\d{4})\\s+"
+            + "(?<duddl>\\d{2,5})\\s+"
+            + "(?<dxz1>\\d{4,5})\\s+"
             + "(?<dxz2>\\d \\d{4} \\d \\d)";
 
     final static String regexTHead = "(?<hnum>[А-ЯA-Z]{5})\\s+"
@@ -41,7 +40,7 @@ public class Spravka02Reader implements TableReaderInterface {
 
     final static String regexTBody = "(?<thnum>\\d{2})\\s+"
             + "(?<thnvag>\\d{8})\\s+"
-            + "(?<thediz>\\d{1})\\s+"
+            + "(?<thediz>\\d{4})\\s+"
             + "(?<thvesgr>\\d{3})\\s+"
             + "(?<thstnaz>\\d{5})\\s+"
             + "(?<thcodgr>\\d{5})\\s+"

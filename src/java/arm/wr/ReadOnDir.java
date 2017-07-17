@@ -5,6 +5,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
 import arm.tableutils.sprtemplates.Spravka02Reader;
+import arm.tableutils.sprtemplates.Spravka902Reader;
 import arm.tableutils.sprtemplates.Spravka93Reader;
 import arm.tableutils.sprtemplates.Spravka95Reader;
 import java.io.File;
@@ -32,12 +33,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-    static String p = "c:\\testFolder\\in";
-//    static String p = "d:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "12345";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -52,6 +53,7 @@ public class ReadOnDir extends Thread {
         tableReader.registerReader(new Spravka93Reader());
         tableReader.registerReader(new Spravka95Reader());
         tableReader.registerReader(new Spravka02Reader());
+        tableReader.registerReader(new Spravka902Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
