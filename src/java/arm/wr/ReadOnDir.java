@@ -1,6 +1,12 @@
 package arm.wr;
 
 import static arm.listener.WS.PEERS;
+import arm.tableutils.HtmlTable;
+import arm.tableutils.tablereaders.CompositeReader;
+import arm.tableutils.tablereaders.MultipleResultsException;
+import arm.tableutils.sprtemplates.Spravka02Reader;
+import arm.tableutils.sprtemplates.Spravka93Reader;
+import arm.tableutils.sprtemplates.Spravka95Reader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,15 +17,10 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.websocket.Session;
 
 /**
@@ -31,12 +32,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-//    static String p = "c:\\testFolder\\in";
-    static String p = "d:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "d:\\soob\\in";
 
     private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String USER = "root";
+    private static final String PASS = "12345";
 
     @Override
     public void run() {
@@ -47,19 +48,24 @@ public class ReadOnDir extends Thread {
     }
 
     private static void pathListener() {
+// init composite reader - register all reader types
+        tableReader.registerReader(new Spravka93Reader());
+        tableReader.registerReader(new Spravka95Reader());
+        tableReader.registerReader(new Spravka02Reader());
+
+        ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
             Map<WatchKey, Path> keyMap = new HashMap<>();
             Path path = Paths.get(p);
+
             keyMap.put(path.register(service,
                     StandardWatchEventKinds.ENTRY_CREATE
-            //                    ,StandardWatchEventKinds.ENTRY_DELETE
-            //                    ,StandardWatchEventKinds.ENTRY_MODIFY
+            //                  ,StandardWatchEventKinds.ENTRY_DELETE
+            //                  ,StandardWatchEventKinds.ENTRY_MODIFY
             ), path);
 
             WatchKey watchKey;
-
             do {
-                System.out.println("POTOK");
                 watchKey = service.take();
                 Path eventDir = keyMap.get(watchKey);
 
@@ -67,112 +73,66 @@ public class ReadOnDir extends Thread {
                     WatchEvent.Kind<?> kind = event.kind();
                     Path eventPath = (Path) event.context();
                     System.out.println(eventDir + " : " + kind + " : " + eventPath);
+                    File f = new File(eventDir + "\\" + eventPath);
 
-                    readingFile(eventDir + "\\" + eventPath, "" + eventPath);
-
+                    boolean b;
+                    do {
+                        b = true;
+                        try (FileInputStream fis = new FileInputStream(f)) {
+                            while (f.canRead() && f.canWrite() && f.exists()) {
+                                readingFile(eventDir + "\\" + eventPath);
+                                break;
+                            }
+                        } catch (IOException ex) {
+                            System.out.println("Файл занят " + ex);
+                            b = false;
+                        }
+                    } while (!b);
                 }
             } while (watchKey.reset());
         } catch (Exception e) {
-//            System.out.println("exception on WatchService " + e);
-            e.printStackTrace();
+            System.out.println("exception on WatchService " + e);
         }
+        ///////////////////////////////////////////           
     }
 
-    private static void readingFile(String path, String fileName) throws ClassNotFoundException {
+    static final CompositeReader tableReader = new CompositeReader();
 
-//        String str = null;
-//        Matcher m = null;
-//        try (FileReader reader = new FileReader(path)) {
-//            LineNumberReader lnr = new LineNumberReader(new BufferedReader(reader));
-//            Pattern p1 = Pattern.compile("\\D*:(\\d+)(.*)");
-//            while ((str = lnr.readLine()) != null) {
-//                m = p1.matcher(str);
-//                if (m.find()) {
-//                    System.out.println("Message Code : " + m.group(1));
-//                    System.out.println("" + m.group());
-//                } else {
-////                    System.out.println(new String(str.getBytes("Cp1251"), "CP866"));
-//                    
-//                }
-//            }
-//
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-//try (FileInputStream fin = new FileInputStream("C:\\testFolder\\01020000.00I")) {
-//            byte[] buffer = new byte[fin.available()];
-//            fin.read(buffer, 0, fin.available());
-//            String sss = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//            System.out.println(sss);
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-//        try (FileReader reader = new FileReader("C:\\testFolder\\01020000.00I")) {
-//            LineNumberReader lnr = new LineNumberReader(new BufferedReader(reader));
-//            String str;
-//            while ((str = lnr.readLine()) != null) {
-//                System.out.println(new String(str.getBytes("Cp1251"), "CP866"));
-//            }
-//
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-        boolean d;
-        do {
-            try (FileInputStream fin = new FileInputStream(path)) {
-                d = true;
-                System.out.println("Размер файла: " + fin.available() + " байт(а)");
-                char[] fn = fileName.toCharArray();
-                String s = "";
-                for (int i = 0; i < 4; i++) {
-                    s += fn[i];
-                }
-                System.out.println("111   " + s);
-                byte[] buffer = new byte[fin.available()];
-// считаем файл в буфер
-                fin.read(buffer, 0, fin.available());
+    private static void readingFile(String path) {
+        // test
+        String fileNameToTest;
+        fileNameToTest = path;
+        System.out.println("Using file name " + fileNameToTest);
 
-                System.out.println("Содержимое файла:");
-                String sss = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-                System.out.println(sss);
-//            for (int i = 0; i < buffer.length; i++) {
-//                System.out.print(new String(new String(buffer,"cp866").getBytes("cp1251"),"UTF-8"));
-//            }
-
-                String[] text = sss.split("\\u000d\\u000a\\u000d\\u000a");
-                
-                Class.forName("com.mysql.jdbc.Driver");
-                try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-                        CallableStatement proc = con.prepareCall("{call insertMessage('" + text[0] + "','" + text[1] + "','" + s + "')}");) {
-
-                    proc.execute();
-                    try (Statement stmt = con.createStatement();
-                            ResultSet rs = stmt.executeQuery("select * from in_messages where header='" + text[0] + "'");) {
-
-                        while (rs.next()) {
-//                            System.out.println(rs.getString("header") + "-- \n --" + rs.getString("body"));
-                            for (Session peer : PEERS) {
-                                System.out.println("peeeeeeer " + peer.getId());
-//                                if (peer.equals(0)) {
-                                peer.getBasicRemote().sendText(rs.getString("header") + "\n\n" + rs.getString("body"));
-//                                }
-                            }
-//                            
-                        }
-
+        try {
+            File f = new File(fileNameToTest);
+            if (f.exists()) {
+                HtmlTable result = tableReader.processFile(fileNameToTest);
+                if (result != null) {
+                    String s = result.generateHtml();
+                    for (Session peer : PEERS) {
+                        System.out.println("peeeeeeer " + peer.getId());
+                        peer.getBasicRemote().sendText(s);
                     }
-                } catch (SQLException ex) {
-                    System.out.println("ошибка!!! в SQLException!!!");
-                    System.out.println("" + ex);
-                    System.out.println(Arrays.toString(ex.getStackTrace()));
+                    System.out.println(s);
+                } else {
+                    for (Session peer : PEERS) {
+                        System.out.println("peeeeeeer " + peer.getId());
+                        peer.getBasicRemote().sendText("Could not detect input file type");
+                    }
+                    System.out.println("Could not detect input file type");
                 }
-            } catch (IOException ex) {
-                System.out.println("файл занят");
-                d = false;
+            } else {
+                System.out.println("File not found");
             }
-        } while (!d);
-
-//        deletingFile(path);
+        } catch (MultipleResultsException ex) {
+            System.out.println("Error: multiple results");
+            for (HtmlTable result : ex.multipleResults) {
+                System.out.println(result);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ReadOnDir.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private static void deletingFile(String path) {

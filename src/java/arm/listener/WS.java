@@ -34,8 +34,17 @@ public class WS {
     @OnMessage
     public void onMessage(String message, Session session) {
         System.out.println("ws.WS_server.onMessage()   " + message + "   " + session.getId());
-
-        WsSendMessage(message, session);
+        String[] str = message.split("|");
+        String[] zprs = str[1].split(",");
+        switch (str[0]) {
+            case "spr":
+                System.out.println("spr byl");
+                break;
+            case "qwerty":
+                System.out.println("qwerty byl");
+                break;
+        }
+//        WsSendMessage(message, session);
     }
 
     @OnOpen

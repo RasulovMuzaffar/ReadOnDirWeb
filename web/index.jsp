@@ -7,7 +7,7 @@
         <!--<meta charset="utf-8">-->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>АРМ АСОУП</title>
+        <title>Справочник АСОУП</title>
 
         <!-- Bootstrap -->
         <link href="resources/css/bootstrap.css" rel="stylesheet">
@@ -25,12 +25,12 @@
         <div class="container-fluid">
             <div class="row header">
                 <div class="col-md-4 hleft">
-                    <h2>Web АРМ АСОУП</h2>
+                    <h2>Справочник АСОУП</h2>
                 </div>
                 <div class="col-md-8 hright">
                     <a href="#">Выход</a>
                     <br/>
-                    <h4><strong>Здравствуйте, Юзер Юзер!</strong></h4>
+                    <h4><strong>Здравствуйте, ${user.fName} ${user.lName}!</strong></h4>
 
                 </div>
             </div>
@@ -53,15 +53,16 @@
                     <div class="form-group">
                         <label class="sr-only" for="st">Станция</label>
                         <input type="text" class="form-control" id="st" placeholder="Код станции">
+                        <input type="hidden" name="id_user" value="${user.id}" id="id_user"/>
                     </div>
-                    <button type="submit" class="btn btn-default">OK</button>
+                    <button type="button" class="btn btn-info" onclick="writing();">OK</button>
                 </form>
 
             </div>
-            <div class="row">
-                <label><h3>ВЦ УТИ 93 31.05 13-46 ВЦ 73 НАЛИЦИЕ ПОЕЗДОВ НАХОДЯЩИХСЯ НА СТ. ЧУКУР</h3></label>
+            <div class="row" id="otvet">
+                <!--<label><h3>ВЦ УТИ 93 31.05 13-46 ВЦ 73 НАЛИЦИЕ ПОЕЗДОВ НАХОДЯЩИХСЯ НА СТ. ЧУКУР</h3></label>
                 <div class="col-md-12 tabl">
-                    <table class="mytable" cellspacing='0'>
+                    <table class="mytable" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>№</th>
@@ -110,7 +111,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -150,40 +151,63 @@
             <input type="text" id="ttt"/><button id="xxx" onclick="www();">qwe</button>
             <textarea id="messagesTextArea" rows="50" cols="100"></textarea>
         </div>-->
-        <!--        <script type="text/javascript">
-                    function writing() {
-                        var q = document.getElementById('q').value;
-                        var kod = document.getElementById('kod').value;
-                        var kodDok = document.getElementById('kodDok').value;
-                        var object = document.getElementById('object').value;
-                        var id_user = document.getElementById('id_user').value;
-                        $.get('writing', {q: q, kod: kod, kodDok: kodDok, object: object, id_user: id_user},
-                                function (data) {
-        
-                                });
+        <script type="text/javascript">
+            var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
+            function writing() {
+                var q = 0;//document.getElementById('q').value;
+                var kod = document.getElementById('numMess').value;
+                var kodDok = document.getElementById('numSpr').value;
+                var object = document.getElementById('st').value;
+                var id_user = document.getElementById('id_user').value;
+
+                webSocket.send("spr|" + q + "," + kod + "," + kodDok + "," + object + "," + id_user);
+//                windows.spr(p){
+//                    document.getElementById("otvet").innerHTML = message.data;
+//                };
+
+//                                $.get('writing', {q: q, kod: kod, kodDok: kodDok, object: object, id_user: id_user},
+//                        function (data) {
+//
+//                        });
+            }
+//                    function www() {
+//                        webSocket.send(document.getElementById('ttt').value);
+//                    }
+            var webSocket = new WebSocket("ws://localhost:8080/MessageToASOUP//ws");
+//                    var messagesTextArea = document.getElementById("messagesTextArea");
+            webSocket.onopen = function (message) {
+                processOpen(message);
+                console.log(message);
+            };
+            webSocket.onmessage = function (message) {
+                // processMessage(message);
+                console.log(message);
+                document.getElementById("otvet").innerHTML = message.data;
+                var r = rg.exec(response.data);
+                try {
+                    if (r[1].includes('.')) {
+                        var d = r[1].split(',');
+                        window[d[0]][d[1]](r[2]);
+                    } else {
+                        window[r[1]](r[2]);
                     }
-                    function www() {
-                        webSocket.send(document.getElementById('ttt').value);
-                    }
-                    var webSocket = new WebSocket("ws://localhost:8080/MessageToASOUP//ws");
-                    var messagesTextArea = document.getElementById("messagesTextArea");
-                    webSocket.onopen = function (message) {
-                        processOpen(message);
-        //                console.log(message);
-                    };
-                    webSocket.onmessage = function (message) {
-                        processMessage(message);
-        //                console.log(message);
-                    };
-                    function processOpen(message) {
-        //                console.log(message);
-                        messagesTextArea.value += "Server connected...";
-                    }
-                    function processMessage(message) {
-                        console.log(message.valueOf());
-                        messagesTextArea.value = "";
-                        messagesTextArea.value += message.data;
-                    }
-        
-                </script>-->
+                } catch (er) {
+                    console.log('ошибка ' + er.stack);
+                    console.log('вызов ' + r[1]);
+                    console.trace();
+
+                }
+
+            };
+            function processOpen(message) {
+                console.log(message);
+//                messagesTextArea.value += "Server connected...";
+            }
+            function processMessage(message) {
+                console.log(message.valueOf());
+                messagesTextArea.value = "";
+                messagesTextArea.value += message.data;
+            }
+
+        </script>
     </body>
