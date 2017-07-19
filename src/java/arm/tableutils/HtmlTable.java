@@ -62,10 +62,10 @@ public class HtmlTable {
             }
         }
         result += LABELDOC_CLOSE;
-        result += DIV_TALB_OPEN;
+        result += DIV_TABL_OPEN;
         result += "\n";
         result += generateHtmlTable();
-        result += DIV_TALB_CLOSE;
+        result += DIV_TABL_CLOSE;
 //        result += (BODY_CLOSE + HTML_CLOSE);
         return result;
     }
@@ -86,8 +86,8 @@ public class HtmlTable {
     private static final String CELL_CLOSE = "</td>";
     private static final String LABELDOC_OPEN = "<label><h3>";
     private static final String LABELDOC_CLOSE = "</h3></label>";
-    private static final String DIV_TALB_OPEN = "<div class=\"col-md-12 tabl\">";
-    private static final String DIV_TALB_CLOSE = "</div>";
+    private static final String DIV_TABL_OPEN = "<div class=\"col-md-12 tabl\">";
+    private static final String DIV_TABL_CLOSE = "</div>";
 }
 
 enum RowType {

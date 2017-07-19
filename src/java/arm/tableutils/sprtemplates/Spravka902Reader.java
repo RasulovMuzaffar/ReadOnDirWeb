@@ -48,7 +48,7 @@ public class Spravka902Reader implements TableReaderInterface {
             + "(?<thxz1>\\d \\d \\d \\d)\\s+"
             + "(?<thkont>\\d{2}\\/\\d{2})\\s+"
             + "(?<thxz2>\\d{5})\\s+"
-            + "(?<thoxr>\\d{3}\\W(\\S{1,6}| {6}))";
+            + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
 
     @Override
     public HtmlTable processFile(String fileName) {

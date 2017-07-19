@@ -49,7 +49,18 @@ public class Spravka02Reader implements TableReaderInterface {
             + "(?<thxz1>\\d \\d \\d \\d)\\s+"
             + "(?<thkont>\\d{2}\\/\\d{2})\\s+"
             + "(?<thxz2>\\d{5})\\s+"
-            + "(?<thoxr>\\d{3}\\W(\\S{1,6}| {6}))";
+            + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
+//    final static String regexTBody = "(?<thnum>\\d{2})\\s+"
+//            + "(?<thnvag>\\d{8})\\s+"
+//            + "(?<thediz>\\d{1})\\s+"
+//            + "(?<thvesgr>\\d{3})(\\s+"
+//            + "(?<thstnaz>\\d{5})(\\s+"
+//            + "(?<thcodgr>\\d{5})(\\s+"
+//            + "(?<thcodpoluch>\\d{4,6})(\\s+"
+//            + "(?<thxz1>\\d \\d \\d \\d)(\\s+"
+//            + "(?<thkont>\\d{2}\\/\\d{2})(\\s+"
+//            + "(?<thxz2>\\d{5})(\\s+"
+//            + "(?<thoxr>\\d{3}\\W\\S{1,6})|\\s)|\\s)|\\s)|\\s)|\\s)|\\s)|\\s)";
 
     @Override
     public HtmlTable processFile(String fileName) {

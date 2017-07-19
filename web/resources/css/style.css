@@ -22,7 +22,12 @@
 .hright h4{
     float: right;
 }
-
+.progressInfo{
+    font-family:Arial, Helvetica, sans-serif;
+    color:#E24045;
+    font-size:24px;
+    font-weight: bold;
+}
 /*table*/
 .tabl{
     padding: 0px;

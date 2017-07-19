@@ -59,6 +59,9 @@
                 </form>
 
             </div>
+            <div class="row">
+                <p class="progressInfo"></p>
+            </div>
             <div class="row" id="otvet">
                 <!--<label><h3>ВЦ УТИ 93 31.05 13-46 ВЦ 73 НАЛИЦИЕ ПОЕЗДОВ НАХОДЯЩИХСЯ НА СТ. ЧУКУР</h3></label>
                 <div class="col-md-12 tabl">
@@ -152,15 +155,15 @@
             <textarea id="messagesTextArea" rows="50" cols="100"></textarea>
         </div>-->
         <script type="text/javascript">
-            var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
-            function writing() {
-                var q = 0;//document.getElementById('q').value;
-                var kod = document.getElementById('numMess').value;
-                var kodDok = document.getElementById('numSpr').value;
-                var object = document.getElementById('st').value;
-                var id_user = document.getElementById('id_user').value;
+                        var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
+                        function writing() {
+                            var q = 0;//document.getElementById('q').value;
+                            var kod = document.getElementById('numMess').value;
+                            var kodDok = document.getElementById('numSpr').value;
+                            var object = document.getElementById('st').value;
+                            var id_user = document.getElementById('id_user').value;
 
-                webSocket.send("spr|" + q + "," + kod + "," + kodDok + "," + object + "," + id_user);
+                            webSocket.send("spr|" + q + "," + kod + "," + kodDok + "," + object + "," + id_user);
 //                windows.spr(p){
 //                    document.getElementById("otvet").innerHTML = message.data;
 //                };
@@ -169,45 +172,63 @@
 //                        function (data) {
 //
 //                        });
-            }
+                        }
 //                    function www() {
 //                        webSocket.send(document.getElementById('ttt').value);
 //                    }
-            var webSocket = new WebSocket("ws://192.168.42.195:8080/MessageToASOUP//ws");
+                        var webSocket = new WebSocket("ws://192.168.42.195:8080/MessageToASOUP//ws");
 //                    var messagesTextArea = document.getElementById("messagesTextArea");
-            webSocket.onopen = function (message) {
-                processOpen(message);
-                console.log(message);
-            };
-            webSocket.onmessage = function (message) {
-                // processMessage(message);
-                console.log(message);
-                document.getElementById("otvet").innerHTML = message.data;
-                var r = rg.exec(response.data);
-                try {
-                    if (r[1].includes('.')) {
-                        var d = r[1].split(',');
-                        window[d[0]][d[1]](r[2]);
-                    } else {
-                        window[r[1]](r[2]);
-                    }
-                } catch (er) {
-                    console.log('ошибка ' + er.stack);
-                    console.log('вызов ' + r[1]);
-                    console.trace();
+                        webSocket.onopen = function (message) {
+                            processOpen(message);
+                            console.log(message);
+                        };
+                        webSocket.onmessage = function (message) {
+                            // processMessage(message);
+                            console.log(message);
+                            document.getElementById("otvet").innerHTML = message.data;
 
-                }
+                            checking();
 
-            };
-            function processOpen(message) {
-                console.log(message);
+//                            var r = rg.exec(response.data);
+//                            try {
+//                                if (r[1].includes('.')) {
+//                                    var d = r[1].split(',');
+//                                    window[d[0]][d[1]](r[2]);
+//                                } else {
+//                                    window[r[1]](r[2]);
+//                                }
+//                            } catch (er) {
+//                                console.log('ошибка ' + er.stack);
+//                                console.log('вызов ' + r[1]);
+//                                console.trace();
+//
+//                            }
+
+                        };
+                        function processOpen(message) {
+                            console.log(message);
 //                messagesTextArea.value += "Server connected...";
-            }
-            function processMessage(message) {
-                console.log(message.valueOf());
-                messagesTextArea.value = "";
-                messagesTextArea.value += message.data;
-            }
+                        }
+                        function processMessage(message) {
+                            console.log(message.valueOf());
+                            messagesTextArea.value = "";
+                            messagesTextArea.value += message.data;
+                        }
 
+                        function checking() {
+//                            $(".progressInfo").html($(".mytable tr:last td:first").html());
+                            console.log($(".mytable tr").length);
+                            console.log($(".mytable tr:last td:first").html());
+                            var rowsCount = document.getElementsByClassName("mytable")[0].getElementsByTagName('tr').length;
+                            var endRowFCellVal = document.getElementsByClassName("mytable")[0].rows[rowsCount - 1].cells[0].innerHTML;
+//                            document.getElementsByClassName("progressInfo")[0].innerHTML = endRowFCellVal;
+
+//                            console.log(rowsCount - 1);
+//                            console.log(endRowFCellVal);
+                            if ((rowsCount - 1) != endRowFCellVal) {
+                                document.getElementsByClassName("progressInfo")[0].innerHTML = "Таблица неполная!";
+                                console.log("Таблица неполная!")
+                            }
+                        }
         </script>
     </body>
