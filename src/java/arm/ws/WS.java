@@ -22,7 +22,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint("/ws")
+@ServerEndpoint(value = "/ws", configurator = WsServerConfigurator.class)
 public class WS {
 
     public static final Set<Session> armUsers = Collections.synchronizedSet(new HashSet<Session>());

@@ -14,9 +14,12 @@ import javax.websocket.server.ServerEndpointConfig;
  *
  * @author Muzaffar
  */
-public class WsServerConfigurator extends ServerEndpointConfig.Configurator{
+public class WsServerConfigurator extends ServerEndpointConfig.Configurator {
+
     @Override
-    public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response){
-        sec.getUserProperties().put("usrname", (String)((HttpSession)request.getHttpSession()).getAttribute("usrname"));
+    public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
+        System.out.println("request.getHttpSession()).getAttribute(usrname) " + 
+                ((HttpSession) request.getHttpSession()).getAttribute("usrname"));
+//        sec.getUserProperties().put("usrname", (String) ((HttpSession) request.getHttpSession()).getAttribute("usrname"));
     }
 }
