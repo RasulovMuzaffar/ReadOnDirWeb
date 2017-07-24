@@ -1,6 +1,6 @@
 package arm.wr;
 
-import static arm.listener.WS.PEERS;
+import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
@@ -8,6 +8,9 @@ import arm.tableutils.sprtemplates.Spravka02Reader;
 import arm.tableutils.sprtemplates.Spravka902Reader;
 import arm.tableutils.sprtemplates.Spravka93Reader;
 import arm.tableutils.sprtemplates.Spravka95Reader;
+import arm.test.Auth;
+import arm.ws.WS;
+import static arm.ws.WS.armUsers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,10 +21,17 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.websocket.Session;
 
 /**
@@ -82,7 +92,7 @@ public class ReadOnDir extends Thread {
                         b = true;
                         try (FileInputStream fis = new FileInputStream(f)) {
                             while (f.canRead() && f.canWrite() && f.exists()) {
-                                readingFile(eventDir + "\\" + eventPath);
+                                readingFile(eventDir + "\\" + eventPath, eventPath);
                                 break;
                             }
                         } catch (IOException ex) {
@@ -100,27 +110,82 @@ public class ReadOnDir extends Thread {
 
     static final CompositeReader tableReader = new CompositeReader();
 
-    private static void readingFile(String path) {
+    private static void readingFile(String path, Path fName) {
         // test
-        String fileNameToTest;
-        fileNameToTest = path;
-        System.out.println("Using file name " + fileNameToTest);
+        String filePath = path;
+        String fileName = fName.toString();
+        System.out.println("Using file name " + filePath);
+        System.out.println("Using file name " + fileName);
+        /////////////////////////////////
+        String usrAutoN = null;
+        String rx = "^\\d{4}";
+        final Pattern pattern = Pattern.compile(rx);
+        final Matcher matcher = pattern.matcher(fileName);
 
+        while (matcher.find()) {
+            usrAutoN = matcher.group(0);
+//            System.out.println("Full match: " + matcher.group(0));
+//            for (int i = 1; i <= matcher.groupCount(); i++) {
+//                usrAutoN = matcher.group(i);
+//            }
+        }
+        System.out.println("usrAutoN = " + usrAutoN);
+
+        Users u = null;
         try {
-            File f = new File(fileNameToTest);
+            Class.forName("com.mysql.jdbc.Driver");
+
+            String sql = "select * from users where auto_no='" + usrAutoN + "'";
+            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                    PreparedStatement pstmt = con.prepareStatement(sql);
+                    ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    u = new Users(rs.getLong("id"), rs.getString("firstname"),
+                            rs.getString("lastname"), rs.getInt("id_role"),
+                            rs.getInt("id_org"), rs.getString("auto_no"),
+                            rs.getString("login"), rs.getString("password"));
+//                ul.add(u);
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("exexexexex " + ex);
+            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String gLogin = u.getLogin();
+        System.out.println("gLogin --->>> " + gLogin);
+////////////////////////
+        try {
+            File f = new File(filePath);
+//            System.out.println("fileNameToTest ---?> " + filePath);
             if (f.exists()) {
-                HtmlTable result = tableReader.processFile(fileNameToTest);
+                HtmlTable result = tableReader.processFile(filePath);
                 if (result != null) {
-                    String s = result.generateHtml();
-                    for (Session peer : PEERS) {
-                        System.out.println("peeeeeeer " + peer.getId());
-                        peer.getBasicRemote().sendText(s);
+                    String answer = result.generateHtml();
+
+                    armUsers.stream().forEach((Session x) -> {
+                        System.out.println("x.getUserProperties() --> " + x.getUserProperties());
+                        if (x.getUserProperties().containsValue(gLogin)) {
+                            try {
+                                x.getBasicRemote().sendText(answer);
+                                return;
+                            } catch (IOException ex) {
+                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+
+                    });
+
+                    for (Session armUser : armUsers) {
+//                        armUser.getBasicRemote().sendText(answer);
+                        System.out.println("armUsers : " + armUser.getUserProperties());
                     }
-                    System.out.println(s);
                 } else {
-                    for (Session peer : PEERS) {
-                        System.out.println("peeeeeeer " + peer.getId());
-                        peer.getBasicRemote().sendText("Could not detect input file type");
+                    for (Session armUser : armUsers) {
+                        armUser.getBasicRemote().sendText("Could not detect input file type");
                     }
                     System.out.println("Could not detect input file type");
                 }
@@ -129,9 +194,9 @@ public class ReadOnDir extends Thread {
             }
         } catch (MultipleResultsException ex) {
             System.out.println("Error: multiple results");
-            for (HtmlTable result : ex.multipleResults) {
-                System.out.println(result);
-            }
+//            for (HtmlTable result : ex.multipleResults) {
+//                System.out.println(result);
+//            }
         } catch (IOException ex) {
             Logger.getLogger(ReadOnDir.class.getName()).log(Level.SEVERE, null, ex);
         }

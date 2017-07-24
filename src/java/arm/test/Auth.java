@@ -12,9 +12,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -22,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -45,7 +43,6 @@ public class Auth extends HttpServlet {
         } catch (Exception e) {
             System.out.println("проблема в авторизации " + e);
         }
-
         Users u = null;
 //        List<Users> ul = new ArrayList<>();
         try {
@@ -70,11 +67,13 @@ public class Auth extends HttpServlet {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        request.getSession(true);
-        request.getSession().setAttribute("user", u);
-//        System.out.println("000000 " + request.getSession().getAttribute("user"));
-//        System.out.println(request.getSession().getId());
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (u != null) {
+            HttpSession httpSession = request.getSession(true);
+            httpSession.setAttribute("user", u);
+            httpSession.setAttribute("usrname", u.getLogin());
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("auth.html");
+        }
     }
 }
