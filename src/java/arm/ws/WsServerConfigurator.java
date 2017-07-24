@@ -20,6 +20,6 @@ public class WsServerConfigurator extends ServerEndpointConfig.Configurator {
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
         System.out.println("request.getHttpSession()).getAttribute(usrname) " + 
                 ((HttpSession) request.getHttpSession()).getAttribute("usrname"));
-//        sec.getUserProperties().put("usrname", (String) ((HttpSession) request.getHttpSession()).getAttribute("usrname"));
+        sec.getUserProperties().put("usrname", (String) ((HttpSession) request.getHttpSession()).getAttribute("usrname"));
     }
 }
