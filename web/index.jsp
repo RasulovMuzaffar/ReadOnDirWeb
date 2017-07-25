@@ -62,7 +62,7 @@
             <div class="row">
                 <p class="progressInfo"></p>
             </div>
-            <div class="row" id="otvet">
+            <div class="row" id="tbl">
                 <!--<label><h3>ВЦ УТИ 93 31.05 13-46 ВЦ 73 НАЛИЦИЕ ПОЕЗДОВ НАХОДЯЩИХСЯ НА СТ. ЧУКУР</h3></label>
                 <div class="col-md-12 tabl">
                     <table class="mytable" cellspacing="0">
@@ -185,7 +185,7 @@
                         webSocket.onmessage = function (message) {
                             // processMessage(message);
                             console.log(message);
-                            document.getElementById("otvet").innerHTML = message.data;
+                            document.getElementById("tbl").innerHTML = message.data;
 
                             checking();
 
