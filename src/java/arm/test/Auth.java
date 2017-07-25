@@ -28,9 +28,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -70,8 +70,8 @@ public class Auth extends HttpServlet {
         if (u != null) {
             HttpSession httpSession = request.getSession(true);
             httpSession.setAttribute("user", u);
-            request.getSession().setAttribute("usrname", u.getLogin());
-//            httpSession.setAttribute("usrname", u.getLogin());
+//            request.getSession().setAttribute("usrname", u.getLogin());
+            httpSession.setAttribute("usrname", u.getLogin());
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
             response.sendRedirect("auth.html");
