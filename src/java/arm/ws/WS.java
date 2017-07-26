@@ -5,6 +5,7 @@
  */
 package arm.ws;
 
+import arm.wr.Write;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,41 +26,42 @@ public class WS {
 
     public static final Set<Session> armUsers = Collections.synchronizedSet(new HashSet<Session>());
 
-
     @OnMessage
     public void onMessage(String message, Session userSession) {
 ////        System.out.println("ws http session id >> "+request.getSession().getId());
 //        System.out.println("ws.WS_server.onMessage()   " + message + "   " + session.getId());
-        String[] str = message.split("|");
+//        System.out.println("1111122222222223333333344444 " + message);
+        String[] str = message.split("\u0003");
         String[] zprs = str[1].split(",");
+        System.out.println("str[0] " + str[0]);
+        System.out.println("str[1] " + str[1]);
+        Write w = new Write();
         switch (str[0]) {
             case "spr":
-                System.out.println("spr byl");
-                arm.wr.Write;
-                getWrite(zprs);
+                w.getWrite(userSession);
                 break;
-            case "qwerty":
-                System.out.println("qwerty byl");
+            case "getTGNL":
+                System.out.println("TELEGRAMM NATURNIY LIST");
                 break;
         }
 ////        WsSendMessage(message, session);
         String usrname = (String) userSession.getUserProperties().get("usrname");
         System.out.println("cse >> usrname " + usrname);
 
-        if (usrname != null) {
-            armUsers.stream().forEach((Session x) -> {
-
-                if (x.getUserProperties().containsValue(usrname)) {
-                    try {
-                        x.getBasicRemote().sendText(message);
-                        return;
-                    } catch (IOException ex) {
-                        Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-            });
-        }
+//        if (usrname != null) {
+//            armUsers.stream().forEach((Session x) -> {
+//
+//                if (x.getUserProperties().containsValue(usrname)) {
+//                    try {
+//                        x.getBasicRemote().sendText(message);
+//                        return;
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//
+//            });
+//        }
     }
 
     @OnOpen

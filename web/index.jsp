@@ -63,58 +63,7 @@
                 <p class="progressInfo"></p>
             </div>
             <div class="row" id="tbl">
-                <!--<label><h3>ВЦ УТИ 93 31.05 13-46 ВЦ 73 НАЛИЦИЕ ПОЕЗДОВ НАХОДЯЩИХСЯ НА СТ. ЧУКУР</h3></label>
-                <div class="col-md-12 tabl">
-                    <table class="mytable" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>НОМЕР</th>
-                                <th>ИНДЕКС</th>
-                                <th>СОСТ</th>
-                                <th>ДАТА</th>
-                                <th>ВРЕМЯ</th>
-                                <th>ПАРК</th>
-                                <th>ВАГ</th>
-                                <th>УДЛ</th>
-                                <th>БРУТТ</th>
-                                <th>ТГНЛ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2033</td>
-                                <td>7200 34 6980</td>
-                                <td>ФОРМ</td>
-                                <td>31.05</td>
-                                <td>00-19</td>
-                                <td>00/00</td>
-                                <td>50</td>
-                                <td>50</td>
-                                <td>1187</td>
-                                <td>
-                                    <button type="button" class="btn btn-default">Показать</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2890</td>
-                                <td>6980 636 7200</td>
-                                <td>ПРИБ</td>
-                                <td>31.05</td>
-                                <td>13-02</td>
-                                <td>00/00</td>
-                                <td>53</td>
-                                <td>62</td>
-                                <td>4575</td>
-                                <td>
-                                    <button type="button" class="btn btn-default">Показать</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>-->
+
             </div>
         </div>
 
@@ -133,14 +82,22 @@
                             var object = document.getElementById('st').value;
                             var id_user = document.getElementById('id_user').value;
 
-                            webSocket.send("spr|" + q + "," + kod + "," + kodDok + "," + object + "," + id_user);
+                            webSocket.send("spr\u0003" + q + "," + kod + "," + kodDok + "," + object + "," + id_user);
 //                windows.spr(p){
 //                    document.getElementById("otvet").innerHTML = message.data;
 //                };
 
-                        };
+                        }
+                        ;
+            <%-- получаем натурлий лист поезда  --%>
+                        function getTGNL(p) {
+                            var x = p.replace("  ", " ");
+                            console.log(x);
+                            webSocket.send("getTGNL\u0003"+x);
+                        }
+                        ;
 
-                        var webSocket = new WebSocket("ws://localhost:8080/MessageToASOUP//ws");
+                        var webSocket = new WebSocket("ws://192.168.42.195:8080/MessageToASOUP//ws");
                         webSocket.onopen = function (message) {
                             processOpen(message);
                             console.log(message);
