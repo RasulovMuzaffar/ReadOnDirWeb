@@ -7,10 +7,7 @@ package arm.ws;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,20 +25,23 @@ public class WS {
 
     public static final Set<Session> armUsers = Collections.synchronizedSet(new HashSet<Session>());
 
+
     @OnMessage
-    public void onMessage(String message, Session userSession/*, HttpServletRequest request*/) {
+    public void onMessage(String message, Session userSession) {
 ////        System.out.println("ws http session id >> "+request.getSession().getId());
 //        System.out.println("ws.WS_server.onMessage()   " + message + "   " + session.getId());
-//        String[] str = message.split("|");
-//        String[] zprs = str[1].split(",");
-//        switch (str[0]) {
-//            case "spr":
-//                System.out.println("spr byl");
-//                break;
-//            case "qwerty":
-//                System.out.println("qwerty byl");
-//                break;
-//        }
+        String[] str = message.split("|");
+        String[] zprs = str[1].split(",");
+        switch (str[0]) {
+            case "spr":
+                System.out.println("spr byl");
+                arm.wr.Write;
+                getWrite(zprs);
+                break;
+            case "qwerty":
+                System.out.println("qwerty byl");
+                break;
+        }
 ////        WsSendMessage(message, session);
         String usrname = (String) userSession.getUserProperties().get("usrname");
         System.out.println("cse >> usrname " + usrname);
@@ -64,22 +64,8 @@ public class WS {
 
     @OnOpen
     public void onOpen(EndpointConfig endpointConfig, Session userSession) {
-        System.out.println("usid --> " + userSession.getId());
-        
         userSession.getUserProperties().put("usrname", endpointConfig.getUserProperties().get("usrname"));
-        
-        String usrname = (String) userSession.getUserProperties().get("usrname");
-        System.out.println("usrname " + usrname);
-        
         armUsers.add(userSession);
-        
-        System.out.println("isEmpty? : " + armUsers.isEmpty());
-        System.out.println("size = " + armUsers.size());
-        
-        for (Session s : armUsers) {
-            System.out.println("+----->> " + s.getUserProperties().get("usrname"));
-            System.out.println("id---> " + s.getId());
-        }
     }
 
     @OnError
@@ -113,4 +99,5 @@ public class WS {
         }
 
     }
+
 }

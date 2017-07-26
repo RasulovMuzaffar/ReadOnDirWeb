@@ -166,23 +166,23 @@ public class ReadOnDir extends Thread {
                 if (result != null) {
                     String answer = result.generateHtml();
 
-//                    armUsers.stream().forEach((Session x) -> {
-//                        System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-//                        if (x.getUserProperties().containsValue(gLogin)) {
-//                            try {
-//                                x.getBasicRemote().sendText(answer);
-//                                return;
-//                            } catch (IOException ex) {
-//                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//
-//                    });
+                    armUsers.stream().forEach((Session x) -> {
+                        System.out.println("x.getUserProperties() --> " + x.getUserProperties());
+                        if (x.getUserProperties().containsValue(gLogin)) {
+                            try {
+                                x.getBasicRemote().sendText(answer);
+                                return;
+                            } catch (IOException ex) {
+                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
 
-                    for (Session armUser : armUsers) {
-                        armUser.getBasicRemote().sendText(answer);
-                        System.out.println("armUsers : " + armUser.getUserProperties());
-                    }
+                    });
+
+//                    for (Session armUser : armUsers) {
+//                        armUser.getBasicRemote().sendText(answer);
+//                        System.out.println("armUsers : " + armUser.getUserProperties());
+//                    }
                 } else {
                     for (Session armUser : armUsers) {
                         armUser.getBasicRemote().sendText("Could not detect input file type");
