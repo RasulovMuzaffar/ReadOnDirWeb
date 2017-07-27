@@ -8,6 +8,7 @@ import arm.tableutils.sprtemplates.Spravka02Reader;
 import arm.tableutils.sprtemplates.Spravka902Reader;
 import arm.tableutils.sprtemplates.Spravka93Reader;
 import arm.tableutils.sprtemplates.Spravka95Reader;
+import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
 import arm.ws.WS;
 import static arm.ws.WS.armUsers;
@@ -43,12 +44,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -118,7 +119,8 @@ public class ReadOnDir extends Thread {
         System.out.println("Using file name " + fileName);
         /////////////////////////////////
         String usrAutoN = null;
-        String rx = "^\\d{4}";
+//        String rx = "^\\d{4}";
+        String rx = "01[\\dA-Fa-f\\d]{2}";
         final Pattern pattern = Pattern.compile(rx);
         final Matcher matcher = pattern.matcher(fileName);
 
@@ -151,22 +153,22 @@ public class ReadOnDir extends Thread {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        String gLogin = u.getLogin();
-        System.out.println("gLogin --->>> " + gLogin);
+//        String gLogin = u.getLogin();
+//        System.out.println("gLogin --->>> " + gLogin);
 ////////////////////////
+        Users user = u;
         try {
             File f = new File(filePath);
-//            System.out.println("fileNameToTest ---?> " + filePath);
             if (f.exists()) {
                 HtmlTable result = tableReader.processFile(filePath);
                 if (result != null) {
                     String answer = result.generateHtml();
-                    Users user = u;
+
                     System.out.println("user ------>>> " + user);
                     armUsers.stream().forEach((Session x) -> {
                         System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-                        System.out.println("x.getUserProperties().containsValue(user) ===>> " + 
-                                x.getUserProperties().containsValue(user));
+                        System.out.println("x.getUserProperties().containsValue(user) ===>> "
+                                + x.getUserProperties().containsValue(user));
                         if (x.getUserProperties().containsValue(user)) {
 //                        if (x.getUserProperties().containsValue(gLogin)) {
                             try {
@@ -184,9 +186,21 @@ public class ReadOnDir extends Thread {
 //                        System.out.println("armUsers : " + armUser.getUserProperties());
 //                    }
                 } else {
-                    for (Session armUser : armUsers) {
-                        armUser.getBasicRemote().sendText("Could not detect input file type");
-                    }
+//                    for (Session armUser : armUsers) {                        
+//                        armUser.getBasicRemote().sendText("Could not detect input file type");
+//                    }
+                    String answer = readNotDetectedFile(filePath);
+                    armUsers.stream().forEach((Session x) -> {
+                        if (x.getUserProperties().containsValue(user)) {
+                            try {
+//                                x.getBasicRemote().sendText("Could not detect input file type");
+                                x.getBasicRemote().sendText(answer);
+                                return;
+                            } catch (IOException ex) {
+                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
                     System.out.println("Could not detect input file type");
                 }
             } else {
@@ -197,8 +211,6 @@ public class ReadOnDir extends Thread {
 //            for (HtmlTable result : ex.multipleResults) {
 //                System.out.println(result);
 //            }
-        } catch (IOException ex) {
-            Logger.getLogger(ReadOnDir.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -209,4 +221,28 @@ public class ReadOnDir extends Thread {
         System.out.println("File deleting!!!");
     }
 
+    private static String readNotDetectedFile(String filePath) {
+        String f = null;
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+
+            byte[] buffer = new byte[fis.available()];
+
+            // считаем файл в буфер
+            fis.read(buffer, 0, fis.available());
+
+            String str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+
+            f = TextReplace.getText(str);
+            
+            StringBuffer sb;
+            int i=-1;
+            while((i=fis.read())!=-1){  
+                System.out.print((char)i);
+            }   
+
+        } catch (IOException ex) {
+            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return f;
+    }
 }

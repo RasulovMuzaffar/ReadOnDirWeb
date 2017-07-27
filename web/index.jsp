@@ -93,11 +93,11 @@
                         function getTGNL(p) {
                             var x = p.replace("  ", " ");
                             console.log(x);
-                            webSocket.send("getTGNL\u0003"+x);
+                            webSocket.send("getTGNL\u0003" + x);
                         }
                         ;
-
-                        var webSocket = new WebSocket("ws://127.0.0.1:8080/MessageToASOUP//ws");
+//                        console.log("address ${pageContext.request.localAddr}");
+                        var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/MessageToASOUP//ws");
                         webSocket.onopen = function (message) {
                             processOpen(message);
                             console.log(message);
