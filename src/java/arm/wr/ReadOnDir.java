@@ -43,12 +43,12 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-//    static String p = "c:\\testFolder\\in";
-    static String p = "C:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -124,10 +124,6 @@ public class ReadOnDir extends Thread {
 
         while (matcher.find()) {
             usrAutoN = matcher.group(0);
-//            System.out.println("Full match: " + matcher.group(0));
-//            for (int i = 1; i <= matcher.groupCount(); i++) {
-//                usrAutoN = matcher.group(i);
-//            }
         }
         System.out.println("usrAutoN = " + usrAutoN);
 
@@ -165,10 +161,14 @@ public class ReadOnDir extends Thread {
                 HtmlTable result = tableReader.processFile(filePath);
                 if (result != null) {
                     String answer = result.generateHtml();
-
+                    Users user = u;
+                    System.out.println("user ------>>> " + user);
                     armUsers.stream().forEach((Session x) -> {
                         System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-                        if (x.getUserProperties().containsValue(gLogin)) {
+                        System.out.println("x.getUserProperties().containsValue(user) ===>> " + 
+                                x.getUserProperties().containsValue(user));
+                        if (x.getUserProperties().containsValue(user)) {
+//                        if (x.getUserProperties().containsValue(gLogin)) {
                             try {
                                 x.getBasicRemote().sendText(answer);
                                 return;

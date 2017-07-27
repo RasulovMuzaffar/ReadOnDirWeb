@@ -7,6 +7,7 @@ package arm.ws;
 
 import arm.wr.Write;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,18 +36,19 @@ public class WS {
         String[] zprs = str[1].split(",");
         System.out.println("str[0] " + str[0]);
         System.out.println("str[1] " + str[1]);
+        System.out.println("zprs " + Arrays.toString(zprs));
         Write w = new Write();
         switch (str[0]) {
             case "spr":
-                w.getWrite(userSession);
+                w.getWrite(userSession, str[1]);
                 break;
             case "getTGNL":
                 System.out.println("TELEGRAMM NATURNIY LIST");
                 break;
         }
 ////        WsSendMessage(message, session);
-        String usrname = (String) userSession.getUserProperties().get("usrname");
-        System.out.println("cse >> usrname " + usrname);
+//        String usrname = (String) userSession.getUserProperties().get("usrname");
+//        System.out.println("cse >> usrname " + usrname);
 
 //        if (usrname != null) {
 //            armUsers.stream().forEach((Session x) -> {

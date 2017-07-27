@@ -5,6 +5,7 @@
  */
 package arm.ws;
 
+import arm.ent.Users;
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
@@ -20,9 +21,9 @@ public class WsServerConfigurator extends ServerEndpointConfig.Configurator {
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
 //        sec.getUserProperties().put("usrname", (String) ((HttpSession) request.getHttpSession()).getAttribute("usrname"));
         HttpSession session = (HttpSession) request.getHttpSession();
-        System.out.println("sess isNew? "+session);
-        Object attribute = session.getAttribute("usrname");
-        String name = (String) attribute;
-        sec.getUserProperties().put("usrname", name);
+//        Object attribute = session.getAttribute("usrname");
+        Users u = (Users) session.getAttribute("usrname");
+//        String name = (String) attribute;
+        sec.getUserProperties().put("usrname", u);
     }
 }

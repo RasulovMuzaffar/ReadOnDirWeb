@@ -76,13 +76,13 @@
         <script type="text/javascript">
                         var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
                         function writing() {
-                            var q = 0;//document.getElementById('q').value;
-                            var kod = document.getElementById('numMess').value;
-                            var kodDok = document.getElementById('numSpr').value;
+                            var kodOrg = 0;//document.getElementById('q').value;
+                            var numMess = document.getElementById('numMess').value;
+                            var numSpr = document.getElementById('numSpr').value;
                             var object = document.getElementById('st').value;
                             var id_user = document.getElementById('id_user').value;
 
-                            webSocket.send("spr\u0003" + q + "," + kod + "," + kodDok + "," + object + "," + id_user);
+                            webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
 //                windows.spr(p){
 //                    document.getElementById("otvet").innerHTML = message.data;
 //                };
@@ -97,7 +97,7 @@
                         }
                         ;
 
-                        var webSocket = new WebSocket("ws://192.168.42.195:8080/MessageToASOUP//ws");
+                        var webSocket = new WebSocket("ws://127.0.0.1:8080/MessageToASOUP//ws");
                         webSocket.onopen = function (message) {
                             processOpen(message);
                             console.log(message);
