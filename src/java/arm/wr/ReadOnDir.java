@@ -45,12 +45,12 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -164,7 +164,7 @@ public class ReadOnDir extends Thread {
                 if (result != null) {
                     String answer = result.generateHtml();
 
-        System.out.println("spr---->> "+spr);
+                    System.out.println("spr---->> " + spr);
                     System.out.println("user ------>>> " + user);
                     armUsers.stream().forEach((Session x) -> {
                         System.out.println("x.getUserProperties() --> " + x.getUserProperties());
@@ -173,7 +173,7 @@ public class ReadOnDir extends Thread {
                         if (x.getUserProperties().containsValue(user)) {
 //                        if (x.getUserProperties().containsValue(gLogin)) {
                             try {
-                                x.getBasicRemote().sendText(spr+"\u0003"+answer);
+                                x.getBasicRemote().sendText(spr + "\u0003" + answer);
                                 return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
@@ -192,14 +192,14 @@ public class ReadOnDir extends Thread {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
 //                                x.getBasicRemote().sendText("Could not detect input file type");
-                                x.getBasicRemote().sendText(answer);
+                                x.getBasicRemote().sendText("sprDefault\u0003" + answer);
                                 return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     });
-                    System.out.println("Could not detect input file type");
+                    System.out.println("Could not detect input file type : " + answer);
                 }
             } else {
                 System.out.println("File not found");
@@ -231,12 +231,12 @@ public class ReadOnDir extends Thread {
             String str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f = TextReplace.getText(str);
-            
+
             StringBuffer sb;
-            int i=-1;
-            while((i=fis.read())!=-1){  
-                System.out.print((char)i);
-            }   
+            int i = -1;
+            while ((i = fis.read()) != -1) {
+                System.out.print((char) i);
+            }
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);

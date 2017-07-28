@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Writing extends HttpServlet {
 
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    static String autoNo;
+    static private String autoNo;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
