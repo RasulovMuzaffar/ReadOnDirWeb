@@ -8,6 +8,7 @@ package arm.tableutils.sprtemplates;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.ReadOnDir;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -149,6 +150,7 @@ public class Spravka02Reader implements TableReaderInterface {
 
         if (reading == true) {
             System.out.println("can reading SPR02 " + result);
+            ReadOnDir.spr = "sprPopup";
             return result;
         } else {
             System.out.println("can not reading SPR02 " + result);

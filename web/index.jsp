@@ -67,10 +67,19 @@
             </div>
         </div>
 
+        <!-- Наше модальное всплывающее окно -->
+        <div id="popupWin" class="modalwin">
+            <div id="popup" class="row pt">
+
+            </div>
+        </div>
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="resources/js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="resources/js/bootstrap.js"></script>
+
+        <script src="resources/js/modalwin.js"></script>
 
 
         <script type="text/javascript">
@@ -94,6 +103,8 @@
                             var x = p.replace("  ", " ");
                             console.log(x);
                             webSocket.send("getTGNL\u0003" + x);
+                            
+
                         }
                         ;
 //                        console.log("address ${pageContext.request.localAddr}");
@@ -104,26 +115,16 @@
                         };
                         webSocket.onmessage = function (message) {
                             // processMessage(message);
-                            console.log(message);
-                            document.getElementById("tbl").innerHTML = message.data;
+                            console.log(message.data);
+                            var m = message.data.split("\u0003");
+                            console.log("11111111 "+m[0]);
+                            console.log("22222222 "+m[1]);
+                            window[m[0]](m[1]);
+
+
+        //document.getElementById("tbl").innerHTML = message.data;
 
                             checking();
-
-//                            var r = rg.exec(response.data);
-//                            try {
-//                                if (r[1].includes('.')) {
-//                                    var d = r[1].split(',');
-//                                    window[d[0]][d[1]](r[2]);
-//                                } else {
-//                                    window[r[1]](r[2]);
-//                                }
-//                            } catch (er) {
-//                                console.log('ошибка ' + er.stack);
-//                                console.log('вызов ' + r[1]);
-//                                console.trace();
-//
-//                            }
-
                         };
                         function processOpen(message) {
                             console.log(message);
@@ -146,8 +147,16 @@
 //                            console.log(endRowFCellVal);
                             if ((rowsCount - 1) != endRowFCellVal) {
                                 document.getElementsByClassName("progressInfo")[0].innerHTML = "Таблица неполная!";
-                                console.log("Таблица неполная!")
+                                console.log("Таблица неполная!");
                             }
                         }
+                        function  sprPopup(p){
+                            showModalWin();
+                            document.getElementById("popup").innerHTML = p;
+                        }
+                        function  sprDefault(p){
+                            document.getElementById("tbl").innerHTML = p;
+                        }
+                                    
         </script>
     </body>

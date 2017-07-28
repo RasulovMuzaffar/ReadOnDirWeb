@@ -2,12 +2,12 @@
     margin: 20px 20px 20px 20px;
 }
 /*td{*/
-    /*text-align: center;*/
-    /*vertical-align: middle;*/
-    /*padding: 2px 2px 2px 2px;*/
+/*text-align: center;*/
+/*vertical-align: middle;*/
+/*padding: 2px 2px 2px 2px;*/
 /*}*/
 /*th{*/
-    /*text-align: center;*/
+/*text-align: center;*/
 /*}*/
 .header{
     border-bottom: solid #1b6d85 thin;
@@ -31,6 +31,12 @@
 /*table*/
 .tabl{
     padding: 0px;
+    height: 95%;
+}
+.pt{
+    overflow-y: auto;
+    height: 100%;
+    /*display: block;*/
 }
 .mytable {
     width: 100%;
@@ -136,3 +142,37 @@
     text-decoration:underline;
 }
 /*table*/
+
+/*modal win*/
+.modalwin { 
+    height: 90%;  
+    width: 90%;
+    border: 3px outset gray; 
+    background: #fffdfa;
+    top: 5%; /* отступ сверху */
+    right: 0;
+    left: 0;
+    font-size: 14px; 
+    margin: 0 auto;
+    z-index:2; /* поверх всех */
+    display: none;  /* сначала невидим */
+    position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+    padding: 15px;
+    border: 1px solid #383838;
+    text-align: center;
+    
+}
+#shadow { 
+    position: fixed;
+    width:100%;
+    height:100%;
+    z-index:1; /* поверх всех  кроме окна*/
+    background:#000;
+    opacity: 0.5; /*прозрачность*/
+    left:0;
+    top:0;
+}
+#popup{
+    height: 100%;
+}
+/*modal win*/

@@ -44,12 +44,13 @@ public class ReadOnDir extends Thread {
     /**
      * @param args the command line arguments
      */
-//    static String p = "c:\\testFolder\\in";
-    static String p = "C:\\soob\\in";
+    public static String spr;
+    static String p = "c:\\testFolder\\in";
+//    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -142,7 +143,6 @@ public class ReadOnDir extends Thread {
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
                             rs.getString("login"), rs.getString("password"));
-//                ul.add(u);
                 }
             }
 
@@ -164,6 +164,7 @@ public class ReadOnDir extends Thread {
                 if (result != null) {
                     String answer = result.generateHtml();
 
+        System.out.println("spr---->> "+spr);
                     System.out.println("user ------>>> " + user);
                     armUsers.stream().forEach((Session x) -> {
                         System.out.println("x.getUserProperties() --> " + x.getUserProperties());
@@ -172,7 +173,7 @@ public class ReadOnDir extends Thread {
                         if (x.getUserProperties().containsValue(user)) {
 //                        if (x.getUserProperties().containsValue(gLogin)) {
                             try {
-                                x.getBasicRemote().sendText(answer);
+                                x.getBasicRemote().sendText(spr+"\u0003"+answer);
                                 return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,9 +187,6 @@ public class ReadOnDir extends Thread {
 //                        System.out.println("armUsers : " + armUser.getUserProperties());
 //                    }
                 } else {
-//                    for (Session armUser : armUsers) {                        
-//                        armUser.getBasicRemote().sendText("Could not detect input file type");
-//                    }
                     String answer = readNotDetectedFile(filePath);
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
