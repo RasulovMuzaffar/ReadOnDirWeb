@@ -31,19 +31,43 @@ public class HtmlTable {
         result += TABLE_OPEN;
         for (TableRow row : tableData) {
             if (!row.cells.isEmpty() && !row.type.name().equals("DocHeader")) {
-                result += ROW_OPEN;
-                for (String value : row.cells) {
-                    if (row.type == RowType.Regular) {
-                        result += CELL_OPEN;
-                        result += value;
-                        result += CELL_CLOSE;
-                    } else if (row.type == RowType.Header) {
-                        result += HEADER_CELL_OPEN;
-                        result += value;
-                        result += HEADER_CELL_CLOSE;
+                //////////////////////////////////
+//                result += ROW_OPEN;
+//                for (String value : row.cells) {
+//                    if (row.type == RowType.Regular) {
+//                        result += CELL_OPEN;
+//                        result += value;
+//                        result += CELL_CLOSE;
+//                    } else if (row.type == RowType.Header) {
+//                        result += HEADER_CELL_OPEN;
+//                        result += value;
+//                        result += HEADER_CELL_CLOSE;
+//                    }
+//                }
+//                result += ROW_CLOSE;
+                //////////////////////////////////
+                if (row.type.name().equals("Header")) {
+                    result += (THEAD_OPEN + ROW_OPEN);
+                    for (String value : row.cells) {
+                        if (row.type == RowType.Header) {
+                            result += HEADER_CELL_OPEN;
+                            result += value;
+                            result += HEADER_CELL_CLOSE;
+                        }
                     }
+                    result += (ROW_CLOSE + THEAD_CLOSE);
                 }
-                result += ROW_CLOSE;
+                if (row.type.name().equals("Regular")) {
+                    result += ROW_OPEN;
+                    for (String value : row.cells) {
+                        if (row.type == RowType.Regular) {
+                            result += CELL_OPEN;
+                            result += value;
+                            result += CELL_CLOSE;
+                        }
+                    }
+                    result += ROW_CLOSE;
+                }
             }
         }
         result += TABLE_CLOSE;
@@ -88,6 +112,10 @@ public class HtmlTable {
     private static final String LABELDOC_CLOSE = "</h3></label>";
     private static final String DIV_TABL_OPEN = "<div class=\"col-md-12 tabl\">";
     private static final String DIV_TABL_CLOSE = "</div>";
+    private static final String THEAD_OPEN = "<thead>";
+    private static final String THEAD_CLOSE = "</thead>";
+    private static final String TBODY_OPEN = "<tbody>";
+    private static final String TBODY_CLOSE = "</tbody>";
 }
 
 enum RowType {
