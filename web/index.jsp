@@ -92,7 +92,7 @@
                             var object = document.getElementById('st').value;
                             var id_user = document.getElementById('id_user').value;
 
-let el = document.querySelector('#station option');
+                            var el = document.querySelector('#station option');
                             var opt = el.dataset.value;
 //                            document.querySelector('#stations option').data
                             console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + opt + "," + id_user);
