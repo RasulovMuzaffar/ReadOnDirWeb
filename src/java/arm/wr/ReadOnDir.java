@@ -45,12 +45,12 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -116,8 +116,8 @@ public class ReadOnDir extends Thread {
         // test
         String filePath = path;
         String fileName = fName.toString();
-        System.out.println("Using file name " + filePath);
-        System.out.println("Using file name " + fileName);
+//        System.out.println("Using file name " + filePath);
+//        System.out.println("Using file name " + fileName);
         /////////////////////////////////
         String usrAutoN = null;
 //        String rx = "^\\d{4}";
@@ -128,7 +128,7 @@ public class ReadOnDir extends Thread {
         while (matcher.find()) {
             usrAutoN = matcher.group(0);
         }
-        System.out.println("usrAutoN = " + usrAutoN);
+//        System.out.println("usrAutoN = " + usrAutoN);
 
         Users u = null;
         try {
@@ -147,7 +147,7 @@ public class ReadOnDir extends Thread {
             }
 
         } catch (SQLException ex) {
-            System.out.println("exexexexex " + ex);
+//            System.out.println("exexexexex " + ex);
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
@@ -164,12 +164,12 @@ public class ReadOnDir extends Thread {
                 if (result != null) {
                     String answer = result.generateHtml();
 
-                    System.out.println("spr---->> " + spr);
-                    System.out.println("user ------>>> " + user);
+//                    System.out.println("spr---->> " + spr);
+//                    System.out.println("user ------>>> " + user);
                     armUsers.stream().forEach((Session x) -> {
-                        System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-                        System.out.println("x.getUserProperties().containsValue(user) ===>> "
-                                + x.getUserProperties().containsValue(user));
+//                        System.out.println("x.getUserProperties() --> " + x.getUserProperties());
+//                        System.out.println("x.getUserProperties().containsValue(user) ===>> "
+//                                + x.getUserProperties().containsValue(user));
                         if (x.getUserProperties().containsValue(user)) {
 //                        if (x.getUserProperties().containsValue(gLogin)) {
                             try {

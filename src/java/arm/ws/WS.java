@@ -5,8 +5,10 @@
  */
 package arm.ws;
 
+import arm.find.FindSt;
 import arm.wr.Write;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,14 +31,25 @@ public class WS {
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
-//        String[] str = message.split("\u0003");
-//        String[] zprs = str[1].split(",");
+        String[] str = message.split("\u0003");
+        String[] zprs = str[1].split(",");
 //        System.out.println("str[0] " + str[0]);
 //        System.out.println("str[1] " + str[1]);
 //        System.out.println("zprs " + Arrays.toString(zprs));
-        System.out.println("message WS " + message);
-        Write w = new Write();
-        w.getWrite(userSession, message);
+//        System.out.println("message WS " + message);
+        if (str[0].equals("getSt")) {
+            FindSt find = new FindSt();
+            try {
+                find.getSt(userSession, message);
+//            System.out.println("getSt");
+            } catch (SQLException ex) {
+                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Write w = new Write();
+            w.getWrite(userSession, message);
+        }
+
 //        switch (str[0]) {
 //            case "spr":
 //                w.getWrite(userSession, message /*str[1]*/);

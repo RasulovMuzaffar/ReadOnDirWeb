@@ -51,7 +51,9 @@
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="st">Станция</label>
-                        <input type="text" class="form-control" id="st" placeholder="Код станции">
+                        <input type="text" class="form-control" id="st" placeholder="Код станции" oninput="findSt(this.value);" list="stations"/>
+                        <datalist id="stations">
+                        </datalist>
                         <input type="hidden" name="id_user" value="${user.id}" id="id_user"/>
                     </div>
                     <button type="button" class="btn btn-info" onclick="writing();">OK</button>
@@ -90,6 +92,10 @@
                             var object = document.getElementById('st').value;
                             var id_user = document.getElementById('id_user').value;
 
+let el = document.querySelector('#station option');
+                            var opt = el.dataset.value;
+//                            document.querySelector('#stations option').data
+                            console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + opt + "," + id_user);
                             webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
 //                windows.spr(p){
 //                    document.getElementById("otvet").innerHTML = message.data;
@@ -102,10 +108,17 @@
                             var x = p.replace("  ", " ");
                             console.log(x);
                             webSocket.send("getTGNL\u0003" + x);
-                            
+
 
                         }
                         ;
+
+                        function findSt(p) {
+                            console.log(p);
+                            webSocket.send("getSt\u0003" + p);
+                        }
+                        ;
+
 //                        console.log("address ${pageContext.request.localAddr}");
                         var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/MessageToASOUP//ws");
                         webSocket.onopen = function (message) {
@@ -116,14 +129,15 @@
                             // processMessage(message);
                             console.log(message.data);
                             var m = message.data.split("\u0003");
-                            console.log("11111111 "+m[0]);
-                            console.log("22222222 "+m[1]);
+//                            console.log("11111111 " + m[0]);
+//                            console.log("22222222 " + m[1]);
                             window[m[0]](m[1]);
 
 
-        //document.getElementById("tbl").innerHTML = message.data;
-
-                            checking();
+                            //document.getElementById("tbl").innerHTML = message.data;
+                            if (m[0] != "getSt") {
+                                checking();
+                            }
                         };
                         function processOpen(message) {
                             console.log(message);
@@ -149,13 +163,19 @@
                                 console.log("Таблица неполная!");
                             }
                         }
-                        function  sprPopup(p){
+                        function  sprPopup(p) {
                             showModalWin();
                             document.getElementById("popup").innerHTML = p;
                         }
-                        function  sprDefault(p){
+                        function  sprDefault(p) {
                             document.getElementById("tbl").innerHTML = p;
                         }
-                                    
+                        function getSt(p) {
+//                            console.log(p);
+                            document.getElementById("stations").innerHTML = p;
+                        }
+
         </script>
+        <script src="resources/js/findStation.js"></script>
     </body>
+</html>
