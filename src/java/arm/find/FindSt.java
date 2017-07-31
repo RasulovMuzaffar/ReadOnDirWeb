@@ -28,9 +28,9 @@ import javax.websocket.Session;
  */
 public class FindSt {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     String autoNo;
 
@@ -45,23 +45,37 @@ public class FindSt {
         String string = "";
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String sql = "select * FROM spr_stations ss WHERE ss.name_station LIKE '" + s[1] + "%' limit 5";
+//            String sql = "select * FROM spr_stations ss WHERE ss.name_station LIKE '%" + s[1] + "%' limit 5";
+
+            String[] st1 = s[1].split(" ");
+            StringBuilder sy = new StringBuilder();
+            sy.append("select * FROM spr_stations ss WHERE ");
+
+            for (String sf : st1) {
+                sy.append(" CONCAT(ss.code_station,ss.name_station) like '%").append(sf).
+//                        append("%' and CONCAT(ss.code_station,ss.name_station) like '%").append(sf).
+                        append("%' and ");
+            }
+            sy.setLength(sy.length() - 4);
+            sy.append(" limit 50");
+
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-                    PreparedStatement pstmt = con.prepareStatement(sql);
+                    PreparedStatement pstmt = con.prepareStatement(sy.toString());
                     ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     st = new Station(rs.getLong("id"), rs.getString("code_station"), rs.getString("name_station"));
                     lst.add(st);
                 }
             }
-            string+="getSt\u0003";
+            string += "getSt\u0003";
             for (Station ss : lst) {
 //                System.out.println(""+ss.getCodeSt());
-                string+="<option data-value = '" + ss.getCodeSt() + "' value='" + ss.getNameSt() + "'/>";
+//                string += "<option data-value = '" + ss.getCodeSt() + "' value='" + ss.getNameSt() + "'/>";
+                string += "<option data-value = '" + ss.getCodeSt() + "' value='" + ss.getNameSt() + "'/>";
             }
 //            System.out.println("" + sb.toString());
             for (Session armUser : armUsers) {
-                        armUser.getBasicRemote().sendText(string);
+                armUser.getBasicRemote().sendText(string);
 //                System.out.println("" + sb.toString());
 //                System.out.println("armUsers : " + armUser.getUserProperties());
             }
@@ -84,7 +98,7 @@ public class FindSt {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            System.out.println("**** "+ex);
+            System.out.println("**** " + ex);
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

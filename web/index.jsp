@@ -52,8 +52,9 @@
                     <div class="form-group">
                         <label class="sr-only" for="st">Станция</label>
                         <input type="text" class="form-control" id="st" placeholder="Код станции" oninput="findSt(this.value);" list="stations"/>
-                        <datalist id="stations">
-                        </datalist>
+<!--                        <datalist id="stations">
+                        </datalist>-->
+<table id="stations"></table>
                         <input type="hidden" name="id_user" value="${user.id}" id="id_user"/>
                     </div>
                     <button type="button" class="btn btn-info" onclick="writing();">OK</button>
@@ -89,13 +90,13 @@
                             var kodOrg = 0;//document.getElementById('q').value;
                             var numMess = document.getElementById('numMess').value;
                             var numSpr = document.getElementById('numSpr').value;
-                            var object = document.getElementById('st').value;
+//                            var object = document.getElementById('st').value;
                             var id_user = document.getElementById('id_user').value;
 
-                            var el = document.querySelector('#station option');
-                            var opt = el.dataset.value;
+                            var el = document.querySelector('#stations option');
+                            var object = el.dataset.value;
 //                            document.querySelector('#stations option').data
-                            console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + opt + "," + id_user);
+//                            console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + opt + "," + id_user);
                             webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
 //                windows.spr(p){
 //                    document.getElementById("otvet").innerHTML = message.data;
