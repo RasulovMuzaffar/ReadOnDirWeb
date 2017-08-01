@@ -34,7 +34,8 @@ public class Write {
                 String kodOrg = zprs[0];
                 String numMess = zprs[1];
                 String numSpr = zprs[2];
-                String object = zprs[3];
+                String object = cod4(zprs[3]);
+                System.out.println("999999999999999999999 "+object);
                 String id_user = zprs[4];
                 createFile("(:" + numMess + " " + kodOrg + " " + object + ":" + numSpr + ":)");
                 break;
@@ -69,5 +70,9 @@ public class Write {
         } catch (Exception e) {
             System.out.println("Exception in writingFile " + e);
         }
+    }
+
+    private String cod4(String zpr) {
+        return zpr.substring(0, 4);        
     }
 }

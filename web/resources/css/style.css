@@ -281,7 +281,7 @@ thead, tbody tr {
     padding: 15px;
     border: 1px solid #383838;
     text-align: center;
-    
+
 }
 #shadow { 
     position: fixed;
@@ -297,3 +297,26 @@ thead, tbody tr {
     height: 100%;
 }
 /*modal win*/
+
+#stations{
+    min-width: 170px;
+    position: fixed;
+    z-index: 500;
+    background-color: #fff;
+    border: #ccc solid 1px;
+    -webkit-box-shadow: 0px 2px 10px 0px rgba(143,163,168,1);
+    -moz-box-shadow: 0px 2px 10px 0px rgba(143,163,168,1);
+    box-shadow: 0px 2px 10px 0px rgba(143,163,168,1);
+}
+#stations tr:hover {
+    background: #E4E4E4;
+    cursor: default;
+}
+#stations tbody{
+    min-width: 170px;
+}
+
+#stations td{
+    padding: 3px 10px;
+    width: 100%;
+}

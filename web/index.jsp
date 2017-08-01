@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="row">
-                <form class="form-inline" role="form">
+                <div class="form-inline" role="form">
                     <div class="form-group">
                         <label class="sr-only" for="numMess">Mess</label>
                         <select class="form-control" id="numMess">
@@ -52,13 +52,13 @@
                     <div class="form-group">
                         <label class="sr-only" for="st">Станция</label>
                         <input type="text" class="form-control" id="st" placeholder="Код станции" oninput="findSt(this.value);" list="stations"/>
-<!--                        <datalist id="stations">
-                        </datalist>-->
-<table id="stations"></table>
+                        <!--                        <datalist id="stations">
+                                                </datalist>-->
+                        <table id="stations"></table>
                         <input type="hidden" name="id_user" value="${user.id}" id="id_user"/>
                     </div>
                     <button type="button" class="btn btn-info" onclick="writing();">OK</button>
-                </form>
+                </div>
 
             </div>
             <div class="row">
@@ -90,20 +90,31 @@
                             var kodOrg = 0;//document.getElementById('q').value;
                             var numMess = document.getElementById('numMess').value;
                             var numSpr = document.getElementById('numSpr').value;
-//                            var object = document.getElementById('st').value;
+                            var object = document.getElementById('st').dataset['stcod'];
                             var id_user = document.getElementById('id_user').value;
 
-                            var el = document.querySelector('#stations option');
-                            var object = el.dataset.value;
-//                            document.querySelector('#stations option').data
-//                            console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + opt + "," + id_user);
+//                            var el = document.querySelector('#stations tbody');
+//                            var object = el.dataset.value;
+                            console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
                             webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
-//                windows.spr(p){
-//                    document.getElementById("otvet").innerHTML = message.data;
-//                };
+
 
                         }
                         ;
+
+                        document.querySelector('#stations').addEventListener('click', function (event) {
+                            console.log(event.target.closest('tr').dataset['stcod']);
+                            document.querySelector('#st').value = event.target.closest('tr').querySelector('td').innerText;
+                            document.querySelector('#st').dataset['stcod'] = event.target.closest('tr').dataset['stcod'];
+                            document.getElementById('stations').style.display = 'none';
+
+                        });
+
+                        document.getElementById('st').addEventListener('focus', function (event) {
+                            this.value = "";
+                        });
+
+
             <%-- получаем натурлий лист поезда  --%>
                         function getTGNL(p) {
                             var x = p.replace("  ", " ");
@@ -120,23 +131,18 @@
                         }
                         ;
 
-//                        console.log("address ${pageContext.request.localAddr}");
                         var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/MessageToASOUP//ws");
                         webSocket.onopen = function (message) {
                             processOpen(message);
                             console.log(message);
                         };
                         webSocket.onmessage = function (message) {
-                            // processMessage(message);
                             console.log(message.data);
                             var m = message.data.split("\u0003");
-//                            console.log("11111111 " + m[0]);
-//                            console.log("22222222 " + m[1]);
                             window[m[0]](m[1]);
 
 
-                            //document.getElementById("tbl").innerHTML = message.data;
-                            if (m[0] != "getSt") {
+                            if (m[0] !== "getSt") {
                                 checking();
                             }
                         };
@@ -145,20 +151,15 @@
                         }
                         function processMessage(message) {
                             console.log(message.valueOf());
-//                            messagesTextArea.value = "";
-//                            messagesTextArea.value += message.data;
                         }
 
                         function checking() {
-//                            $(".progressInfo").html($(".mytable tr:last td:first").html());
                             console.log($(".mytable tr").length);
                             console.log($(".mytable tr:last td:first").html());
                             var rowsCount = document.getElementsByClassName("mytable")[0].getElementsByTagName('tr').length;
                             var endRowFCellVal = document.getElementsByClassName("mytable")[0].rows[rowsCount - 1].cells[0].innerHTML;
 //                            document.getElementsByClassName("progressInfo")[0].innerHTML = endRowFCellVal;
 
-//                            console.log(rowsCount - 1);
-//                            console.log(endRowFCellVal);
                             if ((rowsCount - 1) != endRowFCellVal) {
                                 document.getElementsByClassName("progressInfo")[0].innerHTML = "Таблица неполная!";
                                 console.log("Таблица неполная!");
@@ -172,7 +173,7 @@
                             document.getElementById("tbl").innerHTML = p;
                         }
                         function getSt(p) {
-//                            console.log(p);
+                            document.getElementById('stations').style.display = 'table';
                             document.getElementById("stations").innerHTML = p;
                         }
 

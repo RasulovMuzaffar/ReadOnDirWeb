@@ -6,12 +6,15 @@
 package arm.test;
 
 import arm.ent.Users;
+import arm.ws.WS;
+import static arm.ws.WS.armUsers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 /**
  *
@@ -28,9 +32,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -67,15 +71,27 @@ public class Auth extends HttpServlet {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        Users user = u;
+//        armUsers.stream().forEach((Session x) -> {
+//                if (x.getUserProperties().containsValue("u")) {
+//                    try {
+//                        x.getBasicRemote().sendText("\u0003");
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            });
         if (u != null) {
+            
+            System.out.println("this person is online!");
+            System.out.println("new person!");
             HttpSession httpSession = request.getSession(true);
             httpSession.setAttribute("user", u);
-//            request.getSession().setAttribute("usrname", u.getLogin());
-//            httpSession.setAttribute("usrname", u.getLogin());
             httpSession.setAttribute("usrname", u);
-            
-            
+
             request.getRequestDispatcher("index.jsp").forward(request, response);
+
+            System.out.println("armUsers.contains(u); " + armUsers.size());
         } else {
             response.sendRedirect("auth.html");
         }

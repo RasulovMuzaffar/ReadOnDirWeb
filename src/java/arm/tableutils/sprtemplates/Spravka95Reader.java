@@ -103,9 +103,11 @@ public class Spravka95Reader implements TableReaderInterface {
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
+            result.addCell("№");
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
+            result.addCell("ТГНЛ");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -118,10 +120,15 @@ public class Spravka95Reader implements TableReaderInterface {
         pattern = Pattern.compile(regexTBody);
         matcher = pattern.matcher(f);
 
+        int n = 1;
         while (matcher.find()) {
+            result.addCell("" + n++);
+            String bidx = "";
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
+                bidx = matcher.group("bidx");
             }
+            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
