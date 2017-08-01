@@ -320,3 +320,8 @@ thead, tbody tr {
     padding: 3px 10px;
     width: 100%;
 }
+
+.warning{
+    /*float: right;*/
+    color: red;
+}

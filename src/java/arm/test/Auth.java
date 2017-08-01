@@ -14,6 +14,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +34,9 @@ import javax.websocket.Session;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -71,29 +73,46 @@ public class Auth extends HttpServlet {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        Users user = u;
-//        armUsers.stream().forEach((Session x) -> {
-//                if (x.getUserProperties().containsValue("u")) {
-//                    try {
-//                        x.getBasicRemote().sendText("\u0003");
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            });
         if (u != null) {
-            
-            System.out.println("this person is online!");
-            System.out.println("new person!");
-            HttpSession httpSession = request.getSession(true);
-            httpSession.setAttribute("user", u);
-            httpSession.setAttribute("usrname", u);
+            System.out.println("checkUser(u) -- " + checkUser(u));
+            if (!checkUser(u)) {
+                System.out.println("this person is online!");
+                response.sendRedirect("errorPage.html");
+            } else {
+                System.out.println("new person!");
+                HttpSession httpSession = request.getSession(true);
+                httpSession.setAttribute("user", u);
+                httpSession.setAttribute("usrname", u);
 
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
 
             System.out.println("armUsers.contains(u); " + armUsers.size());
         } else {
             response.sendRedirect("auth.html");
         }
+    }
+
+    private boolean checkUser(Users u) {
+        boolean b = true;
+        Users user = u;
+        int i = 0;
+        if (!armUsers.isEmpty()) {
+            for (Session armUser : armUsers) {
+                if (armUser.getUserProperties().containsValue(user)) {
+                    b = false;
+                    try {
+                        i++;
+                        armUser.getBasicRemote().sendText("warning\u0003Попытка войти под Вашим логином!");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                break;
+            }
+        }
+        System.out.println("i = " + i);
+        return b;
     }
 }

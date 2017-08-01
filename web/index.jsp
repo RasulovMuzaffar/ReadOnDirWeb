@@ -26,10 +26,11 @@
                 <div class="col-md-4 hleft">
                     <h2>Справочник АСОУП</h2>
                 </div>
-                <div class="col-md-8 hright">
-                    <a href="#">Выход</a>
+                <div id="xxxx" class="col-md-8 hright">
+                    <a href="logOff">Выход</a>
                     <br/>
                     <h4><strong>Здравствуйте, ${user.fName} ${user.lName}!</strong></h4>
+
 
                 </div>
             </div>
@@ -54,7 +55,7 @@
                         <input type="text" class="form-control" id="st" placeholder="Код станции" oninput="findSt(this.value);" list="stations"/>
                         <!--                        <datalist id="stations">
                                                 </datalist>-->
-                        <table id="stations"></table>
+                        <table id="stations" style="display:none"></table>
                         <input type="hidden" name="id_user" value="${user.id}" id="id_user"/>
                     </div>
                     <button type="button" class="btn btn-info" onclick="writing();">OK</button>
@@ -87,50 +88,45 @@
         <script type="text/javascript">
                         var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
                         function writing() {
-                            var kodOrg = 0;//document.getElementById('q').value;
+                            var kodOrg = 0; //document.getElementById('q').value;
                             var numMess = document.getElementById('numMess').value;
                             var numSpr = document.getElementById('numSpr').value;
-                            var object = document.getElementById('st').dataset['stcod'];
                             var id_user = document.getElementById('id_user').value;
-
+                            var object;
+                            if (isFinite(document.getElementById('st').value)) {
+                                object = document.getElementById('st').value;
+                            } else {
+                                object = document.getElementById('st').dataset['stcod'];
+                            }
 //                            var el = document.querySelector('#stations tbody');
 //                            var object = el.dataset.value;
                             console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
-                            webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
+//                            webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
 
-
+                            document.getElementById('stations').style.display = 'none';
                         }
                         ;
-
                         document.querySelector('#stations').addEventListener('click', function (event) {
                             console.log(event.target.closest('tr').dataset['stcod']);
                             document.querySelector('#st').value = event.target.closest('tr').querySelector('td').innerText;
                             document.querySelector('#st').dataset['stcod'] = event.target.closest('tr').dataset['stcod'];
                             document.getElementById('stations').style.display = 'none';
-
                         });
-
                         document.getElementById('st').addEventListener('focus', function (event) {
                             this.value = "";
                         });
-
-
             <%-- получаем натурлий лист поезда  --%>
                         function getTGNL(p) {
                             var x = p.replace("  ", " ");
                             console.log(x);
                             webSocket.send("getTGNL\u0003" + x);
-
-
                         }
                         ;
-
                         function findSt(p) {
                             console.log(p);
                             webSocket.send("getSt\u0003" + p);
                         }
                         ;
-
                         var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/MessageToASOUP//ws");
                         webSocket.onopen = function (message) {
                             processOpen(message);
@@ -140,11 +136,9 @@
                             console.log(message.data);
                             var m = message.data.split("\u0003");
                             window[m[0]](m[1]);
-
-
-                            if (m[0] !== "getSt") {
-                                checking();
-                            }
+//                            if (m[0] !== "getSt" || m[0] !== "warning") {
+//                                checking();
+//                            }
                         };
                         function processOpen(message) {
                             console.log(message);
@@ -174,9 +168,13 @@
                         }
                         function getSt(p) {
                             document.getElementById('stations').style.display = 'table';
-                            document.getElementById("stations").innerHTML = p;
+                            document.getElementById('stations').innerHTML = p;
                         }
-
+                        function warning(p) {
+                            console.log(p);
+                            document.getElementById('xxxx').insertAdjacentHTML('beforeEnd', '<br/><span id="warning" class="warning">' + p + '</span>');
+                            setTimeout(document.getElementById('warning').remove(),5000);
+                        }
         </script>
         <script src="resources/js/findStation.js"></script>
     </body>
