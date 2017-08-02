@@ -101,7 +101,7 @@
 //                            var el = document.querySelector('#stations tbody');
 //                            var object = el.dataset.value;
                             console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
-//                            webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
+                            webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
 
                             document.getElementById('stations').style.display = 'none';
                         }
@@ -173,7 +173,10 @@
                         function warning(p) {
                             console.log(p);
                             document.getElementById('xxxx').insertAdjacentHTML('beforeEnd', '<br/><span id="warning" class="warning">' + p + '</span>');
-                            setTimeout(document.getElementById('warning').remove(),5000);
+                            setTimeout('document.getElementById("warning").remove()', 5000);
+                        }
+                        function logoff(p) {
+                            location.href = p;
                         }
         </script>
         <script src="resources/js/findStation.js"></script>

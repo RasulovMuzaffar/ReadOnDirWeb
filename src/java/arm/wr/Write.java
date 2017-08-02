@@ -26,7 +26,6 @@ public class Write {
     public void getWrite(Session userSession, String str) {
         Users u = (Users) userSession.getUserProperties().get("usrname");
         autoNo = u.getAutoNo();
-
         String[] s = str.split("\u0003");
         String[] zprs = s[1].split(",");
         switch (s[0]) {
@@ -35,7 +34,6 @@ public class Write {
                 String numMess = zprs[1];
                 String numSpr = zprs[2];
                 String object = cod4(zprs[3]);
-                System.out.println("999999999999999999999 "+object);
                 String id_user = zprs[4];
                 createFile("(:" + numMess + " " + kodOrg + " " + object + ":" + numSpr + ":)");
                 break;

@@ -6,6 +6,7 @@
 package arm.ws;
 
 import arm.find.FindSt;
+import arm.test.Singleton;
 import arm.wr.Write;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -31,6 +33,8 @@ public class WS {
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
+//        HttpSession hs = (HttpSession) userSession;
+        System.out.println("hs ==>> " + userSession.getId());
         String[] str = message.split("\u0003");
         String[] zprs = str[1].split(",");
 //        System.out.println("str[0] " + str[0]);

@@ -5,10 +5,16 @@
  */
 package arm.listener;
 
+import arm.ent.Users;
 import arm.wr.ReadOnDir;
+import static arm.ws.WS.armUsers;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import javax.websocket.Session;
 
 /**
  *
@@ -35,11 +41,20 @@ public class SessionListener implements HttpSessionListener {
     public void sessionDestroyed(HttpSessionEvent event) {
         session = event.getSession();
 
-//        System.out.println("----------------------");
-////        System.out.println("rod.getName()--- "+rod.getName());
-//        System.out.println("ReadOnDir list"+rod);
-////        rod.interrupt();
-//        System.out.println("----------------------");
+        Users user = (Users) session.getAttribute("usrname");
+        System.out.println("dest -- > " + user.getLogin());
+
+        for (Session armUser : armUsers) {
+            if (armUser.getUserProperties().containsValue(user)) {
+                try {
+                    armUser.getBasicRemote().sendText("logoff\u0003auth.html");
+                    armUser.close();                    
+                } catch (IOException ex) {
+                    Logger.getLogger(SessionListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
         totalSess--;
         System.out.println("Total Session ----> " + totalSess);
     }

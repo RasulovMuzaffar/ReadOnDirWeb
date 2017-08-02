@@ -34,9 +34,9 @@ import javax.websocket.Session;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -74,13 +74,14 @@ public class Auth extends HttpServlet {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (u != null) {
-            System.out.println("checkUser(u) -- " + checkUser(u));
+//            System.out.println("checkUser(u) -- " + checkUser(u));
             if (!checkUser(u)) {
                 System.out.println("this person is online!");
                 response.sendRedirect("errorPage.html");
             } else {
                 System.out.println("new person!");
                 HttpSession httpSession = request.getSession(true);
+                System.out.println("httpSession ==> " + httpSession.getId());
                 httpSession.setAttribute("user", u);
                 httpSession.setAttribute("usrname", u);
 
@@ -101,6 +102,7 @@ public class Auth extends HttpServlet {
             for (Session armUser : armUsers) {
                 if (armUser.getUserProperties().containsValue(user)) {
                     b = false;
+                    System.out.println("555555 " + armUser.getId());
                     try {
                         i++;
                         armUser.getBasicRemote().sendText("warning\u0003Попытка войти под Вашим логином!");

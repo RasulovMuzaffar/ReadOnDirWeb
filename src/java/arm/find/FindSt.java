@@ -28,16 +28,16 @@ import javax.websocket.Session;
  */
 public class FindSt {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     String autoNo;
 
     public void getSt(Session userSession, String str) throws SQLException {
         Users u = (Users) userSession.getUserProperties().get("usrname");
         autoNo = u.getAutoNo();
-        System.out.println("-------------====---------");
+//        System.out.println("-------------====---------");
         String[] s = str.split("\u0003");
 //        String[] zprs = s[1].split(",");
         Station st = null;
@@ -84,9 +84,9 @@ public class FindSt {
 ////                System.out.println("armUsers : " + armUser.getUserProperties());
 //            }
             armUsers.stream().forEach((Session x) -> {
-                System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-                System.out.println("x.getUserProperties().containsValue(user) ===>> "
-                        + x.getUserProperties().containsValue(u));
+//                System.out.println("x.getUserProperties() --> " + x.getUserProperties());
+//                System.out.println("x.getUserProperties().containsValue(user) ===>> "
+//                        + x.getUserProperties().containsValue(u));
                 if (x.getUserProperties().containsValue(u)) {
                     try {
                         x.getBasicRemote().sendText(string.toString());
