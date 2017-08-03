@@ -39,11 +39,12 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
-        session = event.getSession();
-
         Users user = (Users) session.getAttribute("usrname");
         System.out.println("dest -- > " + user.getLogin());
 
+        session = event.getSession();
+
+        
         for (Session armUser : armUsers) {
             if (armUser.getUserProperties().containsValue(user)) {
                 try {

@@ -5,14 +5,16 @@
  */
 package arm.ws;
 
+import arm.ent.Users;
 import arm.find.FindSt;
-import arm.test.Singleton;
 import arm.wr.Write;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,11 +32,29 @@ import javax.websocket.server.ServerEndpoint;
 public class WS {
 
     public static final Set<Session> armUsers = Collections.synchronizedSet(new HashSet<Session>());
+    public static final Map<Users, HttpSession> userHttpSess = new HashMap<Users, HttpSession>();
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
-//        HttpSession hs = (HttpSession) userSession;
-        System.out.println("hs ==>> " + userSession.getId());
+//        userHttpSess.get(userSession.getUserProperties());
+        int i = 0;
+        System.out.println("----------onMessage------------");
+        for (Map.Entry<Users, HttpSession> entry : userHttpSess.entrySet()) {
+            i++;
+            Users key = entry.getKey();
+            HttpSession value = entry.getValue();
+            if ((key).equals(userSession.getUserProperties().get("usrname"))) {
+                System.out.println("true!!!!!");
+            }
+            System.out.println(i + ". " + key + " " + value.getId());
+        }
+
+        System.out.println("==========onMessage==========");
+//        System.out.println("us "+);
+//        System.out.println("hs ==>> " + userHttpSess..getLastAccessedTime());
+//        System.out.println("created time CreationTime ==>> " + new Date(hs.getCreationTime()));
+//        System.out.println("created time LastAccessedTime ==>> " + new Date(hs.getLastAccessedTime()));
+//        System.out.println("created time MaxInactiveInterval ==>> " + new Date(hs.getMaxInactiveInterval()));
         String[] str = message.split("\u0003");
         String[] zprs = str[1].split(",");
 //        System.out.println("str[0] " + str[0]);
@@ -77,29 +97,16 @@ public class WS {
     @OnClose
     public void onClose(Session userSession) {
         armUsers.remove(userSession);
-    }
-
-    public void WsSendMessage(String param, Session session) {
-
-        //рассылка всем подключённым, кроме того кто отправил это сообщение
-//        try {
-//            for (Session peer : armUsers) {
-//                if (!peer.equals(session)) {
-//
-//                    peer.getBasicRemote().sendText("--" + param + "--<br>");
-//
-//                }
-//            }
-//        } catch (IOException ex) {
-//            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        //отправка ответа только автору сообщения
-        try {
-            session.getBasicRemote().sendText("--" + param + "--<br>");
-        } catch (IOException ex) {
-            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+        int i = 0;
+        for (Map.Entry<Users, HttpSession> entry : userHttpSess.entrySet()) {
+            Users key = entry.getKey();
+            HttpSession value = entry.getValue();
+            if ((key).equals(userSession.getUserProperties().get("usrname"))) {
+                userHttpSess.remove(key);
+                System.out.println("on deleted!!!!!");
+                break;
+            }
+            System.out.println(i++ + ". " + key + " " + value.getId());
         }
-
     }
-
 }

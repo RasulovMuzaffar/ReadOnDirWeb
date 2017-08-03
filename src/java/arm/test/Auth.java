@@ -34,9 +34,9 @@ import javax.websocket.Session;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -81,14 +81,12 @@ public class Auth extends HttpServlet {
             } else {
                 System.out.println("new person!");
                 HttpSession httpSession = request.getSession(true);
-                System.out.println("httpSession ==> " + httpSession.getId());
+                System.out.println("auth httpSession ==> " + httpSession.getId());
                 httpSession.setAttribute("user", u);
                 httpSession.setAttribute("usrname", u);
 
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
-
-            System.out.println("armUsers.contains(u); " + armUsers.size());
         } else {
             response.sendRedirect("auth.html");
         }
@@ -97,14 +95,11 @@ public class Auth extends HttpServlet {
     private boolean checkUser(Users u) {
         boolean b = true;
         Users user = u;
-        int i = 0;
         if (!armUsers.isEmpty()) {
             for (Session armUser : armUsers) {
                 if (armUser.getUserProperties().containsValue(user)) {
                     b = false;
-                    System.out.println("555555 " + armUser.getId());
                     try {
-                        i++;
                         armUser.getBasicRemote().sendText("warning\u0003Попытка войти под Вашим логином!");
                     } catch (IOException ex) {
                         Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,7 +109,6 @@ public class Auth extends HttpServlet {
                 break;
             }
         }
-        System.out.println("i = " + i);
         return b;
     }
 }
