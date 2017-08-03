@@ -28,9 +28,6 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent event) {
-//        System.out.println("+++++++++++++++++++++");
-//        rod.start();
-//        System.out.println("+++++++++++++++++++++");
 
         session = event.getSession();
         totalSess++;
@@ -39,25 +36,61 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
-        Users user = (Users) session.getAttribute("usrname");
-        System.out.println("dest -- > " + user.getLogin());
-
-        session = event.getSession();
-
-        
+        System.out.println("event "+event.getSession().getId());
+        Users user;
+        System.out.println("----------sessionDestroyed-----------");
         for (Session armUser : armUsers) {
-            if (armUser.getUserProperties().containsValue(user)) {
-                try {
-                    armUser.getBasicRemote().sendText("logoff\u0003auth.html");
-                    armUser.close();                    
-                } catch (IOException ex) {
-                    Logger.getLogger(SessionListener.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            System.out.println("before remove " + armUser.getId());
+            System.out.println("armUser.getUserProperties() " + armUser.getUserProperties());
+        }
+        try {
+            user = (Users) session.getAttribute("usrname");
+            System.out.println("dest -- > " + user.getLogin() + " " + event.getSession().getId());
+
+//            for (Session armUser : armUsers) {
+//                if (armUser.getUserProperties().containsValue(user)) {
+//                    try {
+//                        System.out.println("udalyaem user - " + user.getLogin() + " " + event.getSession().getId());
+//                        Users usr = (Users) armUser.getUserProperties().get("usrname");
+//                        System.out.println("udalyaem armUser - " + usr.getLogin());
+//                        session = event.getSession();
+//                        armUser.getBasicRemote().sendText("logoff\u0003auth.html");
+//                        armUser.close();
+//                        return;
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(SessionListener.class.getName()).log(Level.SEVERE, null, ex);
+//                        System.out.println("neponyatnaya problema!!!");
+//                    }
+//                }
+//            }
+
+armUsers.stream().forEach((Session x) -> {
+                        System.out.println("x.getUserProperties() --> " + x.getId());
+//                        System.out.println("x.getUserProperties().containsValue(user) ===>> "
+//                                + x.getUserProperties().containsValue(user));
+                        if (x.getUserProperties().containsValue(user)) {
+//                        if (x.getUserProperties().containsValue(gLogin)) {
+                            try {
+                                x.getBasicRemote().sendText("logoff\u0003auth.html");
+                                x.close();
+                                return;
+                            } catch (IOException ex) {
+//                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println("ex "+ex);
+                            }
+                        }
+
+                    });
+        } catch (Exception e) {
+            System.out.println("e--------->>> " + e);
+        }
+        for (Session armUser : armUsers) {
+            System.out.println("after remove " + armUser.getId());
         }
 
         totalSess--;
         System.out.println("Total Session ----> " + totalSess);
+        System.out.println("=============sessionDestroyed================");
     }
 
 }

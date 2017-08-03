@@ -6,7 +6,7 @@
 package arm.ws;
 
 import arm.ent.Users;
-import static arm.ws.WS.userHttpSess;
+//import static arm.ws.WS.userHttpSess;
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
@@ -27,7 +27,7 @@ public class WsServerConfigurator extends ServerEndpointConfig.Configurator {
 //        Object attribute = session.getAttribute("usrname");
         Users u = (Users) session.getAttribute("usrname");
 
-        userHttpSess.put(u, session);
+//        userHttpSess.put(u, session);
 //        String name = (String) attribute;
         sec.getUserProperties().put("usrname", u);
     }

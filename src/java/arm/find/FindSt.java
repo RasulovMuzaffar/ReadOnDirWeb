@@ -28,9 +28,9 @@ import javax.websocket.Session;
  */
 public class FindSt {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     String autoNo;
 
@@ -45,7 +45,7 @@ public class FindSt {
         StringBuilder string = new StringBuilder();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            
 //            String sql = "select * FROM spr_stations ss WHERE ss.name_station LIKE '%" + s[1] + "%' limit 5";
 
             String[] st1 = s[1].split(" ");

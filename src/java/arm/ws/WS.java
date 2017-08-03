@@ -32,24 +32,23 @@ import javax.websocket.server.ServerEndpoint;
 public class WS {
 
     public static final Set<Session> armUsers = Collections.synchronizedSet(new HashSet<Session>());
-    public static final Map<Users, HttpSession> userHttpSess = new HashMap<Users, HttpSession>();
+    public static final Map<HttpSession,Session> userHttpSess = new HashMap<>();
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
 //        userHttpSess.get(userSession.getUserProperties());
-        int i = 0;
-        System.out.println("----------onMessage------------");
-        for (Map.Entry<Users, HttpSession> entry : userHttpSess.entrySet()) {
-            i++;
-            Users key = entry.getKey();
-            HttpSession value = entry.getValue();
-            if ((key).equals(userSession.getUserProperties().get("usrname"))) {
-                System.out.println("true!!!!!");
-            }
-            System.out.println(i + ". " + key + " " + value.getId());
-        }
-
-        System.out.println("==========onMessage==========");
+//        int i = 0;
+//        System.out.println("----------onMessage------------");
+//        for (Map.Entry<Users, HttpSession> entry : userHttpSess.entrySet()) {
+//            Users key = entry.getKey();
+//            HttpSession value = entry.getValue();
+//            if ((key).equals(userSession.getUserProperties().get("usrname"))) {
+//                System.out.println("true!!!!!");
+//            }
+//            System.out.println(i++ + ". " + key + " " + value.getId());
+//        }
+//
+//        System.out.println("==========onMessage==========");
 //        System.out.println("us "+);
 //        System.out.println("hs ==>> " + userHttpSess..getLastAccessedTime());
 //        System.out.println("created time CreationTime ==>> " + new Date(hs.getCreationTime()));
@@ -73,21 +72,15 @@ public class WS {
             Write w = new Write();
             w.getWrite(userSession, message);
         }
-
-//        switch (str[0]) {
-//            case "spr":
-//                w.getWrite(userSession, message /*str[1]*/);
-//                break;
-//            case "getTGNL":
-//                System.out.println("TELEGRAMM NATURNIY LIST");
-//                break;
-//        }
     }
 
     @OnOpen
     public void onOpen(EndpointConfig endpointConfig, Session userSession) {
         userSession.getUserProperties().put("usrname", endpointConfig.getUserProperties().get("usrname"));
         armUsers.add(userSession);
+        for (Session armUser : armUsers) {
+            System.out.println("onOpen "+armUser.getId());
+        }
     }
 
     @OnError
@@ -96,17 +89,24 @@ public class WS {
 
     @OnClose
     public void onClose(Session userSession) {
-        armUsers.remove(userSession);
-        int i = 0;
-        for (Map.Entry<Users, HttpSession> entry : userHttpSess.entrySet()) {
-            Users key = entry.getKey();
-            HttpSession value = entry.getValue();
-            if ((key).equals(userSession.getUserProperties().get("usrname"))) {
-                userHttpSess.remove(key);
-                System.out.println("on deleted!!!!!");
-                break;
-            }
-            System.out.println(i++ + ". " + key + " " + value.getId());
+        System.out.println("onClose userSession = "+userSession.getId());
+        for (Session armUser : armUsers) {
+            System.out.println("onClose before remove "+armUser.getId());
         }
+        armUsers.remove(userSession);
+        for (Session armUser : armUsers) {
+            System.out.println("onClose after remove "+armUser.getId());
+        }
+//        int i = 0;
+//        for (Map.Entry<Users, HttpSession> entry : userHttpSess.entrySet()) {
+//            Users key = entry.getKey();
+//            HttpSession value = entry.getValue();
+//            if ((key).equals(userSession.getUserProperties().get("usrname"))) {
+//                userHttpSess.remove(key);
+//                System.out.println("on deleted!!!!!");
+//                break;
+//            }
+//            System.out.println(i++ + ". " + key + " " + value.getId());
+//        }
     }
 }

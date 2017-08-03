@@ -34,9 +34,9 @@ import javax.websocket.Session;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +52,6 @@ public class Auth extends HttpServlet {
         Users u = null;
 //        List<Users> ul = new ArrayList<>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
 
             String sql = "select * from users where login='" + login + "' and password='" + password + "'";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
@@ -70,8 +69,6 @@ public class Auth extends HttpServlet {
         } catch (SQLException ex) {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (u != null) {
 //            System.out.println("checkUser(u) -- " + checkUser(u));
@@ -81,9 +78,10 @@ public class Auth extends HttpServlet {
             } else {
                 System.out.println("new person!");
                 HttpSession httpSession = request.getSession(true);
-                System.out.println("auth httpSession ==> " + httpSession.getId());
+                System.out.println("auth httpSession ==> " + login + " " + httpSession.getId());
                 httpSession.setAttribute("user", u);
                 httpSession.setAttribute("usrname", u);
+//                user = (Users) session.getAttribute("usrname");
 
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }

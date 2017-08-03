@@ -6,6 +6,8 @@
 package arm.test;
 
 import arm.wr.ReadOnDir;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,6 +24,11 @@ public class Singleton {
             System.out.println("---------------------------");
             rod.setDaemon(true);
             rod.start();
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Singleton.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("+++++++++++++++++++++++++++");
         }
     }
