@@ -6,7 +6,6 @@
 package arm.test;
 
 import arm.ent.Users;
-import arm.ws.WS;
 import static arm.ws.WS.armUsers;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,9 +13,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -34,9 +30,9 @@ import javax.websocket.Session;
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -83,7 +79,7 @@ public class Auth extends HttpServlet {
                 httpSession.setAttribute("usrname", u);
 //                user = (Users) session.getAttribute("usrname");
 
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         } else {
             response.sendRedirect("auth.html");

@@ -6,6 +6,7 @@
 package arm.ws;
 
 import arm.ent.Users;
+import static arm.ws.WS.uhs;
 //import static arm.ws.WS.userHttpSess;
 import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
@@ -17,7 +18,8 @@ import javax.websocket.server.ServerEndpointConfig;
  * @author Muzaffar
  */
 public class WsServerConfigurator extends ServerEndpointConfig.Configurator {
-//public static HttpSession hs;
+
+    public static HttpSession hs;
 
     @Override
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
@@ -26,7 +28,7 @@ public class WsServerConfigurator extends ServerEndpointConfig.Configurator {
 //        System.out.println("Handshake httpSession " + session.getId());
 //        Object attribute = session.getAttribute("usrname");
         Users u = (Users) session.getAttribute("usrname");
-
+        hs = session;
 //        userHttpSess.put(u, session);
 //        String name = (String) attribute;
         sec.getUserProperties().put("usrname", u);

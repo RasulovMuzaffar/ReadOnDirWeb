@@ -131,6 +131,13 @@
                         webSocket.onopen = function (message) {
                             processOpen(message);
                             console.log(message);
+                            console.log("sessions\u0003${pageContext.session.id}");
+//                            console.log("sessions\u0003${pageContext.session}");
+//                            console.log("sessions\u0003<%=session.getId()%>");
+//                            console.log('sessions\u0003<%=request.getSession().getId()%>');
+
+                            webSocket.send("sessions\u0003${pageContext.session.id}");
+
                         };
                         webSocket.onmessage = function (message) {
                             console.log(message.data);
