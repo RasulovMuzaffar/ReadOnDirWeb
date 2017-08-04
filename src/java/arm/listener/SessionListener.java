@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arm.listener;
 
 import arm.ent.Users;
 import arm.wr.ReadOnDir;
 import arm.ws.WS;
 import static arm.ws.WS.armUsers;
-import static arm.ws.WS.userHttpSess;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,10 +12,6 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import javax.websocket.Session;
 
-/**
- *
- * @author Muzaffar
- */
 public class SessionListener implements HttpSessionListener {
 
     private HttpSession session = null;
@@ -32,15 +22,6 @@ public class SessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent event) {
 
         session = event.getSession();
-//        Users u = (Users) event.getSession().getAttribute("user");
-//
-//        armUsers.stream().forEach((Session x) -> {
-//            if (x.getUserProperties().containsValue(u)) {
-//                userHttpSess.put(session, x);
-//            }
-//
-//        });
-        
         totalSess++;
         System.out.println("Total Session ----> " + totalSess);
     }

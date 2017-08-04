@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package arm.tableutils.sprtemplates;
 
 import arm.tableutils.HtmlTable;
@@ -16,10 +12,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Muzaffar
- */
+
 public class Spravka02Reader implements TableReaderInterface {
 
     final static String regexDocHead = "(?<dcode>\\d{2})\\s+"
@@ -51,17 +44,6 @@ public class Spravka02Reader implements TableReaderInterface {
             + "(?<thkont>\\d{2}\\/\\d{2})\\s+"
             + "(?<thxz2>\\d{5})\\s+"
             + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
-//    final static String regexTBody = "(?<thnum>\\d{2})\\s+"
-//            + "(?<thnvag>\\d{8})\\s+"
-//            + "(?<thediz>\\d{1})\\s+"
-//            + "(?<thvesgr>\\d{3})(\\s+"
-//            + "(?<thstnaz>\\d{5})(\\s+"
-//            + "(?<thcodgr>\\d{5})(\\s+"
-//            + "(?<thcodpoluch>\\d{4,6})(\\s+"
-//            + "(?<thxz1>\\d \\d \\d \\d)(\\s+"
-//            + "(?<thkont>\\d{2}\\/\\d{2})(\\s+"
-//            + "(?<thxz2>\\d{5})(\\s+"
-//            + "(?<thoxr>\\d{3}\\W\\S{1,6})|\\s)|\\s)|\\s)|\\s)|\\s)|\\s)|\\s)";
 
     @Override
     public HtmlTable processFile(String fileName) {

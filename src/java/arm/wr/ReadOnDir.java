@@ -35,10 +35,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.websocket.Session;
 
-/**
- *
- * @author Muzaffar
- */
 public class ReadOnDir extends Thread {
 
     /**
@@ -116,8 +112,6 @@ public class ReadOnDir extends Thread {
         // test
         String filePath = path;
         String fileName = fName.toString();
-//        System.out.println("Using file name " + filePath);
-//        System.out.println("Using file name " + fileName);
         /////////////////////////////////
         String usrAutoN = null;
 //        String rx = "^\\d{4}";
@@ -128,7 +122,6 @@ public class ReadOnDir extends Thread {
         while (matcher.find()) {
             usrAutoN = matcher.group(0);
         }
-//        System.out.println("usrAutoN = " + usrAutoN);
 
         Users u = null;
         try {
@@ -147,14 +140,12 @@ public class ReadOnDir extends Thread {
             }
 
         } catch (SQLException ex) {
-//            System.out.println("exexexexex " + ex);
+            System.out.println("exexexexex " + ex);
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-//        String gLogin = u.getLogin();
-//        System.out.println("gLogin --->>> " + gLogin);
 ////////////////////////
         Users user = u;
         try {
@@ -164,14 +155,8 @@ public class ReadOnDir extends Thread {
                 if (result != null) {
                     String answer = result.generateHtml();
 
-//                    System.out.println("spr---->> " + spr);
-//                    System.out.println("user ------>>> " + user);
                     armUsers.stream().forEach((Session x) -> {
-//                        System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-//                        System.out.println("x.getUserProperties().containsValue(user) ===>> "
-//                                + x.getUserProperties().containsValue(user));
                         if (x.getUserProperties().containsValue(user)) {
-//                        if (x.getUserProperties().containsValue(gLogin)) {
                             try {
                                 x.getBasicRemote().sendText(spr + "\u0003" + answer);
                                 return;
@@ -182,16 +167,11 @@ public class ReadOnDir extends Thread {
 
                     });
 
-//                    for (Session armUser : armUsers) {
-//                        armUser.getBasicRemote().sendText(answer);
-//                        System.out.println("armUsers : " + armUser.getUserProperties());
-//                    }
                 } else {
                     String answer = readNotDetectedFile(filePath);
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
-//                                x.getBasicRemote().sendText("Could not detect input file type");
                                 x.getBasicRemote().sendText("sprDefault\u0003" + answer);
                                 return;
                             } catch (IOException ex) {
@@ -206,9 +186,6 @@ public class ReadOnDir extends Thread {
             }
         } catch (MultipleResultsException ex) {
             System.out.println("Error: multiple results");
-//            for (HtmlTable result : ex.multipleResults) {
-//                System.out.println(result);
-//            }
         }
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arm.find;
 
 import arm.ent.Station;
@@ -22,15 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 
-/**
- *
- * @author Muzaffar
- */
 public class FindSt {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     String autoNo;
 
@@ -45,9 +36,8 @@ public class FindSt {
         StringBuilder string = new StringBuilder();
 
         try {
-            
-//            String sql = "select * FROM spr_stations ss WHERE ss.name_station LIKE '%" + s[1] + "%' limit 5";
 
+//            String sql = "select * FROM spr_stations ss WHERE ss.name_station LIKE '%" + s[1] + "%' limit 5";
             String[] st1 = s[1].split(" ");
             StringBuilder sy = new StringBuilder();
             sy.append("SELECT concat_ws(' | ', ss.code_station, ss.name_station) AS nn, code_station FROM spr_stations ss WHERE ");
@@ -65,28 +55,11 @@ public class FindSt {
                     PreparedStatement pstmt = con.prepareStatement(sy.toString());
                     ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-//                    st = new Station(rs.getLong("id"), rs.getString("code_station"), rs.getString("name_station"));
-//                    lst.add(st);
-//                    string.append("<option value='").append(s[1]).append("'>").append(rs.getString("nn")).append("</option>");
                     string.append("<tr  data-stcod='").append(rs.getString("code_station")).append("'><td>").append(rs.getString("nn")).append("</td></tr>");
                 }
             }
 
-//            for (Station ss : lst) {
-////                System.out.println(""+ss.getCodeSt());
-////                string += "<option data-value = '" + ss.getCodeSt() + "' value='" + ss.getNameSt() + "'/>";
-//                string.append("<option value='").append(s[1]).append("'></option>");
-//            }
-//            System.out.println("" + sb.toString());
-//            for (Session armUser : armUsers) {
-//                armUser.getBasicRemote().sendText(string.toString());
-////                System.out.println("" + sb.toString());
-////                System.out.println("armUsers : " + armUser.getUserProperties());
-//            }
             armUsers.stream().forEach((Session x) -> {
-//                System.out.println("x.getUserProperties() --> " + x.getUserProperties());
-//                System.out.println("x.getUserProperties().containsValue(user) ===>> "
-//                        + x.getUserProperties().containsValue(u));
                 if (x.getUserProperties().containsValue(u)) {
                     try {
                         x.getBasicRemote().sendText(string.toString());
@@ -95,7 +68,6 @@ public class FindSt {
                         Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-
             });
         } catch (SQLException ex) {
             System.out.println("exexexexex " + ex);

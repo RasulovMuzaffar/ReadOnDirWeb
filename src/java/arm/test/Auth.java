@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arm.test;
 
 import arm.ent.Users;
@@ -22,17 +17,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.xml.sax.SAXException;
 
-/**
- *
- * @author Muzaffar
- */
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    public static String sessionTimeoutFromWebXml;
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -45,8 +42,15 @@ public class Auth extends HttpServlet {
         } catch (Exception e) {
             System.out.println("проблема в авторизации " + e);
         }
+        System.out.println("looooogin: " + login);
+        System.out.println("passsssss: " + password);
+        try {
+            sessionTimeoutFromWebXml = XPathFactory.newInstance().newXPath().compile("web-app/session-config/session-timeout").evaluate(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getServletContext().getResourceAsStream("/WEB-INF/web.xml")));
+        } catch (XPathExpressionException | ParserConfigurationException | SAXException ex) {
+            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         Users u = null;
-//        List<Users> ul = new ArrayList<>();
         try {
 
             String sql = "select * from users where login='" + login + "' and password='" + password + "'";
@@ -58,7 +62,6 @@ public class Auth extends HttpServlet {
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
                             rs.getString("login"), rs.getString("password"));
-//                ul.add(u);
                 }
             }
 
@@ -67,7 +70,6 @@ public class Auth extends HttpServlet {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (u != null) {
-//            System.out.println("checkUser(u) -- " + checkUser(u));
             if (!checkUser(u)) {
                 System.out.println("this person is online!");
                 response.sendRedirect("errorPage.html");
@@ -77,9 +79,8 @@ public class Auth extends HttpServlet {
                 System.out.println("auth httpSession ==> " + login + " " + httpSession.getId());
                 httpSession.setAttribute("user", u);
                 httpSession.setAttribute("usrname", u);
-//                user = (Users) session.getAttribute("usrname");
 
-request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         } else {
             response.sendRedirect("auth.html");

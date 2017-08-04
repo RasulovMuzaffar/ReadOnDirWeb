@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arm.ws;
 
 import static arm.ws.WsServerConfigurator.hs;
@@ -24,14 +19,13 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import static arm.test.Auth.sessionTimeoutFromWebXml;
 
 @ServerEndpoint(value = "/ws", configurator = WsServerConfigurator.class)
-//@ServerEndpoint(value = "/ws")
 public class WS {
 
     public static final Set<Session> armUsers = Collections.synchronizedSet(new HashSet<Session>());
-    public static final Map<Session, String> userHttpSess = new HashMap<>();
-    public static final Map<Session, HttpSession> uhs = new HashMap<>();
+    public static final Map<Session, HttpSession> usersSession = new HashMap<>();
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
@@ -45,16 +39,13 @@ public class WS {
                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (str[0].equals("sessions")) {
-            userHttpSess.put(userSession, str[1]);
-            uhs.put(userSession, hs);
+            usersSession.put(userSession, hs);
         } else {
             Write w = new Write();
             w.getWrite(userSession, message);
         }
 
         prolongSess(userSession);
-//        if (userHttpSess.containsValue(userSession)) {
-//        }
     }
 
     @OnOpen
@@ -73,16 +64,8 @@ public class WS {
     }
 
     private void prolongSess(Session userSession) {
-        System.out.println("--------------------------------");
-        for (Map.Entry<Session, HttpSession> u : uhs.entrySet()) {
-            Session k = u.getKey();
-            HttpSession v = u.getValue();
-            System.out.println(k + " -+- " + v);
-        }
-        System.out.println("usess " + userSession);
-        System.out.println("===============================");
-        if (uhs.containsKey(userSession)) {
-            hs.setMaxInactiveInterval(1 * 60);
+        if (usersSession.containsKey(userSession)) {
+            usersSession.get(userSession).setMaxInactiveInterval(Integer.parseInt(sessionTimeoutFromWebXml.trim()) * 60);
         }
     }
 }

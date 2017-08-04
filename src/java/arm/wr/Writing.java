@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Muzaffar
- */
+
 @WebServlet(name = "Writing", urlPatterns = {"/writing"})
 public class Writing extends HttpServlet {
 
@@ -24,8 +21,6 @@ public class Writing extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType(CONTENT_TYPE);
-//        String mess = null;
-//        mess = request.getParameter("mess");
         String kod = null;
         String q = null;
         String kodDok = null;
@@ -60,8 +55,6 @@ public class Writing extends HttpServlet {
         try (FileWriter writer = new FileWriter(pth, false)) {
 //            writer.write(text);
             writer.write(new String (text.getBytes(),"Cp866"));
-//            writer.append("\nB– “T€     93 31.05 13-46 B– 73");
-//            writer.append("\n" + new String("B– “T€     93 31.05 13-46 B– 73".getBytes(), "Cp866"));
         } catch (Exception e) {
             System.out.println("Exception in writingFile " + e);
         }

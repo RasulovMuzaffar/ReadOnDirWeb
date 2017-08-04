@@ -31,21 +31,6 @@ public class HtmlTable {
         result += TABLE_OPEN;
         for (TableRow row : tableData) {
             if (!row.cells.isEmpty() && !row.type.name().equals("DocHeader")) {
-                //////////////////////////////////
-//                result += ROW_OPEN;
-//                for (String value : row.cells) {
-//                    if (row.type == RowType.Regular) {
-//                        result += CELL_OPEN;
-//                        result += value;
-//                        result += CELL_CLOSE;
-//                    } else if (row.type == RowType.Header) {
-//                        result += HEADER_CELL_OPEN;
-//                        result += value;
-//                        result += HEADER_CELL_CLOSE;
-//                    }
-//                }
-//                result += ROW_CLOSE;
-                //////////////////////////////////
                 if (row.type.name().equals("Header")) {
                     result += (THEAD_OPEN + ROW_OPEN);
                     for (String value : row.cells) {
@@ -71,12 +56,10 @@ public class HtmlTable {
             }
         }
         result += TABLE_CLOSE;
-//        result += (TABLE_CLOSE + BODY_CLOSE + HTML_CLOSE);
         return result;
     }
 
     public String generateHtml() {
-//        String result = HTML_OPEN + BODY_OPEN;
         String result = LABELDOC_OPEN;
         for (TableRow row : tableData) {
             for (String value : row.cells) {
@@ -90,7 +73,6 @@ public class HtmlTable {
         result += "\n";
         result += generateHtmlTable();
         result += DIV_TABL_CLOSE;
-//        result += (BODY_CLOSE + HTML_CLOSE);
         return result;
     }
 

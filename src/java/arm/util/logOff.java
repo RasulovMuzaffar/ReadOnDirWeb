@@ -1,6 +1,5 @@
 package arm.util;
 
-import static arm.ws.WS.armUsers;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +17,6 @@ public class logOff extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("Exit!!! " + request.getSession().getAttribute("user"));
         request.getSession().invalidate();
-//        armUsers.remove(userSession);
         response.sendRedirect("auth.html");
     }
 }
