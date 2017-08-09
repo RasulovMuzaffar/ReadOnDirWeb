@@ -20,7 +20,14 @@ public class Spravka92Reader implements TableReaderInterface {
 //            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
 //            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
 //            + "(?<dhst>[А-ЯA-Z]{5})";
-    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2} [А-ЯA-Z]{3})\\s+(?<dhcode>\\d{2})\\s+(?<dhdate>\\d{2}.\\d{2})\\s+(?<dhtime>\\d{2}-\\d{2})\\s+(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAЗHAЧEHИEM\\s+HA\\s+CT.)\\s+(?<dhst>[А-ЯA-Z\\d+]{2,8})";
+    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
+            + "(?<dhcode>\\d{2})\\s+"
+            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
+            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
+            + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
+//            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAЗHAЧEHИEM\\s+HA\\s+CT.)\\s+"
+            + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{11}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2}.)\\s+"
+            + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
 
     final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
@@ -42,6 +49,9 @@ public class Spravka92Reader implements TableReaderInterface {
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -79,6 +89,7 @@ public class Spravka92Reader implements TableReaderInterface {
                 result.markCurrentRowAsDocHeader();
             }
 
+            docHead = true;
             result.advanceToNextRow();
         }
 
@@ -99,6 +110,7 @@ public class Spravka92Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
 
+            tHead = true;
             result.advanceToNextRow();
         }
 
@@ -119,11 +131,12 @@ public class Spravka92Reader implements TableReaderInterface {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
             }
+            tBody = true;
             reading = true;
             result.advanceToNextRow();
         }
 
-        if (reading == true) {
+        if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR92 " + result);
             ReadOnDir.spr = "sprDefault";
             return result;

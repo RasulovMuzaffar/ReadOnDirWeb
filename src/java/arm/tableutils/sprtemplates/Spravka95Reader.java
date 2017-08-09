@@ -22,7 +22,15 @@ public class Spravka95Reader implements TableReaderInterface {
 //            + "(?<dhnum>\\d{2,4})\\s+"
 //            + "(?<dhnpn>[А-ЯA-Z]{6}\\s+[А-ЯA-Z]{7}\\s+[А-ЯA-Z]{1}\\s+[А-ЯA-Z]{7})\\s+"
 //            + "(?<dhSt>[А-ЯA-Z\\d+]{2,8})";
-    final static String regexDocHead = "(?<dhOrg>[А-ЯA-Z]{2,6})\\s+(?<dhUTY>[А-ЯA-Z]{2,6})\\s+(?<dhSpr>\\d{2,4})\\s+(?<dhdate>\\d{2}.\\d{2})\\s+(?<dhtime>\\d{2}-\\d{2})\\s+(?<dhOrg2>[А-ЯA-Z]{2,6})\\s+(?<dhnum>\\d{2,4})\\s+(?<dhnpn>ПOДXOД\\s+ПOEЗДOB\\s+K\\s+CTAHЦИИ)\\s+(?<dhSt>[А-ЯA-Z\\d+]{2,8})";
+//    BЦ УTИ     95 09.08 12-00 BЦ 73
+//ПOДXOД ПOEЗДOB       K CTAHЦИИ     ЧYKYP 
+    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
+            + "(?<dhcode>\\d{2})\\s+"
+            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
+            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
+            + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
+            + "(?<dhnpsst>[A-ZА-Я]{6}\\s[A-ZА-Я]{7}\\s+[A-ZА-Я]{1}\\s[A-ZА-Я]{7})\\s+"
+            + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
 
     final static String regexTHead = "(?<hnum>[А-ЯA-Z]{5})\\s+"
             + "(?<hidx>[А-ЯA-Z]{6})\\s+"
@@ -45,6 +53,9 @@ public class Spravka95Reader implements TableReaderInterface {
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -86,7 +97,7 @@ public class Spravka95Reader implements TableReaderInterface {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsDocHeader();
             }
-
+            docHead = true;
             result.advanceToNextRow();
         }
 
@@ -105,7 +116,7 @@ public class Spravka95Reader implements TableReaderInterface {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
             }
-
+            tHead = true;
             result.advanceToNextRow();
         }
 
@@ -126,11 +137,12 @@ public class Spravka95Reader implements TableReaderInterface {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
             }
+            tBody = true;
             reading = true;
             result.advanceToNextRow();
         }
 
-        if (reading == true) {
+        if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR95 " + result);
             ReadOnDir.spr = "sprDefault";
             return result;
