@@ -13,15 +13,16 @@ import java.util.regex.Pattern;
 
 public class Spravka93Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "(?<dhOrg>[А-ЯA-Z]{2,6})\\s+"
-            + "(?<dhUTY>[А-ЯA-Z]{2,6})\\s+"
-            + "(?<dhSpr>\\d{2,4})\\s+"
-            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
-            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
-            + "(?<dhOrg2>[А-ЯA-Z]{2,6})\\s+"
-            + "(?<dhnum>\\d{2,4})\\s+"
-            + "(?<dhnpn>[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,11}\\s+[А-ЯA-Z]{2})\\s+"
-            + "(?<dhSt>[А-ЯA-Z]{2}.\\s+[А-ЯA-Z\\d+]{2,8})";
+//    final static String regexDocHead = "(?<dhOrg>[А-ЯA-Z]{2,6})\\s+"
+//            + "(?<dhUTY>[А-ЯA-Z]{2,6})\\s+"
+//            + "(?<dhSpr>\\d{2,4})\\s+"
+//            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
+//            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
+//            + "(?<dhOrg2>[А-ЯA-Z]{2,6})\\s+"
+//            + "(?<dhnum>\\d{2,4})\\s+"
+//            + "(?<dhnpn>[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,11}\\s+[А-ЯA-Z]{2})\\s+"
+//            + "(?<dhSt>[А-ЯA-Z]{2}.\\s+[А-ЯA-Z\\d+]{2,8})";
+    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2} [А-ЯA-Z]{3})\\s+(?<dhcode>\\d{2})\\s+(?<dhdate>\\d{2}.\\d{2})\\s+(?<dhtime>\\d{2}-\\d{2})\\s+(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAXOДЯЩИXCЯ\\s+HA\\s+CT.)\\s+(?<dhst>[А-ЯA-Z\\d+]{2,8})";
 
     final static String regexTHead = "(?<hnum>[А-ЯA-Z]{5})\\s+"
             + "(?<hidx>[А-ЯA-Z]{6})\\s+"

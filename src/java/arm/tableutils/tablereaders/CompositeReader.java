@@ -13,7 +13,7 @@ public class CompositeReader implements TableReaderInterface {
 	    HtmlTable table = reader.processFile(fileName);
 	    if (table != null) {
 		results.add(table);
-                break;
+//                break;
 	    }
 	}
 

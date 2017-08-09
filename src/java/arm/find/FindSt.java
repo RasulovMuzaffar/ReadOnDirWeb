@@ -28,7 +28,7 @@ public class FindSt {
     public void getSt(Session userSession, String str) throws SQLException {
         Users u = (Users) userSession.getUserProperties().get("usrname");
         autoNo = u.getAutoNo();
-//        System.out.println("-------------====---------");
+        System.out.println("-------------==find==---------");
         String[] s = str.split("\u0003");
 //        String[] zprs = s[1].split(",");
         Station st = null;

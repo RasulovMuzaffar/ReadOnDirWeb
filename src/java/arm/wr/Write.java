@@ -19,15 +19,16 @@ public class Write {
         Users u = (Users) userSession.getUserProperties().get("usrname");
         autoNo = u.getAutoNo();
         String[] s = str.split("\u0003");
-        String[] zprs = s[1].split(",");
+//        String[] zprs = s[1].split(",");
         switch (s[0]) {
             case "spr":
-                String kodOrg = zprs[0];
-                String numMess = zprs[1];
-                String numSpr = zprs[2];
-                String object = cod4(zprs[3]);
-                String id_user = zprs[4];
-                createFile("(:" + numMess + " " + kodOrg + " " + object + ":" + numSpr + ":)");
+//                String kodOrg = zprs[0];
+//                String numMess = zprs[1];
+//                String numSpr = zprs[2];
+//                String object = cod4(zprs[3]);
+//                String id_user = zprs[4];
+//                createFile("(:" + numMess + " " + kodOrg + " " + object + ":" + numSpr + ":)");
+                createFile(s[1]);
                 break;
             case "getTGNL":
                 System.out.println("TELEGRAMMA NATURNIY LIST");

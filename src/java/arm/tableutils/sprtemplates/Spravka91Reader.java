@@ -11,40 +11,48 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Spravka95Reader implements TableReaderInterface {
+public class Spravka91Reader implements TableReaderInterface {
 
-//    final static String regexDocHead = "(?<dhOrg>[А-ЯA-Z]{2,6})\\s+"
-//            + "(?<dhUTY>[А-ЯA-Z]{2,6})\\s+"
-//            + "(?<dhSpr>\\d{2,4})\\s+"
+//    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2} [А-ЯA-Z]{3})\\s+"
+//            + "(?<dhcode>\\d{2})\\s+"
 //            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
 //            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
-//            + "(?<dhOrg2>[А-ЯA-Z]{2,6})\\s+"
-//            + "(?<dhnum>\\d{2,4})\\s+"
-//            + "(?<dhnpn>[А-ЯA-Z]{6}\\s+[А-ЯA-Z]{7}\\s+[А-ЯA-Z]{1}\\s+[А-ЯA-Z]{7})\\s+"
-//            + "(?<dhSt>[А-ЯA-Z\\d+]{2,8})";
-    final static String regexDocHead = "(?<dhOrg>[А-ЯA-Z]{2,6})\\s+(?<dhUTY>[А-ЯA-Z]{2,6})\\s+(?<dhSpr>\\d{2,4})\\s+(?<dhdate>\\d{2}.\\d{2})\\s+(?<dhtime>\\d{2}-\\d{2})\\s+(?<dhOrg2>[А-ЯA-Z]{2,6})\\s+(?<dhnum>\\d{2,4})\\s+(?<dhnpn>ПOДXOД\\s+ПOEЗДOB\\s+K\\s+CTAHЦИИ)\\s+(?<dhSt>[А-ЯA-Z\\d+]{2,8})";
+//            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
+//            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
+//            + "(?<dhst>[А-ЯA-Z]{5})";
+    final static String regexDocHead = "(?<dhvcuty>[A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
+            + "(?<dhcode>\\d{2})\\s+"
+            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
+            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
+            + "(?<dhvc73>[A-ZА-Я]{2}\\s\\d{2})\\s+"
+            //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+CФOPMИPOBAHHЫX\\s+CT.)\\s+"
+            + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{14}\\s[A-ZА-Я]{2}.)\\s+"
+            + "(?<dhst>[A-ZА-Я\\d+]{2,8})";
 
-    final static String regexTHead = "(?<hnum>[А-ЯA-Z]{5})\\s+"
-            + "(?<hidx>[А-ЯA-Z]{6})\\s+"
-            + "(?<hstate>[А-ЯA-Z]{4})\\s+"
-            + "(?<hst>[А-ЯA-Z]{4})\\s+"
-            + "(?<hdate>[А-ЯA-Z]{4})\\s+"
-            + "(?<htime>[А-ЯA-Z]{5})";
+    final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
+            + "(?<thidx>[A-ZА-Я]{6})\\s+"
+            + "(?<thstate>[A-ZА-Я]{4})\\s+"
+            + "(?<thst>[A-ZА-Я]{4})\\s+"
+            + "(?<thdate>[A-ZА-Я]{4})\\s+"
+            + "(?<thtime>[A-ZА-Я]{5})";
 
-    final static String regexTBody = "(?<bnum>\\d{4})\\s+"
-            + "(?<bidx>\\d{4}\\s+\\d{2,3}\\s\\d{4})\\s+"
-            + "(?<bstate>[А-ЯA-Z]{2,4})\\s+"
-            + "(?<bst>[А-ЯA-Z]{2,6})\\s+"
-            + "(?<bdate>\\d{2}.\\d{2})\\s+"
-            + "(?<btime>\\d{2}-\\d{2})";
+    final static String regexTBody = "(?<tbnum>\\d{4})\\s+"
+            + "(?<tbidx>\\d{4}\\s+\\d{2,3}\\s+\\d{4})\\s+"
+            + "(?<tbstate>[A-ZА-Я]{2,4})\\s+"
+            + "(?<tbst>[A-ZА-Я]{2,6}-{0,1}[A-ZА-Я]{1,3})\\s+"
+            + "(?<tbdate>\\d{2}.\\d{2})\\s+"
+            + "(?<tbtime>\\d{2}-\\d{2})";
 
-    @Override
     public HtmlTable processFile(String fileName) {
         String str = null;
         String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
+
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -63,6 +71,7 @@ public class Spravka95Reader implements TableReaderInterface {
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception in Spravka93Reader : " + ex);
         }
 
         HtmlTable result = new HtmlTable();
@@ -71,15 +80,10 @@ public class Spravka95Reader implements TableReaderInterface {
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
+
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                String s = matcher.group("dhnpn");
-
-                if (matcher.group(i).equals(s)) {
-                    result.addCell(matcher.group(i).replaceAll("\\s+", " "));
-                } else {
-                    result.addCell(matcher.group(i));
-                }
+                result.addCell(matcher.group(i));
             }
 
             if (!tableHeaderProcessed) {
@@ -87,6 +91,7 @@ public class Spravka95Reader implements TableReaderInterface {
                 result.markCurrentRowAsDocHeader();
             }
 
+            docHead = true;
             result.advanceToNextRow();
         }
 
@@ -95,6 +100,7 @@ public class Spravka95Reader implements TableReaderInterface {
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
+
             result.addCell("№");
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
@@ -106,6 +112,7 @@ public class Spravka95Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
 
+            tHead = true;
             result.advanceToNextRow();
         }
 
@@ -118,7 +125,7 @@ public class Spravka95Reader implements TableReaderInterface {
             String bidx = "";
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
-                bidx = matcher.group("bidx");
+                bidx = matcher.group("tbidx");
             }
             result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
 
@@ -127,18 +134,18 @@ public class Spravka95Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
             reading = true;
+            tBody = true;
             result.advanceToNextRow();
         }
 
-        if (reading == true) {
-            System.out.println("can reading SPR95 " + result);
+        if (reading == true && (docHead == true && tHead == true && tBody == true)) {
+            System.out.println("can reading SPR91 " + result);
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR95 " + result);
+            System.out.println("can not reading SPR91 " + result);
             return null;
         }
-
     }
 
 }

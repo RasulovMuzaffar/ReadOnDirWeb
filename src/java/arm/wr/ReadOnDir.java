@@ -4,10 +4,7 @@ import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
-import arm.tableutils.sprtemplates.Spravka02Reader;
-import arm.tableutils.sprtemplates.Spravka902Reader;
-import arm.tableutils.sprtemplates.Spravka93Reader;
-import arm.tableutils.sprtemplates.Spravka95Reader;
+import arm.tableutils.sprtemplates.*;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
 import arm.ws.WS;
@@ -58,10 +55,12 @@ public class ReadOnDir extends Thread {
 
     private static void pathListener() {
 // init composite reader - register all reader types
-        tableReader.registerReader(new Spravka93Reader());
-        tableReader.registerReader(new Spravka95Reader());
         tableReader.registerReader(new Spravka02Reader());
         tableReader.registerReader(new Spravka902Reader());
+        tableReader.registerReader(new Spravka91Reader());
+//        tableReader.registerReader(new Spravka92Reader());
+//        tableReader.registerReader(new Spravka93Reader());
+//        tableReader.registerReader(new Spravka95Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
