@@ -84,7 +84,7 @@ public class Spravka95Reader implements TableReaderInterface {
         boolean tableHeaderProcessed = false;
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                String s = matcher.group("dhnpn");
+                String s = matcher.group("dhnpsst");
 
                 if (matcher.group(i).equals(s)) {
                     result.addCell(matcher.group(i).replaceAll("\\s+", " "));
