@@ -8,4 +8,7 @@ public class TextReplace {
                 replace("P", "Р").replace("T", "Т").replace("X", "Х").replace("Y", "У");
         return text;
     }
+    public static String getSha(String str){
+        return str.replace("?", "Ш");
+    }
 }

@@ -5,6 +5,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
 import arm.tableutils.sprtemplates.*;
+import static arm.tableutils.tablereaders.CompositeReader.lht;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
 import arm.ws.WS;
@@ -25,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,6 +58,7 @@ public class ReadOnDir extends Thread {
     private static void pathListener() {
 // init composite reader - register all reader types
         tableReader.registerReader(new Spravka02Reader());
+        tableReader.registerReader(new Spravka5065Reader());
         tableReader.registerReader(new Spravka902Reader());
         tableReader.registerReader(new Spravka91Reader());
         tableReader.registerReader(new Spravka92Reader());
@@ -151,13 +154,26 @@ public class ReadOnDir extends Thread {
             File f = new File(filePath);
             if (f.exists()) {
                 HtmlTable result = tableReader.processFile(filePath);
-                if (result != null) {
-                    String answer = result.generateHtml();
+//                List<HtmlTable> result = tableReader.processFile(filePath);
 
+                StringBuilder s = null;
+                if (result != null) {
+                    System.out.println("lht.isEmpty()--->>> "+lht.isEmpty());
+                    if (!lht.isEmpty()) {
+                        for (int i = 0; i < lht.size(); i++) {
+                            s.append(lht.get(i).generateHtml());
+                        }
+                        s.append("<br/>");
+                    }
+                    String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
-                                x.getBasicRemote().sendText(spr + "\u0003" + answer);
+                                if (lht.isEmpty()) {
+                                    x.getBasicRemote().sendText(spr + "\u0003" + answer);
+                                } else {
+                                    x.getBasicRemote().sendText(spr + "\u0003" + s);
+                                }
                                 return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);

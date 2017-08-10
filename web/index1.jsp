@@ -159,12 +159,12 @@
                             console.log(x);
                             webSocket.send("getTGNL\u0003" + x);
                         }
-                        
+
                         function findSt(p) {
                             console.log(p);
                             webSocket.send("getSt\u0003" + p);
                         }
-                        
+
 
 
                         function checking() {
@@ -179,11 +179,11 @@
                                 console.log("Таблица неполная!");
                             }
                         }
-                        function  sprPopup(p) {
+                        function sprPopup(p) {
                             showModalWin();
                             document.getElementById("popup").innerHTML = p;
                         }
-                        function  sprDefault(p) {
+                        function sprDefault(p) {
                             document.getElementById("tbl").innerHTML = p;
                         }
                         function getSt(p) {
@@ -372,6 +372,7 @@
                                 case 'pf3':
                                     console.log('(:212 0 ' + station + ':91:92:93:)');
                                     return '(:212 0 ' + station + ':91:92:93:)';
+//                                    return '(:212 0 ' + station + ':91:)';
                                     break;
 
                                 case 'pf4':

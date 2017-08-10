@@ -1,6 +1,7 @@
 package arm.tableutils.tablereaders;
 
 import arm.tableutils.HtmlTable;
+import java.util.List;
 
 
 public interface TableReaderInterface {

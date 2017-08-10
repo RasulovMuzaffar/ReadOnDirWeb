@@ -1,19 +1,25 @@
-
 package arm.wr;
 
 import arm.ent.Users;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.websocket.Session;
-
 
 public class Write {
 
 //    static String path = "c:\\testFolder\\out";
     static String path = "c:\\soob\\out";
     String autoNo;
-
 
     public void getWrite(Session userSession, String str) {
         Users u = (Users) userSession.getUserProperties().get("usrname");
@@ -28,12 +34,21 @@ public class Write {
 //                String object = cod4(zprs[3]);
 //                String id_user = zprs[4];
 //                createFile("(:" + numMess + " " + kodOrg + " " + object + ":" + numSpr + ":)");
-                createFile(s[1]);
+                String text = s[1];
+                createFile(text);
+//                 {
+//                    try {
+//                        createFile(new String(text.getBytes(), "Cp866"));
+//                    } catch (UnsupportedEncodingException ex) {
+//                        Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
+//                        System.out.println("UnsupportedEncodingException in Write : " + ex);
+//                    }
+//                }
                 break;
             case "getTGNL":
                 System.out.println("TELEGRAMMA NATURNIY LIST");
 //                (:213 0:7200 89 7258 902:)
-                createFile("(:213 0:"+s[1]+" 902:)");
+                createFile("(:213 0:" + s[1] + " 902:)");
                 break;
         }
 
@@ -55,15 +70,26 @@ public class Write {
     }
 
     private void writingFile(String pth, String text) {
-        try (FileWriter writer = new FileWriter(pth, false)) {
-            writer.write(text);
-//            writer.write(new String(text.getBytes(), "Cp866"));
-        } catch (Exception e) {
-            System.out.println("Exception in writingFile " + e);
+
+        try (OutputStream outputStream = new FileOutputStream(pth);
+                Writer outputStreamWriter = new OutputStreamWriter(outputStream, "Cp866");) {
+        outputStreamWriter.write(text);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+//
+//        try (FileWriter writer = new FileWriter(pth, false)) {
+//            writer.write(text);
+////            writer.write(new String(text.getBytes(), "Cp866"));
+//        } catch (Exception e) {
+//            System.out.println("Exception in writingFile " + e);
+//        }
     }
 
     private String cod4(String zpr) {
-        return zpr.substring(0, 4);        
+        return zpr.substring(0, 4);
     }
 }
