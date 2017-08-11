@@ -59,6 +59,7 @@ public class ReadOnDir extends Thread {
 // init composite reader - register all reader types
         tableReader.registerReader(new Spravka02Reader());
         tableReader.registerReader(new Spravka5065Reader());
+        tableReader.registerReader(new Spravka7401Reader());
         tableReader.registerReader(new Spravka902Reader());
         tableReader.registerReader(new Spravka91Reader());
         tableReader.registerReader(new Spravka92Reader());

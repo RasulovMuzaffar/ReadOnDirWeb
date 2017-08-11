@@ -40,6 +40,7 @@ public class Spravka5065Reader implements TableReaderInterface {
             + "([A-ZА-Я]{7})\\s+"
             + "([A-ZА-Я]{3,8}-{0,1}[A-ZА-Я]{0,8}\\d{0,2})\\s+"
             + "([A-ZА-Я]{6}-[A-ZА-Я]{2,5})\\s+"
+            + "([A-ZА-Я]{0,4}\\S{0,1}[A-ZА-Я]{0,4}\\s{0,5}\\({0,1}\\d{0,3}\\){0,1})\\s+"
             + "([A-ZА-Я]{4}\\S[A-ZА-Я]{2,3})";
 
     final static String regexTHead = "(?<thnv>[A-ZА-Я]{1}\\s+[A-ZА-Я]{6})\\s+"

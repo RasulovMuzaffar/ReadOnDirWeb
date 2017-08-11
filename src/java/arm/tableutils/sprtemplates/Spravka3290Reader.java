@@ -20,34 +20,33 @@ import java.util.regex.Pattern;
  *
  * @author Muzaffar
  */
-public class Spravka7401Reader implements TableReaderInterface {
+public class Spravka3290Reader implements TableReaderInterface {
 
     final static String regexDocHead = "([A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
             + "(\\d{4})\\s+"
             + "(\\d{2}.\\d{2})\\s+"
             + "(\\d{2}-\\d{2})\\s+"
-            + "([A-ZА-Я]{2}\\s\\d{2})\\s+"
-            + "([A-ZА-Я]{7})\\s+"
-            + "([A-ZА-Я]{8})\\s+"
-            + "([A-ZА-Я]{6})\\s+"
-            + "([A-ZА-Я]{6})";
+            + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{8})\\s+([A-ZА-Я]{7})\\s+"
+            + "([A-ZА-Я]{2})\\s+([A-ZА-Я]{5})\\s+"
+            + "(\\([A-ZА-Я]{2}\\s[A-ZА-Я]{3}\\s[A-ZА-Я]{1}\\s[A-ZА-Я]{13}\\))\\s+"
+            + "([A-ZА-Я]{5})\\s+"
+            + "([A-ZА-Я]{2})\\s+([A-ZА-Я]{6}:\\d{2}\\-\\d{2}\\s[A-ZА-Я]{3}.)\\s+"
+            + "([A-ZА-Я]{5}:)";
 
-    final static String regexTHead = "(?<thpoluch>[A-ZА-Я]{5})"
-            + "-\\d{4,5}\\s+"
-            + "(?<thnvag>[A-ZА-Я]{2}.[A-ZА-Я]{3})\\s+"
-            + "(?<thves>[A-ZА-Я]{3})\\s+"
-            + "(?<thgruz>[A-ZА-Я]{4})\\s+"
-            + "(?<thnp>[A-ZА-Я]{2})\\s+"
-            + "(?<thidx>[A-ZА-Я]{6})\\s+"
-            + "(?<thdisl>[A-ZА-Я]{4})\\s+"
-            + "(?<thoper>[A-ZА-Я]{4})\\s+"
-            + "(?<thvroper>[A-ZА-Я]{2}.[A-ZА-Я]{4})\\s+"
-            + "(?<thvroj>[A-ZА-Я]{2}.[A-ZА-Я]{2})";
+    final static String regexTHead = "(?<thsbst>[A-ZА-Я]{6}.)\\s+:\\s+"
+            + "(?<thvsg>[A-ZА-Я]{3})\\s+"
+            + "(?<thkr>[A-ZА-Я]{2})\\s+"
+            + "(?<thpl>[A-ZА-Я]{2})\\s+"
+            + "(?<thpv>[A-ZА-Я]{2})\\s+"
+            + "(?<thcs>[A-ZА-Я]{2})\\s+"
+            + "(?<thrf>[A-ZА-Я]{2})\\s+"
+            + "(?<thpr>[A-ZА-Я]{2})\\s+"
+            + "(?<thcmv>[A-ZА-Я]{3})\\s+"
+            + "(?<th94>\\d{2})\\s+"
+            + "(?<thzvg>[A-ZА-Я]{3})\\s+"
+            + "(?<thftg>[A-ZА-Я]{3})\\s+"
+            + "(?<thmvz>[A-ZА-Я]{3})";
 
-//    final static String regexTBody = "((?<tbpoluch>\\d{0,4})\\D{0,}(?<tbnvag>\\d{8})\\s+"
-//            + "(?<tbves>\\d{1,2}))|"
-//            + "((?<= )((?<tbgruz>\\d{5})\\s+(?<tbnp>\\d{4})\\s+(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+"
-//            + "(?<tbdisl>\\d{5})\\s+(?<tboper>[A-ZА-Я]{2,4})\\s+(?<tbvroper>\\d{2}\\s\\d{2}-\\d{2})))";
     final static String regexTBody = "((?<poluch>\\d{4}){0,1}\\s+)(\\D+\\s){0,1}(?<vg>\\d{8})\\s+(?<ves>\\d{1,2})(\\s(?<gr>\\d{5})\\s+(?<np>\\d{4})\\s+(?<idx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+(?<disl>\\d{5})\\s+(?<oper>[A-ZА-Я]{4})\\s+(?<vrop>\\d{2}\\s+\\d{2}\\-\\d{2})(?<vroj>\\s+\\d{2}\\s+\\d{2}\\-\\d{2}){0,1}){0,1}";
 
     public HtmlTable processFile(String fileName) {

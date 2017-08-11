@@ -293,7 +293,7 @@
 
                             } else if (val === 'pf6' || val === 'pf8' || val === 'pf9' || val === 'pf7') {
                                 var inpt = '<label class="sr-only" for="tm">Время</label>';
-                                inpt += '<input type="text" class="form-control" id="tm" placeholder="Время"/>';
+                                inpt += '<input type="text" class="form-control" id="tm" value="00" placeholder="Время"/>';
 
                                 document.getElementById('inptTime').innerHTML = inpt;
 
@@ -305,7 +305,7 @@
                                 document.getElementById('inptSt').innerHTML = inpt;
 
                                 var inptTm = '<label class="sr-only" for="tm">Время</label>';
-                                inptTm += '<input type="text" class="form-control" id="tm" placeholder="Время"/>';
+                                inptTm += '<input type="text" class="form-control" id="tm" value="00" placeholder="Время"/>';
 
                                 document.getElementById('inptTime').innerHTML = inptTm;
 
