@@ -43,6 +43,7 @@ public class Spravka91Reader implements TableReaderInterface {
             + "(?<tbdate>\\d{2}.\\d{2})\\s+"
             + "(?<tbtime>\\d{2}-\\d{2})";
 
+    @Override
     public HtmlTable processFile(String fileName) {
         String str = null;
         String f = null;

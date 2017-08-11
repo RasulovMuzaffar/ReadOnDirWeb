@@ -20,37 +20,29 @@ import java.util.regex.Pattern;
  *
  * @author Muzaffar
  */
-public class Spravka5065Reader implements TableReaderInterface {
+public class Spravka7401Reader  implements TableReaderInterface {
 
-//    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2} [А-ЯA-Z]{3})\\s+"
-//            + "(?<dhcode>\\d{2})\\s+"
-//            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
-//            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
-//            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
-//            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
-//            + "(?<dhst>[А-ЯA-Z]{5})";
-    final static String regexDocHead = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{3})\\s+"
+    final static String regexDocHead = "([A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
             + "(\\d{4})\\s+"
             + "(\\d{2}.\\d{2})\\s+"
             + "(\\d{2}-\\d{2})\\s+"
-            + "([A-ZА-Я]{2})\\s+"
-            + "(\\d{2})\\s+"
-            + "([A-ZА-Я]{10})\\s+"
+            + "([A-ZА-Я]{2}\\s\\d{2})\\s+"
             + "([A-ZА-Я]{7})\\s+"
-            + "([A-ZА-Я]{7})\\s+"
-            + "([A-ZА-Я]{3,8}-{0,1}[A-ZА-Я]{0,8}\\d{0,2})\\s+"
-            + "([A-ZА-Я]{6}-[A-ZА-Я]{2,5})\\s+"
-            + "([A-ZА-Я]{4}\\S[A-ZА-Я]{2,3})";
+            + "([A-ZА-Я]{8})\\s+"
+            + "([A-ZА-Я]{6})\\s+"
+            + "([A-ZА-Я]{6})";
 
-    final static String regexTHead = "(?<thnv>[A-ZА-Я]{1}\\s+[A-ZА-Я]{6})\\s+"
-            + "(?<thnazn>[A-ZА-Я]{4})\\s+"
+    final static String regexTHead = "(?<thpoluch>[A-ZА-Я]{5})"
+            + "-\\d{4,5}\\s+"
+            + "(?<thnvag>[A-ZА-Я]{2}.[A-ZА-Я]{3})\\s+"
             + "(?<thves>[A-ZА-Я]{3})\\s+"
             + "(?<thgruz>[A-ZА-Я]{4})\\s+"
-            + "(?<thpoluch>[A-ZА-Я]{5})\\s+"
+            + "(?<thnp>[A-ZА-Я]{2})\\s+"
+            + "(?<thidx>[A-ZА-Я]{6})\\s+"
+            + "(?<thdisl>[A-ZА-Я]{4})\\s+"
             + "(?<thoper>[A-ZА-Я]{4})\\s+"
-            + "(?<thdate>[A-ZА-Я]{4})\\s+"
-            + "(?<thtime>[A-ZА-Я]{5})\\s+"
-            + "(?<thidx>[A-ZА-Я]{6}\\s+[A-ZА-Я]{6})";
+            + "(?<thvroper>[A-ZА-Я]{2}.[A-ZА-Я]{4})\\s+"
+            + "(?<thvroj>[A-ZА-Я]{2}.[A-ZА-Я]{2})";
 
     final static String regexTBody = "(?<tbnv>\\d{8})\\s+"
             + "(?<tbnazn>\\d{5})\\s+"
