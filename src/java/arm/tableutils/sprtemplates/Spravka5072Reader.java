@@ -37,7 +37,18 @@ public class Spravka5072Reader  implements TableReaderInterface {
 //            + "(?<tbves>\\d{1,2}))|"
 //            + "((?<= )((?<tbgruz>\\d{5})\\s+(?<tbnp>\\d{4})\\s+(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+"
 //            + "(?<tbdisl>\\d{5})\\s+(?<tboper>[A-ZА-Я]{2,4})\\s+(?<tbvroper>\\d{2}\\s\\d{2}-\\d{2})))";
-    final static String regexTBody = "((?<poluch>\\d{4}){0,1}\\s+)(\\D+\\s){0,1}(?<vg>\\d{8})\\s+(?<ves>\\d{1,2})(\\s(?<gr>\\d{5})\\s+(?<np>\\d{4})\\s+(?<idx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+(?<disl>\\d{5})\\s+(?<oper>[A-ZА-Я]{4})\\s+(?<vrop>\\d{2}\\s+\\d{2}\\-\\d{2})(?<vroj>\\s+\\d{2}\\s+\\d{2}\\-\\d{2}){0,1}){0,1}";
+    final static String regexTBody = "((?<tbsobst>[A-ZА-Я]{11}\\s[A-ZА-Я]{1,4})\\s+){0,1}"
+            + "((?<tbnvag>\\d{8})\\s+"
+            + "(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+"
+            + "(?<tbgr>\\d{5})\\s+"
+            + "(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+"
+            + "(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+"
+            + "(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+"
+            + "(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+"
+            + "(?<tbdor>\\d{1,3})\\s+"
+            + "(?<tbgos>\\d{1,3})\\s+"
+            + "(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+){0,1}"
+            + "(?<tbvkv>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4}\\s+){0,1}";
 
     public HtmlTable processFile(String fileName) {
         String str = null;
@@ -120,62 +131,12 @@ public class Spravka5072Reader  implements TableReaderInterface {
         int n = 1;
         while (matcher.find()) {
             result.addCell("" + n++);
-            if (matcher.group("poluch") != null) {
-                result.addCell(matcher.group("poluch"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("vg") != null) {
-                result.addCell(matcher.group("vg"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("ves") != null) {
-                result.addCell(matcher.group("ves"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("gr") != null) {
-                result.addCell(matcher.group("gr"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("np") != null) {
-                result.addCell(matcher.group("np"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("idx") != null) {
-                result.addCell(matcher.group("idx"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("disl") != null) {
-                result.addCell(matcher.group("disl"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("oper") != null) {
-                result.addCell(matcher.group("oper"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("vrop") != null) {
-                result.addCell(matcher.group("vrop"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("vroj") != null) {
-                result.addCell(matcher.group("vroj"));
-            } else {
-                result.addCell("");
-            }
-
+            
 //            String bidx = "";
-//            for (int i = 1; i <= matcher.groupCount(); i++) {
-//                result.addCell(matcher.group(i));
-////                bidx = matcher.group("tbidx");
-//            }
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                result.addCell(matcher.group(i));
+//                bidx = matcher.group("tbidx");
+            }
 //            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -190,11 +151,11 @@ public class Spravka5072Reader  implements TableReaderInterface {
         System.out.println("tHead === " + tHead);
         System.out.println("tBody === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR5065 " + result);
+            System.out.println("can reading SPR5072 " + result);
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR5065 " + result);
+            System.out.println("can not reading SPR5072 " + result);
             return null;
         }
     }

@@ -4,7 +4,15 @@ import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
-import arm.tableutils.sprtemplates.*;
+import arm.tableutils.sprtemplates.Spravka02Reader;
+import arm.tableutils.sprtemplates.Spravka5065Reader;
+import arm.tableutils.sprtemplates.Spravka5072Reader;
+import arm.tableutils.sprtemplates.Spravka7401Reader;
+import arm.tableutils.sprtemplates.Spravka902Reader;
+import arm.tableutils.sprtemplates.Spravka91Reader;
+import arm.tableutils.sprtemplates.Spravka92Reader;
+import arm.tableutils.sprtemplates.Spravka93Reader;
+import arm.tableutils.sprtemplates.Spravka95Reader;
 import static arm.tableutils.tablereaders.CompositeReader.lht;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
@@ -26,7 +34,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,14 +64,15 @@ public class ReadOnDir extends Thread {
 
     private static void pathListener() {
 // init composite reader - register all reader types
-        tableReader.registerReader(new Spravka02Reader());
+//        tableReader.registerReader(new Spravka02Reader());
         tableReader.registerReader(new Spravka5065Reader());
-        tableReader.registerReader(new Spravka7401Reader());
-        tableReader.registerReader(new Spravka902Reader());
-        tableReader.registerReader(new Spravka91Reader());
-        tableReader.registerReader(new Spravka92Reader());
-        tableReader.registerReader(new Spravka93Reader());
-        tableReader.registerReader(new Spravka95Reader());
+        tableReader.registerReader(new Spravka5072Reader());
+//        tableReader.registerReader(new Spravka7401Reader());
+//        tableReader.registerReader(new Spravka902Reader());
+//        tableReader.registerReader(new Spravka91Reader());
+//        tableReader.registerReader(new Spravka92Reader());
+//        tableReader.registerReader(new Spravka93Reader());
+//        tableReader.registerReader(new Spravka95Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
