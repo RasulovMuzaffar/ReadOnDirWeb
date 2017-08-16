@@ -4,15 +4,7 @@ import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
-import arm.tableutils.sprtemplates.Spravka02Reader;
-import arm.tableutils.sprtemplates.Spravka5065Reader;
-import arm.tableutils.sprtemplates.Spravka5072Reader;
-import arm.tableutils.sprtemplates.Spravka7401Reader;
-import arm.tableutils.sprtemplates.Spravka902Reader;
-import arm.tableutils.sprtemplates.Spravka91Reader;
-import arm.tableutils.sprtemplates.Spravka92Reader;
-import arm.tableutils.sprtemplates.Spravka93Reader;
-import arm.tableutils.sprtemplates.Spravka95Reader;
+import arm.tableutils.sprtemplates.*;
 import static arm.tableutils.tablereaders.CompositeReader.lht;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
@@ -35,6 +27,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -65,8 +62,9 @@ public class ReadOnDir extends Thread {
     private static void pathListener() {
 // init composite reader - register all reader types
 //        tableReader.registerReader(new Spravka02Reader());
-        tableReader.registerReader(new Spravka5065Reader());
+//        tableReader.registerReader(new Spravka5065Reader());
         tableReader.registerReader(new Spravka5072Reader());
+//        tableReader.registerReader(new Spravka64Reader());
 //        tableReader.registerReader(new Spravka7401Reader());
 //        tableReader.registerReader(new Spravka902Reader());
 //        tableReader.registerReader(new Spravka91Reader());
@@ -78,6 +76,7 @@ public class ReadOnDir extends Thread {
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
             Map<WatchKey, Path> keyMap = new HashMap<>();
             Path path = Paths.get(p);
+            System.out.println("blablablablabla");
 
             keyMap.put(path.register(service,
                     StandardWatchEventKinds.ENTRY_CREATE
@@ -96,6 +95,17 @@ public class ReadOnDir extends Thread {
                     System.out.println(eventDir + " : " + kind + " : " + eventPath);
                     File f = new File(eventDir + "\\" + eventPath);
 
+                    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
+                    ScheduledFuture scheduledFuture
+                            = scheduledExecutorService.schedule(new Callable() {
+                                public Object call() throws Exception {
+                                    System.out.println("Executed!");
+                                    return "Called!";
+                                }
+                            }, 2, TimeUnit.SECONDS);
+//                    readingFile(eventDir + "\\" + eventPath, eventPath);
+                    /////////////////////////////
+
                     boolean b;
                     do {
                         b = true;
@@ -105,10 +115,12 @@ public class ReadOnDir extends Thread {
                                 break;
                             }
                         } catch (IOException ex) {
-                            System.out.println("Файл занят " + ex);
+                            System.out.println("File take another process " + ex);
                             b = false;
                         }
                     } while (!b);
+
+                    scheduledExecutorService.shutdown();
                 }
             } while (watchKey.reset());
         } catch (Exception e) {
@@ -167,7 +179,7 @@ public class ReadOnDir extends Thread {
 
                 StringBuilder s = null;
                 if (result != null) {
-                    System.out.println("lht.isEmpty()--->>> "+lht.isEmpty());
+                    System.out.println("lht.isEmpty()--->>> " + lht.isEmpty());
                     if (!lht.isEmpty()) {
                         for (int i = 0; i < lht.size(); i++) {
                             s.append(lht.get(i).generateHtml());
