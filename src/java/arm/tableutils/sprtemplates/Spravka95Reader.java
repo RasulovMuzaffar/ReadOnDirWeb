@@ -42,7 +42,7 @@ public class Spravka95Reader implements TableReaderInterface {
     final static String regexTBody = "(?<bnum>\\d{4})\\s+"
             + "(?<bidx>\\d{4}\\s+\\d{2,3}\\s\\d{4})\\s+"
             + "(?<bstate>[А-ЯA-Z]{2,4})\\s+"
-            + "(?<bst>[A-ZА-Я]{2,6}-{0,1}[A-ZА-Я]{1,3})\\s+"
+            + "(?<bst>[A-ZА-Я]{0,6}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})\\s+"
             + "(?<bdate>\\d{2}.\\d{2})\\s+"
             + "(?<btime>\\d{2}-\\d{2})";
 
