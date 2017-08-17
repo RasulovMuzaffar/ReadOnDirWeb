@@ -20,14 +20,14 @@ public class Spravka91Reader implements TableReaderInterface {
 //            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
 //            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
 //            + "(?<dhst>[А-ЯA-Z]{5})";
-    final static String regexDocHead = "(?<dhvcuty>[A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
+    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3})\\s+"
             + "(?<dhcode>\\d{2})\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
             + "(?<dhvc73>[A-ZА-Я]{2}\\s\\d{2})\\s+"
             //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+CФOPMИPOBAHHЫX\\s+CT.)\\s+"
             + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{14}\\s[A-ZА-Я]{2}.)\\s+"
-            + "(?<dhst>[A-ZА-Я\\d+]{2,8})";
+            + "(?<dhst>[A-ZА-Я]{2,10}-{0,1}[A-ZА-Я]{0,5}\\d{0,4})";
 
     final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
@@ -37,9 +37,9 @@ public class Spravka91Reader implements TableReaderInterface {
             + "(?<thtime>[A-ZА-Я]{5})";
 
     final static String regexTBody = "(?<tbnum>\\d{4})\\s+"
-            + "(?<tbidx>\\d{4}\\s+\\d{2,3}\\s+\\d{4})\\s+"
+            + "(?<tbidx>\\d{4,6}\\s+\\d{2,3}\\s+\\d{4,6})\\s+"
             + "(?<tbstate>[A-ZА-Я]{2,4})\\s+"
-            + "(?<tbst>[A-ZА-Я]{2,6}-{0,1}[A-ZА-Я]{1,3})\\s+"
+            + "(?<tbst>[A-ZА-Я]{0,6}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})\\s+"
             + "(?<tbdate>\\d{2}.\\d{2})\\s+"
             + "(?<tbtime>\\d{2}-\\d{2})";
 
@@ -53,6 +53,7 @@ public class Spravka91Reader implements TableReaderInterface {
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
+        String doroga = "";
 
         /*
         * пока условно будем считать что файл всегда есть!
@@ -85,7 +86,10 @@ public class Spravka91Reader implements TableReaderInterface {
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
+
             }
+
+            doroga = matcher.group("dhdor");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -106,7 +110,9 @@ public class Spravka91Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-            result.addCell("ТГНЛ");
+            if (doroga.equals("УТИ")) {
+                result.addCell("ТГНЛ");
+            }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -128,8 +134,9 @@ public class Spravka91Reader implements TableReaderInterface {
                 result.addCell(matcher.group(i));
                 bidx = matcher.group("tbidx");
             }
-            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
-
+            if (doroga.equals("УТИ")) {
+                result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
+            }
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
@@ -138,7 +145,9 @@ public class Spravka91Reader implements TableReaderInterface {
             tBody = true;
             result.advanceToNextRow();
         }
-
+        System.out.println("docHead === " + docHead);
+        System.out.println("tHead === " + tHead);
+        System.out.println("tBody === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR91 " + result);
             ReadOnDir.spr = "sprDefault";
