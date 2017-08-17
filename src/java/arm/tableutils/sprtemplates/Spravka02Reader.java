@@ -7,6 +7,7 @@ import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -139,6 +140,11 @@ public class Spravka02Reader implements TableReaderInterface {
             return null;
         }
 
+    }
+
+    @Override
+    public List<HtmlTable> readersResult() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

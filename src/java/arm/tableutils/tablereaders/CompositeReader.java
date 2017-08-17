@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class CompositeReader implements TableReaderInterface {
 
-//    public static List<HtmlTable> lht = new ArrayList<>();
+     static List<HtmlTable> lht = new ArrayList<>();
 
     @Override
     public HtmlTable processFile(String fileName) throws MultipleResultsException {
@@ -28,8 +28,9 @@ public class CompositeReader implements TableReaderInterface {
 //                for (int i = 0; i < results.size(); i++) {
 //                    lht.add(results.get(i));
 //                }
-                throw new MultipleResultsException(results);
-//                return null;
+                lht = results;
+//                throw new MultipleResultsException(results);
+                return null;
 
         }
     }
@@ -38,5 +39,11 @@ public class CompositeReader implements TableReaderInterface {
         readersList.add(reader);
     }
 
+    public List<HtmlTable> readersResult(){
+//        list.size()
+        return lht;
+    }
     private List<TableReaderInterface> readersList = new ArrayList<>();
+    
+    
 }

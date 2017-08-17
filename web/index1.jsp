@@ -447,9 +447,9 @@
 
                                     ////////////////////////////////////////////////
                                 case 'pf21':
-                                    console.log('(:216 XXXX XXX XXXX:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:216 XXXX XXX XXXX:)';
+                                    console.log('(:216 '+idx+':)');
+//                                    alert("на стадии разработки!");
+                                    return '(:216 '+idx+':)';
                                     break;
                                 case 'pf22':
                                     console.log('(:215*XXXX XXX XXXX*(10 7300 1)09:)');

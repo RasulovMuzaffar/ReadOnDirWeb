@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -177,6 +178,15 @@ public class ReadOnDir extends Thread {
                 HtmlTable result = tableReader.processFile(filePath);
 //                List<HtmlTable> result = tableReader.processFile(filePath);
 
+//                if (result == null) {
+//                    List<HtmlTable> list = tableReader.readersResult();
+//                    if (!list.isEmpty()) {
+//                        for (HtmlTable l : list) {
+//                            System.out.println("l ==>> " + l.generateHtml());
+//                        }
+//                    }
+//                }
+
                 StringBuilder s = null;
                 if (result != null) {
 //                    System.out.println("lht.isEmpty()--->>> " + lht.isEmpty());
@@ -191,9 +201,9 @@ public class ReadOnDir extends Thread {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
 //                                if (lht.isEmpty()) {
-//                                    x.getBasicRemote().sendText(spr + "\u0003" + answer);
+                                x.getBasicRemote().sendText(spr + "\u0003" + answer);
 //                                } else {
-                                    x.getBasicRemote().sendText(spr + "\u0003" + s);
+//                                    x.getBasicRemote().sendText(spr + "\u0003" + s);
 //                                }
                                 return;
                             } catch (IOException ex) {
@@ -204,18 +214,42 @@ public class ReadOnDir extends Thread {
                     });
 
                 } else {
-                    String answer = readNotDetectedFile(filePath);
-                    armUsers.stream().forEach((Session x) -> {
-                        if (x.getUserProperties().containsValue(user)) {
-                            try {
-                                x.getBasicRemote().sendText("sprDefault\u0003" + answer);
-                                return;
-                            } catch (IOException ex) {
-                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                    StringBuilder moreAnswer = new StringBuilder();
+                    List<HtmlTable> list = tableReader.readersResult();
+                    
+                    System.out.println("------------------------1111-------------------------"+list.size());
+                    if (list.size()!=0) {
+                        for (HtmlTable l : list) {
+                            moreAnswer.append(l.generateHtml());
+                            moreAnswer.append("<br/>");
                         }
-                    });
-                    System.out.println("Could not detect input file type : " + answer);
+                        System.out.println("-------------------------------------------------");
+                        System.out.println(moreAnswer.toString());
+                        System.out.println("-------------------------------------------------");
+                        armUsers.stream().forEach((Session x) -> {
+                            if (x.getUserProperties().containsValue(user)) {
+                                try {
+                                    x.getBasicRemote().sendText("sprDefault\u0003" + moreAnswer);
+                                    return;
+                                } catch (IOException ex) {
+                                    Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        });
+                    } else {
+                        String answer = readNotDetectedFile(filePath);
+                        armUsers.stream().forEach((Session x) -> {
+                            if (x.getUserProperties().containsValue(user)) {
+                                try {
+                                    x.getBasicRemote().sendText("sprDefault\u0003" + answer);
+                                    return;
+                                } catch (IOException ex) {
+                                    Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        });
+                        System.out.println("Could not detect input file type : " + answer);
+                    }
                 }
             } else {
                 System.out.println("File not found");
