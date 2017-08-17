@@ -44,12 +44,12 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -61,16 +61,16 @@ public class ReadOnDir extends Thread {
 
     private static void pathListener() {
 // init composite reader - register all reader types
-//        tableReader.registerReader(new Spravka02Reader());
-//        tableReader.registerReader(new Spravka5065Reader());
+        tableReader.registerReader(new Spravka02Reader());
+        tableReader.registerReader(new Spravka5065Reader());
         tableReader.registerReader(new Spravka5072Reader());
-//        tableReader.registerReader(new Spravka64Reader());
-//        tableReader.registerReader(new Spravka7401Reader());
-//        tableReader.registerReader(new Spravka902Reader());
-//        tableReader.registerReader(new Spravka91Reader());
-//        tableReader.registerReader(new Spravka92Reader());
-//        tableReader.registerReader(new Spravka93Reader());
-//        tableReader.registerReader(new Spravka95Reader());
+        tableReader.registerReader(new Spravka64Reader());
+        tableReader.registerReader(new Spravka7401Reader());
+        tableReader.registerReader(new Spravka902Reader());
+        tableReader.registerReader(new Spravka91Reader());
+        tableReader.registerReader(new Spravka92Reader());
+        tableReader.registerReader(new Spravka93Reader());
+        tableReader.registerReader(new Spravka95Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
