@@ -5,7 +5,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
 import arm.tableutils.sprtemplates.*;
-import static arm.tableutils.tablereaders.CompositeReader.lht;
+//import static arm.tableutils.tablereaders.CompositeReader.lht;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
 import arm.ws.WS;
@@ -179,22 +179,22 @@ public class ReadOnDir extends Thread {
 
                 StringBuilder s = null;
                 if (result != null) {
-                    System.out.println("lht.isEmpty()--->>> " + lht.isEmpty());
-                    if (!lht.isEmpty()) {
-                        for (int i = 0; i < lht.size(); i++) {
-                            s.append(lht.get(i).generateHtml());
-                        }
-                        s.append("<br/>");
-                    }
+//                    System.out.println("lht.isEmpty()--->>> " + lht.isEmpty());
+//                    if (!lht.isEmpty()) {
+//                        for (int i = 0; i < lht.size(); i++) {
+//                            s.append(lht.get(i).generateHtml());
+//                        }
+//                        s.append("<br/>");
+//                    }
                     String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
-                                if (lht.isEmpty()) {
-                                    x.getBasicRemote().sendText(spr + "\u0003" + answer);
-                                } else {
+//                                if (lht.isEmpty()) {
+//                                    x.getBasicRemote().sendText(spr + "\u0003" + answer);
+//                                } else {
                                     x.getBasicRemote().sendText(spr + "\u0003" + s);
-                                }
+//                                }
                                 return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
