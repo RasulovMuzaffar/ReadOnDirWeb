@@ -45,12 +45,12 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-//    static String p = "c:\\testFolder\\in";
-    static String p = "C:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -149,7 +149,6 @@ public class ReadOnDir extends Thread {
 
         Users u = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
 
             String sql = "select * from users where auto_no='" + usrAutoN + "'";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
@@ -165,8 +164,6 @@ public class ReadOnDir extends Thread {
 
         } catch (SQLException ex) {
             System.out.println("exexexexex " + ex);
-            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -186,8 +183,7 @@ public class ReadOnDir extends Thread {
 //                        }
 //                    }
 //                }
-
-                StringBuilder s = null;
+                StringBuilder s = new StringBuilder();
                 if (result != null) {
 //                    System.out.println("lht.isEmpty()--->>> " + lht.isEmpty());
 //                    if (!lht.isEmpty()) {
@@ -216,9 +212,14 @@ public class ReadOnDir extends Thread {
                 } else {
                     StringBuilder moreAnswer = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
-                    
-                    System.out.println("------------------------1111-------------------------"+list.size());
-                    if (list.size()!=0) {
+
+                    System.out.println("------------------------1111-------------------------" + list.size());
+                    if (list.size() != 0) {
+                        System.out.println("+++++++++++++");
+
+                        System.out.println("" + list.get(1).generateHtml());
+                        System.out.println("+++++++++++++");
+
                         for (HtmlTable l : list) {
                             moreAnswer.append(l.generateHtml());
                             moreAnswer.append("<br/>");
@@ -230,6 +231,7 @@ public class ReadOnDir extends Thread {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {
                                     x.getBasicRemote().sendText("sprDefault\u0003" + moreAnswer);
+                                    CompositeReader.lht.removeAll(list);
                                     return;
                                 } catch (IOException ex) {
                                     Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);

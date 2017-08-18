@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class CompositeReader implements TableReaderInterface {
 
-     static List<HtmlTable> lht = new ArrayList<>();
+    public static List<HtmlTable> lht = new ArrayList<>();
 
     @Override
     public HtmlTable processFile(String fileName) throws MultipleResultsException {
