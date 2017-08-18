@@ -54,7 +54,7 @@ public class ReadOnDir extends Thread {
 
     @Override
     public void run() {
-        System.out.println("thread!!!");
+        System.out.println("thread!!!!");
 //        if (Thread.currentThread().isInterrupted()) {
         pathListener();
 //        }
