@@ -45,12 +45,12 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -175,23 +175,8 @@ public class ReadOnDir extends Thread {
                 HtmlTable result = tableReader.processFile(filePath);
 //                List<HtmlTable> result = tableReader.processFile(filePath);
 
-//                if (result == null) {
-//                    List<HtmlTable> list = tableReader.readersResult();
-//                    if (!list.isEmpty()) {
-//                        for (HtmlTable l : list) {
-//                            System.out.println("l ==>> " + l.generateHtml());
-//                        }
-//                    }
-//                }
                 StringBuilder s = new StringBuilder();
                 if (result != null) {
-//                    System.out.println("lht.isEmpty()--->>> " + lht.isEmpty());
-//                    if (!lht.isEmpty()) {
-//                        for (int i = 0; i < lht.size(); i++) {
-//                            s.append(lht.get(i).generateHtml());
-//                        }
-//                        s.append("<br/>");
-//                    }
                     String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
@@ -213,20 +198,20 @@ public class ReadOnDir extends Thread {
                     StringBuilder moreAnswer = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
 
-                    System.out.println("------------------------1111-------------------------" + list.size());
+//                    System.out.println("------------------------1111-------------------------" + list.size());
                     if (list.size() != 0) {
-                        System.out.println("+++++++++++++");
+//                        System.out.println("+++++++++++++");
 
-                        System.out.println("" + list.get(1).generateHtml());
-                        System.out.println("+++++++++++++");
+//                        System.out.println("" + list.get(1).generateHtml());
+//                        System.out.println("+++++++++++++");
 
                         for (HtmlTable l : list) {
                             moreAnswer.append(l.generateHtml());
                             moreAnswer.append("<br/>");
                         }
-                        System.out.println("-------------------------------------------------");
-                        System.out.println(moreAnswer.toString());
-                        System.out.println("-------------------------------------------------");
+//                        System.out.println("-------------------------------------------------");
+//                        System.out.println(moreAnswer.toString());
+//                        System.out.println("-------------------------------------------------");
                         armUsers.stream().forEach((Session x) -> {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {

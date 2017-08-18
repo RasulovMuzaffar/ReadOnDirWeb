@@ -40,7 +40,11 @@ public class CompositeReader implements TableReaderInterface {
     }
 
     public List<HtmlTable> readersResult(){
-//        list.size()
+        System.out.println("---------------------------------------------");
+        for (HtmlTable l : lht) {
+            System.out.println(""+l.generateHtml());
+        }
+        System.out.println("---------------------------------------------");
         return lht;
     }
     private List<TableReaderInterface> readersList = new ArrayList<>();

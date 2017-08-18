@@ -370,7 +370,7 @@
                                     break;
 
                                 case 'pf3':
-                                    console.log('(:212 0 ' + station + ':91:92:93:)');
+                                    console.log('(:212 0 ' + station + ':92:)');
                                     return '(:212 0 ' + station + ':91:92:93:)';
 //                                    return '(:212 0 ' + station + ':91:)';
                                     break;

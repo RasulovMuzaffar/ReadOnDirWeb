@@ -53,6 +53,9 @@ public class Spravka02Reader implements TableReaderInterface {
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -89,6 +92,7 @@ public class Spravka02Reader implements TableReaderInterface {
                 result.markCurrentRowAsDocHeader();
             }
 
+            docHead = true;
             result.advanceToNextRow();
         }
 
@@ -112,6 +116,7 @@ public class Spravka02Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
 
+            tHead = true;
             result.advanceToNextRow();
         }
 
@@ -128,10 +133,14 @@ public class Spravka02Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
             reading = true;
+            tBody = true;
             result.advanceToNextRow();
         }
 
-        if (reading == true) {
+        System.out.println("docHead02 === " + docHead);
+        System.out.println("tHead02 === " + tHead);
+        System.out.println("tBody02 === " + tBody);
+        if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR02 " + result);
             ReadOnDir.spr = "sprPopup";
             return result;

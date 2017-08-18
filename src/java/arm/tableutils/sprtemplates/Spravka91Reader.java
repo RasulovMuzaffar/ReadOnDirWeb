@@ -22,7 +22,8 @@ public class Spravka91Reader implements TableReaderInterface {
 //            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
 //            + "(?<dhst>[А-ЯA-Z]{5})";
     final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3})\\s+"
-            + "(?<dhcode>\\d{2})\\s+"
+            //            + "(?<dhcode>\\d{2})\\s+"
+            + "(?<dhcode>91)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
             + "(?<dhvc73>[A-ZА-Я]{2}\\s\\d{2})\\s+"
@@ -44,24 +45,25 @@ public class Spravka91Reader implements TableReaderInterface {
             + "(?<tbdate>\\d{2}.\\d{2})\\s+"
             + "(?<tbtime>\\d{2}-\\d{2})";
 
+    String str = null;
+    String f = null;
+    Pattern pattern;
+    Matcher matcher;
+    boolean reading = false;
+    boolean docHead = false;
+    boolean tHead = false;
+    boolean tBody = false;
+    String doroga = "";
+
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
-        Pattern pattern;
-        Matcher matcher;
-        boolean reading = false;
-        boolean docHead = false;
-        boolean tHead = false;
-        boolean tBody = false;
-        String doroga = "";
 
         /*
         * пока условно будем считать что файл всегда есть!
          */
         try (FileInputStream fis = new FileInputStream(fileName)) {
 
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+            System.out.println("File size: " + fis.available() + " bytes");
 
             byte[] buffer = new byte[fis.available()];
 
@@ -74,8 +76,31 @@ public class Spravka91Reader implements TableReaderInterface {
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka93Reader : " + ex);
+            System.out.println("exception in Spravka91Reader : " + ex);
         }
+        String vc = "(?<vc>ВЦ УТИ\\s+\\d{2}\\s)";
+        String[] lines = f.split("\\r\\n\\r\\nВЦ");
+        HtmlTable result = new HtmlTable();
+        for (String l : lines) {
+            pattern = Pattern.compile(vc);
+            matcher = pattern.matcher(l);
+            while (matcher.find()) {
+                if (matcher.group("vc") != null) {
+                    result = getResult(l);
+                } else {
+                    result = getResult("ВЦ " + l);
+                }
+            }
+        }
+        
+        if (result != null) {
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    private HtmlTable getResult(String f) {
 
         HtmlTable result = new HtmlTable();
 
@@ -100,7 +125,10 @@ public class Spravka91Reader implements TableReaderInterface {
             docHead = true;
             result.advanceToNextRow();
         }
-
+        if (docHead == false) {
+            System.out.println("fignya v 91 docHead!!!");
+            return null;
+        }
         pattern = Pattern.compile(regexTHead);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
@@ -122,8 +150,13 @@ public class Spravka91Reader implements TableReaderInterface {
 
             tHead = true;
             result.advanceToNextRow();
+            break;
         }
 
+        if (tHead == false) {
+            System.out.println("fignya v 91 tHead!!!");
+            return null;
+        }
         pattern = Pattern.compile(regexTBody);
         matcher = pattern.matcher(f);
 
@@ -146,15 +179,23 @@ public class Spravka91Reader implements TableReaderInterface {
             tBody = true;
             result.advanceToNextRow();
         }
-        System.out.println("docHead === " + docHead);
-        System.out.println("tHead === " + tHead);
-        System.out.println("tBody === " + tBody);
+
+        if (tBody == false) {
+            System.out.println("fignya v 91 tBody!!!");
+            return null;
+        }
+        System.out.println("docHead91 === " + docHead);
+        System.out.println("tHead91 === " + tHead);
+        System.out.println("tBody91 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR91 " + result);
+//            System.out.println("can reading SPR91 " + result);
             ReadOnDir.spr = "sprDefault";
+//            System.out.println("+++++++++++++++++++++++++91++++++++++++++++++++++++");
+//            System.out.println("" + result.generateHtml());
+//            System.out.println("-------------------------91------------------------");
             return result;
         } else {
-            System.out.println("can not reading SPR91 " + result);
+//            System.out.println("can not reading SPR91 " + result);
             return null;
         }
     }

@@ -24,7 +24,8 @@ public class Spravka93Reader implements TableReaderInterface {
 //            + "(?<dhnpn>[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,11}\\s+[А-ЯA-Z]{2})\\s+"
 //            + "(?<dhSt>[А-ЯA-Z]{2}.\\s+[А-ЯA-Z\\d+]{2,8})";
     final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
-            + "(?<dhcode>\\d{2})\\s+"
+//            + "(?<dhcode>\\d{2})\\s+"
+            + "(?<dhcode>93)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
             + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
@@ -101,6 +102,10 @@ public class Spravka93Reader implements TableReaderInterface {
             docHead = true;
             result.advanceToNextRow();
         }
+        if (docHead == false) {
+            System.out.println("fignya v 93 docHead!!!");
+            return null;
+        }
 
         pattern = Pattern.compile(regexTHead);
         matcher = pattern.matcher(f);
@@ -120,6 +125,10 @@ public class Spravka93Reader implements TableReaderInterface {
             }
             tHead = true;
             result.advanceToNextRow();
+        }
+        if (tHead == false) {
+            System.out.println("fignya v 93 tHead!!!");
+            return null;
         }
 
         pattern = Pattern.compile(regexTBody);
@@ -143,16 +152,23 @@ public class Spravka93Reader implements TableReaderInterface {
             reading = true;
             result.advanceToNextRow();
         }
+        if (tBody == false) {
+            System.out.println("fignya v 93 tBody!!!");
+            return null;
+        }
 
-        System.out.println("docHead === " + docHead);
-        System.out.println("tHead === " + tHead);
-        System.out.println("tBody === " + tBody);
+        System.out.println("docHead93 === " + docHead);
+        System.out.println("tHead93 === " + tHead);
+        System.out.println("tBody93 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR93 " + result);
+//            System.out.println("can reading SPR93 " + result);
             ReadOnDir.spr = "sprDefault";
+//            System.out.println("+++++++++++++++++++++++++93++++++++++++++++++++++++");
+//            System.out.println("" + result.generateHtml());
+//            System.out.println("-------------------------93------------------------");
             return result;
         } else {
-            System.out.println("can not reading SPR93 " + result);
+//            System.out.println("can not reading SPR93 " + result);
             return null;
         }
     }

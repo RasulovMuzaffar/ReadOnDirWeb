@@ -163,6 +163,9 @@ public class Spravka64Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
+        System.out.println("docHead64 === " + docHead);
+        System.out.println("tHead64 === " + tHead);
+        System.out.println("tBody64 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody
                 == true)) {
             System.out.println("can reading SPR64 " + result);

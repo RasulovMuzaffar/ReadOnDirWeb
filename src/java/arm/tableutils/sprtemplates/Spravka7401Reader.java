@@ -198,9 +198,9 @@ public class Spravka7401Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        System.out.println("docHead === " + docHead);
-        System.out.println("tHead === " + tHead);
-        System.out.println("tBody === " + tBody);
+        System.out.println("docHead7401 === " + docHead);
+        System.out.println("tHead7401 === " + tHead);
+        System.out.println("tBody7401 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR5065 " + result);
             ReadOnDir.spr = "sprDefault";

@@ -21,12 +21,13 @@ public class Spravka92Reader implements TableReaderInterface {
 //            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
 //            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
 //            + "(?<dhst>[А-ЯA-Z]{5})";
-    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
-            + "(?<dhcode>\\d{2})\\s+"
+    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3})\\s+"
+            //            + "(?<dhcode>\\d{2})\\s+"
+            + "(?<dhcode>92)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
             + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
-//            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAЗHAЧEHИEM\\s+HA\\s+CT.)\\s+"
+            //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAЗHAЧEHИEM\\s+HA\\s+CT.)\\s+"
             + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{11}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2}.)\\s+"
             + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
 
@@ -44,21 +45,25 @@ public class Spravka92Reader implements TableReaderInterface {
             + "(?<tbdate>\\d{2}.\\d{2})\\s+"
             + "(?<tbtime>\\d{2}-\\d{2})";
 
+    String str = null;
+    String f = null;
+    Pattern pattern;
+    Matcher matcher;
+    boolean reading = false;
+    boolean docHead = false;
+    boolean tHead = false;
+    boolean tBody = false;
+    String doroga = "";
+
+    @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
-        Pattern pattern;
-        Matcher matcher;
-        boolean reading = false;
-        boolean docHead = false;
-        boolean tHead = false;
-        boolean tBody = false;
+
         /*
         * пока условно будем считать что файл всегда есть!
          */
         try (FileInputStream fis = new FileInputStream(fileName)) {
 
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+            System.out.println("File size: " + fis.available() + " bytes");
 
             byte[] buffer = new byte[fis.available()];
 
@@ -70,20 +75,85 @@ public class Spravka92Reader implements TableReaderInterface {
             f = TextReplace.getText(str);
 
         } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Spravka92Reader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception in Spravka92Reader : " + ex);
         }
+
+        String vc = "(?<vc>ВЦ УТИ\\s+\\d{2}\\s)";
+        String[] lines = f.split("\\r\\n\\r\\nВЦ");
+        pattern = Pattern.compile(vc);
+
+        HtmlTable result = new HtmlTable();
+        System.out.println(lines.length);
+        for (String l : lines) {
+            if (" УТИ".equals(l.substring(0, 4))) {
+                String l1 = "ВЦ" + l;
+                matcher = pattern.matcher(l1);
+                int q = 0;
+                while (matcher.find()) {
+                    System.out.println(++q + " ===>> " + l1);
+                    result = getResult(l1);
+                }
+            } else {
+                matcher = pattern.matcher(l);
+                int w = 0;
+                while (matcher.find()) {
+                    System.out.println(++w + " ===>> " + l);
+                    result = getResult(l);
+                }
+            }
+//            System.out.println("99999999999999999999");
+//            System.out.println(l);
+//            System.out.println("99999999999999999999");
+        }
+//        for (String l : lines) {
+//            if (" УТИ".equals(l.substring(0, 4))) {
+//                String full = "ВЦ" + l;
+//                pattern = Pattern.compile(vc);
+//                matcher = pattern.matcher(full);
+//                while (matcher.find()) {
+//                    System.out.println("matcher.group(\"vc\") != null =====>>>> "+matcher.group("vc"));
+//                    if (matcher.group("vc") != null) {
+//                        result = getResult(full);
+//                    } 
+//                }
+//            } else {
+//                pattern = Pattern.compile(vc);
+//                matcher = pattern.matcher(l);
+//                while (matcher.find()) {
+//                    if (matcher.group("vc") != null) {
+//                        result = getResult(l);
+//                    }
+//                }
+//            }
+//        }
+        result = getResult(f);
+        if (result != null) {
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    private HtmlTable getResult(String text) {
+        System.out.println("tttttttttttttttttttttttttttttttt");
+        System.out.println(text);
+        System.out.println("ttttttttttttttttttttttttttttttttt");
 
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(regexDocHead);
-        matcher = pattern.matcher(f);
+        matcher = pattern.matcher(text);
 
         boolean tableHeaderProcessed = false;
 
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
+
             }
+
+            doroga = matcher.group("dhdor");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -93,9 +163,12 @@ public class Spravka92Reader implements TableReaderInterface {
             docHead = true;
             result.advanceToNextRow();
         }
-
+        if (docHead == false) {
+            System.out.println("fignya v 92 docHead!!!");
+            return null;
+        }
         pattern = Pattern.compile(regexTHead);
-        matcher = pattern.matcher(f);
+        matcher = pattern.matcher(text);
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
@@ -104,7 +177,9 @@ public class Spravka92Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-            result.addCell("ТГНЛ");
+            if (doroga.equals("УТИ")) {
+                result.addCell("ТГНЛ");
+            }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -113,10 +188,15 @@ public class Spravka92Reader implements TableReaderInterface {
 
             tHead = true;
             result.advanceToNextRow();
+            break;
         }
 
+        if (tHead == false) {
+            System.out.println("fignya v 92 tHead!!!");
+            return null;
+        }
         pattern = Pattern.compile(regexTBody);
-        matcher = pattern.matcher(f);
+        matcher = pattern.matcher(text);
 
         int n = 1;
         while (matcher.find()) {
@@ -126,26 +206,34 @@ public class Spravka92Reader implements TableReaderInterface {
                 result.addCell(matcher.group(i));
                 bidx = matcher.group("tbidx");
             }
-            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
-
+            if (doroga.equals("УТИ")) {
+                result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
+            }
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
             }
-            tBody = true;
             reading = true;
+            tBody = true;
             result.advanceToNextRow();
         }
 
-        System.out.println("docHead === " + docHead);
-        System.out.println("tHead === " + tHead);
-        System.out.println("tBody === " + tBody);
+        if (tBody == false) {
+            System.out.println("fignya v 92 tBody!!!");
+            return null;
+        }
+        System.out.println("docHead92 === " + docHead);
+        System.out.println("tHead92 === " + tHead);
+        System.out.println("tBody92 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR92 " + result);
+//            System.out.println("can reading SPR92 " + result);
             ReadOnDir.spr = "sprDefault";
+//            System.out.println("+++++++++++++++++++++++++92++++++++++++++++++++++++");
+//            System.out.println("" + result.generateHtml());
+//            System.out.println("-------------------------92------------------------");
             return result;
         } else {
-            System.out.println("can not reading SPR92 " + result);
+//            System.out.println("can not reading SPR92 " + result);
             return null;
         }
     }
