@@ -78,21 +78,17 @@ public class Spravka91Reader implements TableReaderInterface {
             Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("exception in Spravka91Reader : " + ex);
         }
-        String vc = "(?<vc>ВЦ УТИ\\s+\\d{2}\\s)";
-        String[] lines = f.split("\\r\\n\\r\\nВЦ");
+
+        String[] lines = f.split("ВЦ УТИ");
+
         HtmlTable result = new HtmlTable();
+        System.out.println(lines.length);
         for (String l : lines) {
-            pattern = Pattern.compile(vc);
-            matcher = pattern.matcher(l);
-            while (matcher.find()) {
-                if (matcher.group("vc") != null) {
-                    result = getResult(l);
-                } else {
-                    result = getResult("ВЦ " + l);
-                }
+            if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("91")) {
+                result = getResult("ВЦ УТИ" + l);
             }
         }
-        
+
         if (result != null) {
             return result;
         } else {
@@ -100,12 +96,12 @@ public class Spravka91Reader implements TableReaderInterface {
         }
     }
 
-    private HtmlTable getResult(String f) {
+    private HtmlTable getResult(String str) {
 
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(regexDocHead);
-        matcher = pattern.matcher(f);
+        matcher = pattern.matcher(str);
 
         boolean tableHeaderProcessed = false;
 
@@ -130,7 +126,7 @@ public class Spravka91Reader implements TableReaderInterface {
             return null;
         }
         pattern = Pattern.compile(regexTHead);
-        matcher = pattern.matcher(f);
+        matcher = pattern.matcher(str);
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
@@ -158,7 +154,7 @@ public class Spravka91Reader implements TableReaderInterface {
             return null;
         }
         pattern = Pattern.compile(regexTBody);
-        matcher = pattern.matcher(f);
+        matcher = pattern.matcher(str);
 
         int n = 1;
         while (matcher.find()) {

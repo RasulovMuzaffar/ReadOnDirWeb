@@ -79,55 +79,16 @@ public class Spravka92Reader implements TableReaderInterface {
             System.out.println("exception in Spravka92Reader : " + ex);
         }
 
-        String vc = "(?<vc>ВЦ УТИ\\s+\\d{2}\\s)";
-        String[] lines = f.split("\\r\\n\\r\\nВЦ");
-        pattern = Pattern.compile(vc);
+        String[] lines = f.split("ВЦ УТИ");
 
         HtmlTable result = new HtmlTable();
         System.out.println(lines.length);
         for (String l : lines) {
-            if (" УТИ".equals(l.substring(0, 4))) {
-                String l1 = "ВЦ" + l;
-                matcher = pattern.matcher(l1);
-                int q = 0;
-                while (matcher.find()) {
-                    System.out.println(++q + " ===>> " + l1);
-                    result = getResult(l1);
-                }
-            } else {
-                matcher = pattern.matcher(l);
-                int w = 0;
-                while (matcher.find()) {
-                    System.out.println(++w + " ===>> " + l);
-                    result = getResult(l);
-                }
+            if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("92")) {
+                result = getResult("ВЦ УТИ" + l);
             }
-//            System.out.println("99999999999999999999");
-//            System.out.println(l);
-//            System.out.println("99999999999999999999");
         }
-//        for (String l : lines) {
-//            if (" УТИ".equals(l.substring(0, 4))) {
-//                String full = "ВЦ" + l;
-//                pattern = Pattern.compile(vc);
-//                matcher = pattern.matcher(full);
-//                while (matcher.find()) {
-//                    System.out.println("matcher.group(\"vc\") != null =====>>>> "+matcher.group("vc"));
-//                    if (matcher.group("vc") != null) {
-//                        result = getResult(full);
-//                    } 
-//                }
-//            } else {
-//                pattern = Pattern.compile(vc);
-//                matcher = pattern.matcher(l);
-//                while (matcher.find()) {
-//                    if (matcher.group("vc") != null) {
-//                        result = getResult(l);
-//                    }
-//                }
-//            }
-//        }
-        result = getResult(f);
+
         if (result != null) {
             return result;
         } else {
