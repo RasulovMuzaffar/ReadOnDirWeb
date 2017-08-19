@@ -21,7 +21,7 @@ public class Spravka91Reader implements TableReaderInterface {
 //            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
 //            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
 //            + "(?<dhst>[А-ЯA-Z]{5})";
-    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3})\\s+"
+    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3,4})\\s+"
             //            + "(?<dhcode>\\d{2})\\s+"
             + "(?<dhcode>91)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
@@ -82,11 +82,6 @@ public class Spravka91Reader implements TableReaderInterface {
         String[] lines = f.split("ВЦ УТИ");
 
         HtmlTable result = new HtmlTable();
-//        result=null;
-        System.out.println("----91919191919191919191919191");
-        System.out.println(result);
-        System.out.println("----91919191919191919191919191");
-        System.out.println(lines.length);
         for (String l : lines) {
             if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("91")) {
                 result = getResult("ВЦ УТИ" + l);
@@ -96,14 +91,7 @@ public class Spravka91Reader implements TableReaderInterface {
             }
         }
 
-//        System.out.println("91919191919191919191919191");
-//        System.out.println(result);
-//        System.out.println("91919191919191919191919191");
-////        if (result != null) {
             return result;
-//        } else {
-//            return null;
-//        }
     }
 
     private HtmlTable getResult(String str) {

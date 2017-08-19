@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
 
 public class Spravka64Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "([A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
-            + "(\\d{2})\\s+(\\d{2}.\\d{2})\\s+(\\d{2}-\\d{2})\\s+"
-            + "([A-ZА-Я]{2})\\s+(\\d{2})\\s+([A-ZА-Я]{6})\\s+"
-            + "([A-ZА-Я]{7})\\s+([A-ZА-Я]{0,10}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+"
-            + "([A-ZА-Я]{1})\\s+([A-ZА-Я]{8})";
+    final static String regexDocHead = "([A-ZА-Я]{2}\\s[A-ZА-Я]{2,4})\\s+"
+            + "(64)\\s+(\\d{2}.\\d{2})\\s+(\\d{2}\\-\\d{2})\\s+"
+            + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{6})\\s+([A-ZА-Я]{7})\\s+"
+            + "([A-ZА-Я]{2,6}\\-?\\.?[A-ZА-Я]{0,4}\\.?\\d{0,2}\\.?)\\s+"
+            + "([A-ZА-Я]{1}\\s[A-ZА-Я]{8})";
 
     final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
@@ -28,24 +28,10 @@ public class Spravka64Reader implements TableReaderInterface {
             + "(?<thtime>[A-ZА-Я]{5})";
 
     final static String regexTBody = "(?<tbnp>\\d{4})\\s+"
-            + "(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s"
-            + "((?<tbstate1>[A-ZА-Я]{4}\\-{0,1}\\d{0,2})\\s+"
-            + "(?<tbtime1>\\d{2}\\-\\d{2})){0,1}\\s+"
-            + "((?<tbstate2>[A-ZА-Я]{4}\\-{0,1}\\d{0,2})\\s"
-            + "(?<tbtime2>\\d{2}\\-{1}\\d{2})){0,1}\\s{0,14}"
-            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s"
-            + "(?<tbxz3>\\d{0,3})){0,1}"
-            + "(\\s(?<tbxz4>[A-ZА-Я]{0,1}\\d{0,1})\\s{4,7}"
-            + "(?<tbxz5>\\d{1,4})){0,1}"
-            + "(\\s{11}(?<tbxz6>\\d{4})){0,1}";
-//    final static String regexTBody = "(?<tbnp>\\d{4})\\s+"
-//            + "(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s"
-//            + "((?<tbstate1>[A-ZА-Я]{4}\\-{0,1}\\d{0,2})\\s+"
-//            + "(?<tbtime1>\\d{2}\\-\\d{2})){0,1}\\s{0,}"
-//            + "((?<tbstate2>[A-ZА-Я]{4}\\-{0,1}\\d{0,2})\\s"
-//            + "(?<tbtime2>\\d{2}\\-\\d{2})){0,1}\\s+"
-//            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s(?<tbxz3>\\d{0,3})){0,1}\\s{0,}"
-//            + "((?<tbxz4>[A-ZА-Я]{0,1}\\d{0,1})\\s+(?<tbxz5>\\d{0,4})){0,1}";
+            + "(?<tbidx>\\d{4,6}\\+\\d{2,3}\\+\\d{4,6})\\s+"
+            + "((?<tbstate1>[A-ZА-Я]{2,4})\\s+(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+"
+            + "((?<tbstate2>[A-ZА-Я]{2,4})\\s+(?<tbtime2>\\d{2}\\-\\d{2}))?\\s+"
+            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{0,4})\\s(?<tbxz3>\\d{0,3}))?";
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -75,7 +61,7 @@ public class Spravka64Reader implements TableReaderInterface {
             f = TextReplace.getText(str);
 
         } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Spravka64Reader.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("exception in Spravka93Reader : " + ex);
         }
 
@@ -114,10 +100,6 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell("хз1");
             result.addCell("хз2");
             result.addCell("хз3");
-            result.addCell("хз4");
-            result.addCell("хз5");
-            result.addCell("хз6");
-            result.addCell("ТГНЛ");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -134,7 +116,6 @@ public class Spravka64Reader implements TableReaderInterface {
         int n = 1;
         while (matcher.find()) {
             result.addCell("" + n++);
-            String bidx = "";
 
             result.addCell(matcher.group("tbnp"));
             result.addCell(plusToSpace(matcher.group("tbidx")));
@@ -145,14 +126,7 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz1")));
             result.addCell(delNull(matcher.group("tbxz2")));
             result.addCell(delNull(matcher.group("tbxz3")));
-            result.addCell(delNull(matcher.group("tbxz4")));
-            result.addCell(delNull(matcher.group("tbxz5")));
-            result.addCell(delNull(matcher.group("tbxz6")));
 
-
-            bidx = plusToSpace(matcher.group("tbidx"));
-
-            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
