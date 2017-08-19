@@ -74,6 +74,7 @@ public class Spravka92Reader implements TableReaderInterface {
             str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f = TextReplace.getSha(TextReplace.getText(str));
+            //asdasdasd
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka92Reader.class.getName()).log(Level.SEVERE, null, ex);
