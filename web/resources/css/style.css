@@ -21,6 +21,10 @@
     font-weight: bold;
 }
 /*table*/
+tr.redRow td{
+    border-bottom-color: red;
+    /*border-bottom: 2px;*/
+}
 
 .tabl{
     padding: 0px;
@@ -133,6 +137,8 @@
     color: #bd5a35;
     text-decoration:underline;
 }
+
+
 
 /*table*/
 

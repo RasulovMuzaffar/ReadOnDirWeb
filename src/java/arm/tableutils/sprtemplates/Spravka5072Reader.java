@@ -133,7 +133,8 @@ public class Spravka5072Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbdor")));
             result.addCell(delNull(matcher.group("tbgos")));
             result.addCell(delNull(matcher.group("tbsto")));
-            result.addCell(htmlParse(delNull(matcher.group("tbvkv"))));
+            String column = htmlParse(delNull(matcher.group("tbvkv")));
+            result.addCell(column);
 //            result.addCell(delNull(matcher.group("tbobwk")));
 
 //            String bidx = "";
@@ -146,6 +147,10 @@ public class Spravka5072Reader implements TableReaderInterface {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
             }
+            if (!column.equals("")) {
+                result.markCurrentRowAsRegularRed();
+            }
+            
             reading = true;
             tBody = true;
             result.advanceToNextRow();
@@ -178,7 +183,7 @@ public class Spravka5072Reader implements TableReaderInterface {
             String s2 = str[1];
             System.out.println("<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>");
             return "<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>";
-        }else{
+        } else {
             return "";
         }
     }

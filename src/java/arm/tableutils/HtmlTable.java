@@ -17,6 +17,10 @@ public class HtmlTable {
     public void markCurrentRowAsDocHeader() {
         currentRow.type = RowType.DocHeader;
     }
+    
+    public void markCurrentRowAsRegularRed(){
+        currentRow.type = RowType.RegularRed;
+    }
 
     public void addCell(String value) {
         if (currentRow == null) {
@@ -52,6 +56,17 @@ public class HtmlTable {
                         }
                     }
                     result.append(ROW_CLOSE);
+                }else if(row.type.name().equals("RegularRed")){
+                    result.append(ROW_OPEN_RED);
+                    for (String value : row.cells) {
+                        if (row.type == RowType.RegularRed) {
+                            result.append(CELL_OPEN_RED);
+                            result.append(value);
+                            result.append(CELL_CLOSE_RED);
+                        }
+                    }
+                    result.append(ROW_CLOSE_RED);
+                    System.out.println("--------------------------------1-------------------------------------");
                 }
             }
         }
@@ -99,12 +114,18 @@ public class HtmlTable {
     private static final String THEAD_CLOSE = "</thead>";
     private static final String TBODY_OPEN = "<tbody>";
     private static final String TBODY_CLOSE = "</tbody>";
+    private static final String ROW_OPEN_RED = "<tr class = 'redRow'>";
+    private static final String ROW_CLOSE_RED = "</tr>";
+    private static final String CELL_OPEN_RED = "<td style='border-bottom-color: red;'>";
+    private static final String CELL_CLOSE_RED = "</td>";
+    
 }
 
 enum RowType {
     DocHeader,
     Header,
-    Regular
+    Regular,
+    RegularRed
 }
 
 class TableRow {
