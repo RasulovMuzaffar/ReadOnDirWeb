@@ -23,16 +23,16 @@ import java.util.regex.Pattern;
  */
 public class Spravka3290Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "([A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
-            + "(\\d{4})\\s+"
-            + "(\\d{2}.\\d{2})\\s+"
-            + "(\\d{2}-\\d{2})\\s+"
-            + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{8})\\s+([A-ZА-Я]{7})\\s+"
-            + "([A-ZА-Я]{2})\\s+([A-ZА-Я]{5})\\s+"
-            + "(\\([A-ZА-Я]{2}\\s[A-ZА-Я]{3}\\s[A-ZА-Я]{1}\\s[A-ZА-Я]{13}\\))\\s+"
-            + "([A-ZА-Я]{5})\\s+"
-            + "([A-ZА-Я]{2})\\s+([A-ZА-Я]{6}:\\d{2}\\-\\d{2}\\s[A-ZА-Я]{3}.)\\s+"
-            + "([A-ZА-Я]{5}:)";
+    final static String regexDocHead = "((?<dhvc>[A-ZА-Я]{2})\\s+"
+            + "(?<dhdor>[A-ZА-Я]{3})\\s+"
+            + "(?<dhcode>3290)\\s+"
+            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
+            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
+            + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
+            + "(?<dhpvps>[A-ZА-Я]{8}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{5}\\s\\([A-ZА-Я]{2}\\s[A-ZА-Я]{3}\\s[A-ZА-Я]{1}\\s[A-ZА-Я]{13}\\))\\s+"
+            + "(?<dhst>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,2}\\.?)\\s+"
+            + "(?<dhrp>[A-ZА-Я]{1,4})\\s+"
+            + "(?<dhper>[A-ZА-Я]{6}\\:\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{3}\\.)";
 
     final static String regexTHead = "(?<thsbst>[A-ZА-Я]{6}.)\\s+:\\s+"
             + "(?<thvsg>[A-ZА-Я]{3})\\s+"

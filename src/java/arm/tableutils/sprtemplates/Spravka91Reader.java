@@ -29,7 +29,7 @@ public class Spravka91Reader implements TableReaderInterface {
             + "(?<dhvc73>[A-ZА-Я]{2}\\s\\d{2})\\s+"
             //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+CФOPMИPOBAHHЫX\\s+CT.)\\s+"
             + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{14}\\s[A-ZА-Я]{2}.)\\s+"
-            + "(?<dhst>[A-ZА-Я]{2,10}-{0,1}[A-ZА-Я]{0,5}\\d{0,4})";
+            + "(?<dhst>[A-ZА-Я]{0,6}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})";
 
     final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
@@ -72,7 +72,7 @@ public class Spravka91Reader implements TableReaderInterface {
 
             str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
-            f = TextReplace.getText(str);
+            f = TextReplace.getSha(TextReplace.getText(str));
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
