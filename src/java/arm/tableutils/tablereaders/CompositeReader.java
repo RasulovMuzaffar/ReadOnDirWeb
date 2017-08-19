@@ -11,23 +11,26 @@ public class CompositeReader implements TableReaderInterface {
     @Override
     public HtmlTable processFile(String fileName) throws MultipleResultsException {
         List<HtmlTable> results = new ArrayList<>();
+        System.out.println("RESULTS SIZE =====>>> " + results.size());
+        int i = 0;
         for (TableReaderInterface reader : readersList) {
             HtmlTable table = reader.processFile(fileName);
+            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+            System.out.println(++i + " ===== " + table);
             if (table != null) {
                 results.add(table);
 //                break;
+                System.out.println(i + " ===table not null=== " + table.generateHtml());
             }
+            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         }
-
+        
         switch (results.size()) {
             case 0:
                 return null; // no results, input file not recognized
             case 1:
                 return results.get(0); // the only result
             default:
-//                for (int i = 0; i < results.size(); i++) {
-//                    lht.add(results.get(i));
-//                }
                 lht = results;
 //                throw new MultipleResultsException(results);
                 return null;
@@ -39,15 +42,18 @@ public class CompositeReader implements TableReaderInterface {
         readersList.add(reader);
     }
 
-    public List<HtmlTable> readersResult(){
-        System.out.println("---------------------------------------------");
-        for (HtmlTable l : lht) {
-            System.out.println(""+l.generateHtml());
-        }
-        System.out.println("---------------------------------------------");
-        return lht;
+    @Override
+    public List<HtmlTable> readersResult() {
+//        if (lht!=null) {
+//            for (HtmlTable l : lht) {
+//                System.out.println("" + l.generateHtml());
+//            }
+            return lht;
+//        } else {
+//            return null;
+//        }
+
     }
     private List<TableReaderInterface> readersList = new ArrayList<>();
-    
-    
+
 }

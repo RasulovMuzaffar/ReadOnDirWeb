@@ -63,6 +63,7 @@ public class ReadOnDir extends Thread {
     private static void pathListener() {
 // init composite reader - register all reader types
         tableReader.registerReader(new Spravka02Reader());
+        tableReader.registerReader(new Spravka3290Reader());
         tableReader.registerReader(new Spravka5065Reader());
         tableReader.registerReader(new Spravka5072Reader());
         tableReader.registerReader(new Spravka64Reader());
@@ -173,7 +174,6 @@ public class ReadOnDir extends Thread {
             File f = new File(filePath);
             if (f.exists()) {
                 HtmlTable result = tableReader.processFile(filePath);
-//                List<HtmlTable> result = tableReader.processFile(filePath);
 
                 StringBuilder s = new StringBuilder();
                 if (result != null) {
@@ -181,11 +181,7 @@ public class ReadOnDir extends Thread {
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
-//                                if (lht.isEmpty()) {
                                 x.getBasicRemote().sendText(spr + "\u0003" + answer);
-//                                } else {
-//                                    x.getBasicRemote().sendText(spr + "\u0003" + s);
-//                                }
                                 return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,27 +191,19 @@ public class ReadOnDir extends Thread {
                     });
 
                 } else {
-                    StringBuilder moreAnswer = new StringBuilder();
+                    StringBuilder moreSprs = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
-
-//                    System.out.println("------------------------1111-------------------------" + list.size());
+//                    System.out.println("list.size() ---->>>> "+list.size());
                     if (list.size() != 0) {
-//                        System.out.println("+++++++++++++");
-
-//                        System.out.println("" + list.get(1).generateHtml());
-//                        System.out.println("+++++++++++++");
 
                         for (HtmlTable l : list) {
-                            moreAnswer.append(l.generateHtml());
-                            moreAnswer.append("<br/>");
+                            moreSprs.append(l.generateHtml());
+                            moreSprs.append("<br/>");
                         }
-//                        System.out.println("-------------------------------------------------");
-//                        System.out.println(moreAnswer.toString());
-//                        System.out.println("-------------------------------------------------");
                         armUsers.stream().forEach((Session x) -> {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003" + moreAnswer);
+                                    x.getBasicRemote().sendText("sprDefault\u0003" + moreSprs);
                                     CompositeReader.lht.removeAll(list);
                                     return;
                                 } catch (IOException ex) {
@@ -224,11 +212,12 @@ public class ReadOnDir extends Thread {
                             }
                         });
                     } else {
+                        System.out.println("mi tuda zawli!!!");
                         String answer = readNotDetectedFile(filePath);
                         armUsers.stream().forEach((Session x) -> {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003" + answer);
+                                    x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer+"</h3></label>");
                                     return;
                                 } catch (IOException ex) {
                                     Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,7 +255,6 @@ public class ReadOnDir extends Thread {
 
             f = TextReplace.getText(str);
 
-            StringBuffer sb;
             int i = -1;
             while ((i = fis.read()) != -1) {
                 System.out.print((char) i);

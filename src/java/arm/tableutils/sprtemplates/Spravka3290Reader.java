@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  */
 public class Spravka3290Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "((?<dhvc>[A-ZА-Я]{2})\\s+"
+    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+"
             + "(?<dhdor>[A-ZА-Я]{3})\\s+"
             + "(?<dhcode>3290)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
@@ -201,11 +201,11 @@ public class Spravka3290Reader implements TableReaderInterface {
         System.out.println("tHead3290 === " + tHead);
         System.out.println("tBody3290 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR5065 " + result);
+            System.out.println("can reading SPR3290 " + result);
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR5065 " + result);
+            System.out.println("can not reading SPR3290 " + result);
             return null;
         }
     }

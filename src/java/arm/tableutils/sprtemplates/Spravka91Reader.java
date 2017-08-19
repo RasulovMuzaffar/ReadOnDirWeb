@@ -82,22 +82,31 @@ public class Spravka91Reader implements TableReaderInterface {
         String[] lines = f.split("ВЦ УТИ");
 
         HtmlTable result = new HtmlTable();
+//        result=null;
+        System.out.println("----91919191919191919191919191");
+        System.out.println(result);
+        System.out.println("----91919191919191919191919191");
         System.out.println(lines.length);
         for (String l : lines) {
             if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("91")) {
                 result = getResult("ВЦ УТИ" + l);
+                break;
+            } else {
+                result = null;
             }
         }
 
-        if (result != null) {
+//        System.out.println("91919191919191919191919191");
+//        System.out.println(result);
+//        System.out.println("91919191919191919191919191");
+////        if (result != null) {
             return result;
-        } else {
-            return null;
-        }
+//        } else {
+//            return null;
+//        }
     }
 
     private HtmlTable getResult(String str) {
-
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(regexDocHead);

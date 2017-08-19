@@ -27,53 +27,54 @@ public class HtmlTable {
     }
 
     public String generateHtmlTable() {
-        String result = "";//HTML_OPEN + BODY_OPEN;
-        result += TABLE_OPEN;
+        StringBuilder result = new StringBuilder();//HTML_OPEN + BODY_OPEN;
+        result.append(TABLE_OPEN);
         for (TableRow row : tableData) {
             if (!row.cells.isEmpty() && !row.type.name().equals("DocHeader")) {
                 if (row.type.name().equals("Header")) {
-                    result += (THEAD_OPEN + ROW_OPEN);
+                    result.append(THEAD_OPEN).append(ROW_OPEN);
                     for (String value : row.cells) {
                         if (row.type == RowType.Header) {
-                            result += HEADER_CELL_OPEN;
-                            result += value;
-                            result += HEADER_CELL_CLOSE;
+                            result.append(HEADER_CELL_OPEN);
+                            result.append(value);
+                            result.append(HEADER_CELL_CLOSE);
                         }
                     }
-                    result += (ROW_CLOSE + THEAD_CLOSE);
+                    result.append(ROW_CLOSE).append(THEAD_CLOSE);
                 }
                 if (row.type.name().equals("Regular")) {
-                    result += ROW_OPEN;
+                    result.append(ROW_OPEN);
                     for (String value : row.cells) {
                         if (row.type == RowType.Regular) {
-                            result += CELL_OPEN;
-                            result += value;
-                            result += CELL_CLOSE;
+                            result.append(CELL_OPEN);
+                            result.append(value);
+                            result.append(CELL_CLOSE);
                         }
                     }
-                    result += ROW_CLOSE;
+                    result.append(ROW_CLOSE);
                 }
             }
         }
-        result += TABLE_CLOSE;
-        return result;
+        result.append(TABLE_CLOSE);
+        return result.toString();
     }
 
     public String generateHtml() {
-        String result = LABELDOC_OPEN;
+        StringBuilder result = new StringBuilder();
+                result.append(LABELDOC_OPEN);
         for (TableRow row : tableData) {
             for (String value : row.cells) {
                 if (row.type == RowType.DocHeader) {
-                    result += value + " ";
+                    result.append(value).append(" ");
                 }
             }
         }
-        result += LABELDOC_CLOSE;
-        result += DIV_TABL_OPEN;
-        result += "\n";
-        result += generateHtmlTable();
-        result += DIV_TABL_CLOSE;
-        return result;
+        result.append(LABELDOC_CLOSE);
+        result.append(DIV_TABL_OPEN);
+        result.append("\n");
+        result.append(generateHtmlTable());
+        result.append(DIV_TABL_CLOSE);
+        return result.toString();
     }
 
     private List<TableRow> tableData = new LinkedList<>();

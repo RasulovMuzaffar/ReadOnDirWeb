@@ -20,5 +20,4 @@ function showModalWin() {
             return false;
         }
     };
-
 }

@@ -6,6 +6,7 @@ import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ public class Spravka92Reader implements TableReaderInterface {
             + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
             //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAЗHAЧEHИEM\\s+HA\\s+CT.)\\s+"
             + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{11}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2}.)\\s+"
-//            + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
+            //            + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
             + "(?<dhst>[A-ZА-Я]{0,6}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})";
 
     final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
@@ -84,18 +85,26 @@ public class Spravka92Reader implements TableReaderInterface {
         String[] lines = f.split("ВЦ УТИ");
 
         HtmlTable result = new HtmlTable();
-        System.out.println(lines.length);
+//        result=null;
+//        System.out.println(lines.length);
+//List<HtmlTable> listResults = new ArrayList<>();
         for (String l : lines) {
             if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("92")) {
                 result = getResult("ВЦ УТИ" + l);
+//                listResults.add(result);
+                break;
+            } else {
+                result = null;
+//                listResults.add(result);
             }
         }
 
-        if (result != null) {
-            return result;
-        } else {
-            return null;
-        }
+//        fore
+//        if (result != null) {
+        return result;
+//        } else {
+//            return null;
+//        }
     }
 
     private HtmlTable getResult(String text) {
