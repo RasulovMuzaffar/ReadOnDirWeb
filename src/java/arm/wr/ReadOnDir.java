@@ -45,8 +45,8 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
     private static final String URL = "jdbc:mysql://localhost:3306/arm";
     private static final String USER = "test";
