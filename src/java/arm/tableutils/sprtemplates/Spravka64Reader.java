@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 
 public class Spravka64Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "([A-ZА-Я]{2}\\s[A-ZА-Я]{2,4})\\s+"
+    final static String regexDocHead = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{2,4})\\s+"
             + "(64)\\s+(\\d{2}.\\d{2})\\s+(\\d{2}\\-\\d{2})\\s+"
             + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{6})\\s+([A-ZА-Я]{7})\\s+"
-            + "([A-ZА-Я]{2,6}\\-?\\.?[A-ZА-Я]{0,4}\\.?\\d{0,2}\\.?)\\s+"
+            + "([A-ZА-Я]{1,6}\\-?\\.?[A-ZА-Я]{0,4}\\.?\\d{0,2}\\.?)\\s+"
             + "([A-ZА-Я]{1}\\s[A-ZА-Я]{8})";
 
     final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"

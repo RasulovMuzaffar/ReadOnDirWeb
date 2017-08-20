@@ -131,7 +131,7 @@ public class Spravka5065Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 if (matcher.group(i) != null) {
                     result.addCell(matcher.group(i));
-                System.out.println("********************** "+matcher.group(i));
+//                System.out.println("********************** "+matcher.group(i));
                 }
             }
 //            result.addCell("ТГНЛ");

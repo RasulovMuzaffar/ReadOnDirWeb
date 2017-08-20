@@ -48,7 +48,6 @@ public class Spravka5072Reader implements TableReaderInterface {
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
-        System.out.println("-================================---------------------------============-");
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -148,7 +147,7 @@ public class Spravka5072Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
             if (!column.equals("")) {
-                result.markCurrentRowAsRegularRed();
+                result.markCurrentRowAsRegularUnderlining();
             }
             
             reading = true;

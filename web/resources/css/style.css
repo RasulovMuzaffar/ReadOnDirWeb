@@ -21,8 +21,14 @@
     font-weight: bold;
 }
 /*table*/
-.redRow td{
-    border-bottom: 3px solid #E1C3C3 !important;
+.RegularUnderlining td{
+/*    border-bottom: 3px solid #E1C3C3 !important;*/
+    border-bottom: 3px solid #b3b3ff !important;
+    /*border-bottom: 2px;*/
+}
+
+.RegularUnderscore td{
+    border-top: 3px solid #b3b3ff !important;
     /*border-bottom: 2px;*/
 }
 
