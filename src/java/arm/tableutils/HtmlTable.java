@@ -116,7 +116,8 @@ public class HtmlTable {
     private static final String TBODY_CLOSE = "</tbody>";
     private static final String ROW_OPEN_RED = "<tr class = 'redRow'>";
     private static final String ROW_CLOSE_RED = "</tr>";
-    private static final String CELL_OPEN_RED = "<td style='border-bottom-color: red;'>";
+//    private static final String CELL_OPEN_RED = "<td style='border-bottom: 3px solid #888888;'>";
+    private static final String CELL_OPEN_RED = "<td>";
     private static final String CELL_CLOSE_RED = "</td>";
     
 }

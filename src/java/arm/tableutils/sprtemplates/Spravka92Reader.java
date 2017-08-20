@@ -85,16 +85,19 @@ public class Spravka92Reader implements TableReaderInterface {
         String[] lines = f.split("ВЦ УТИ");
 
         HtmlTable result = new HtmlTable();
-        for (String l : lines) {
-            if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("92")) {
-                result = getResult("ВЦ УТИ" + l);
-                break;
-            } else {
-                result = null;
+        if (lines.length > 1) {
+            for (String l : lines) {
+                if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("92")) {
+                    result = getResult("ВЦ УТИ" + l);
+                    break;
+                } else {
+                    result = null;
+                }
             }
+            return result;
+        } else {
+            return getResult(f);
         }
-
-        return result;
     }
 
     private HtmlTable getResult(String text) {

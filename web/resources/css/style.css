@@ -21,8 +21,8 @@
     font-weight: bold;
 }
 /*table*/
-tr.redRow td{
-    border-bottom-color: red;
+.redRow td{
+    border-bottom: 3px solid #E1C3C3 !important;
     /*border-bottom: 2px;*/
 }
 
