@@ -28,14 +28,25 @@ public class Spravka64Reader implements TableReaderInterface {
             + "(?<thtime>[A-ZА-Я]{5})";
 
     final static String regexTBody = "(?<tbnp>\\d{4})\\s+"
-            + "(?<tbidx>\\d{4,6}\\+\\d{2,3}\\+\\d{4,6})\\s+"
-            + "((?<tbstate1>[A-ZА-Я]{2,4})\\s+"
+            + "(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s"
+            + "((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+"
             + "(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+"
-            + "((?<tbstate2>[A-ZА-Я]{2,4})\\s+"
-            + "(?<tbtime2>\\d{2}\\-\\d{2}))?\\s+"
-            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{0,4})\\s"
-            + "(?<tbxz3>\\d{0,3})\\s+"
-            + "(?<tbxz4>[A-ZА-Я]{0,4})\\s+(?<tbxz5>\\d{0,4}))?";
+            + "((?<tbstate2>[A-ZА-Я]{4}\\-?\\d{0,2})\\s"
+            + "(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}"
+            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s"
+            + "(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}"
+            + "(?<tbxz5>\\d{1,4}))?"
+            + "(\\s{11}(?<tbxz6>\\d{4}))?";
+    
+//    final static String regexTBody = "(?<tbnp>\\d{4})\\s+"
+//            + "(?<tbidx>\\d{4,6}\\+\\d{2,3}\\+\\d{4,6})\\s+"
+//            + "((?<tbstate1>[A-ZА-Я]{2,4})\\s+"
+//            + "(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+"
+//            + "((?<tbstate2>[A-ZА-Я]{2,4})\\s+"
+//            + "(?<tbtime2>\\d{2}\\-\\d{2}))?\\s+"
+//            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{0,4})\\s"
+//            + "(?<tbxz3>\\d{0,3})\\s+"
+//            + "(?<tbxz4>[A-ZА-Я]{0,4})\\s+(?<tbxz5>\\d{0,4}))?";
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -106,6 +117,7 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell("хз3");
             result.addCell("хз4");
             result.addCell("хз5");
+            result.addCell("хз6");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -134,6 +146,7 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz3")));
             result.addCell(delNull(matcher.group("tbxz4")));
             result.addCell(delNull(matcher.group("tbxz5")));
+            result.addCell(delNull(matcher.group("tbxz6")));
 
 
             if (!tableHeaderProcessed) {
