@@ -163,12 +163,18 @@ public class Spravka3290Reader implements TableReaderInterface {
         while (matcher.find()) {
 
             if ("ВСГ ГРЗ.ВГ".equals(matcher.group("tdvcggrzvg"))) {
+                if (tip==1 || tip==2) {
+                    park="<b>РП</b>";
+                }else{
+                    park="<b>НРП</b>";
+                }
                 if (tip % 2 != 0) {
                     type = "<b>СДАЧА</b>";
                 }else{
                     type = "<b>ПРИЕМ</b>";
                 }
-                result.addCell("<b>РП</b>");
+                
+                result.addCell(park);
 //                result.addCell("<b>" + period + "</b>");
                 result.addCell(type);
                 result.addCell("<b>" + delNull(matcher.group("tdvcggrzvg")) + "</b>");
