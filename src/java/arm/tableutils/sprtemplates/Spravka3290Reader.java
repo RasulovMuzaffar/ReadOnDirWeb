@@ -32,23 +32,25 @@ public class Spravka3290Reader implements TableReaderInterface {
             + "(?<dhpvps>[A-ZА-Я]{8}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{5}\\s\\([A-ZА-Я]{2}\\s[A-ZА-Я]{3}\\s[A-ZА-Я]{1}\\s[A-ZА-Я]{13}\\))\\s+"
             + "(?<dhst>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,2}\\.?)\\s+"
             + "(?<dhrp>[A-ZА-Я]{1,4})\\s+"
-            + "(?<dhper>[A-ZА-Я]{6}\\:\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{3}\\.)";
+            + "(?<dhper>[A-ZА-Я]{6}\\:)"
+            + "(?<dhperiod>\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{3}\\.)";
 
-    final static String regexTHead = "(?<thsbst>[A-ZА-Я]{6}.)\\s+:\\s+"
-            + "(?<thvsg>[A-ZА-Я]{3})\\s+"
-            + "(?<thkr>[A-ZА-Я]{2})\\s+"
-            + "(?<thpl>[A-ZА-Я]{2})\\s+"
-            + "(?<thpv>[A-ZА-Я]{2})\\s+"
-            + "(?<thcs>[A-ZА-Я]{2})\\s+"
-            + "(?<thrf>[A-ZА-Я]{2})\\s+"
-            + "(?<thpr>[A-ZА-Я]{2})\\s+"
-            + "(?<thcmv>[A-ZА-Я]{3})\\s+"
-            + "(?<th94>\\d{2})\\s+"
-            + "(?<thzvg>[A-ZА-Я]{3})\\s+"
-            + "(?<thftg>[A-ZА-Я]{3})\\s+"
-            + "(?<thmvz>[A-ZА-Я]{3})";
+    final static String regexTHead = "(?<thtype>[A-ZА-Я]{4,7})\\:\\s+(?<thsbst>[A-ZА-Я]{6}\\.)\\s+\\:\\s+"
+            + "(?<thvsg>[A-ZА-Я]{3})\\s+(?<thkr>[A-ZА-Я]{2})\\s+"
+            + "(?<thpl>[A-ZА-Я]{2})\\s+(?<thpv>[A-ZА-Я]{2})\\s+"
+            + "(?<thcs>[A-ZА-Я]{2})\\s+(?<thrf>[A-ZА-Я]{2})\\s+"
+            + "(?<thpr>[A-ZА-Я]{2})\\s+(?<thcmv>[A-ZА-Я]{3})\\s+"
+            + "(?<th94>\\d{2})\\s+(?<thzvg>[A-ZА-Я]{3})\\s+"
+            + "(?<thftg>[A-ZА-Я]{3})\\s+(?<thmvz>[A-ZА-Я]{3})";
 
-    final static String regexTBody = "((?<poluch>\\d{4}){0,1}\\s+)(\\D+\\s){0,1}(?<vg>\\d{8})\\s+(?<ves>\\d{1,2})(\\s(?<gr>\\d{5})\\s+(?<np>\\d{4})\\s+(?<idx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+(?<disl>\\d{5})\\s+(?<oper>[A-ZА-Я]{4})\\s+(?<vrop>\\d{2}\\s+\\d{2}\\-\\d{2})(?<vroj>\\s+\\d{2}\\s+\\d{2}\\-\\d{2}){0,1}){0,1}";
+//    final static String regexTBody = "(?<tdvcggrzvg>[A-ZА-Я]{2,3}\\s[A-ZА-Я]{0,3}\\.?[A-ZА-Я]{0,2})\\s{0,}\\:\\s{1,4}"
+//            + "(?<tdvsg>\\d{1,3})?\\s{1,4}(?<tdkr>\\d{1,3})?\\s{1,4}"
+//            + "(?<tdpl>\\d{1,3})?\\s{1,4}(?<tdpv>\\d{1,3})?\\s{1,4}"
+//            + "(?<tdcs>\\d{1,3})?\\s{1,4}(?<tdrf>\\d{1,3})?\\s{1,4}"
+//            + "(?<tdpr>\\d{1,3})?\\s{1,4}(?<tdcmv>\\d{1,3})?\\s{1,4}"
+//            + "(?<td94>\\d{1,3})?\\s{1,4}(?<tdzrv>\\d{1,3})?\\s{1,4}"
+//            + "(?<tdftg>\\d{1,3})?\\s{1,4}(?<tdmvz>\\d{1,3})?";
+    final static String regexTBody = "(?<tdvcggrzvg>[A-ZА-Я]{3,5}\\s[A-ZА-Я]{0,3}\\s?[A-ZА-Я]{0,5}\\.?[A-ZА-Я]{0,3})\\s{0,}\\:(\\s{1,5}(?<tdvsg>\\d{1,3})?\\s{1,5}(?<tdkr>\\d{1,3})?\\s{1,5}(?<tdpl>\\d{1,3})?\\s{1,5}(?<tdpv>\\d{1,3})?\\s{1,5}(?<tdcs>\\d{1,3})?\\s{1,5}(?<tdrf>\\d{1,3})?\\s{1,5}(?<tdpr>\\d{1,3})?\\s{1,4}(?<tdcmv>\\d{1,3})?\\s{1,4}(?<td94>\\d{1,3})?\\s{1,4}(?<tdzrv>\\d{1,3})?\\s{1,4}(?<tdftg>\\d{1,3})?\\s{1,4}(?<tdmvz>\\d{1,3})?)?";
 
     public HtmlTable processFile(String fileName) {
         String str = null;
@@ -60,6 +62,9 @@ public class Spravka3290Reader implements TableReaderInterface {
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
+        String park = "";
+        String period = "";
+        String type = "";
 
         /*
         * пока условно будем считать что файл всегда есть!
@@ -79,8 +84,8 @@ public class Spravka3290Reader implements TableReaderInterface {
             f = TextReplace.getSha(f1);
 
         } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka93Reader : " + ex);
+            Logger.getLogger(Spravka3290Reader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception in Spravka3290Reader : " + ex);
         }
 
         HtmlTable result = new HtmlTable();
@@ -91,9 +96,19 @@ public class Spravka3290Reader implements TableReaderInterface {
         boolean tableHeaderProcessed = false;
 
         while (matcher.find()) {
-            for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
-            }
+            result.addCell(matcher.group("dhvc"));
+            result.addCell(matcher.group("dhdor"));
+            result.addCell(matcher.group("dhcode"));
+            result.addCell(matcher.group("dhdate"));
+            result.addCell(matcher.group("dhtime"));
+            result.addCell(matcher.group("dhvc73"));
+            result.addCell(matcher.group("dhpvps"));
+            result.addCell("<br/><b>" + matcher.group("dhst") + "</b>");
+            
+            park = matcher.group("dhrp");
+           
+            result.addCell(matcher.group("dhper"));
+            result.addCell(matcher.group("dhperiod"));
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -110,11 +125,34 @@ public class Spravka3290Reader implements TableReaderInterface {
 
         while (matcher.find()) {
 
-            result.addCell("№");
-            for (int i = 1; i <= matcher.groupCount(); i++) {
+//            result.addCell("№");
+            result.addCell("ПАРК");
+//            result.addCell("ПЕРИОД");
+            result.addCell("ТИП");
+            
+            /*(?<thtype>[A-ZА-Я]{4,7})\\:\\s+(?<thsbst>[A-ZА-Я]{6}\\.)\\s+\\:\\s+"
+            + "(?<thvsg>[A-ZА-Я]{3})\\s+(?<thkr>[A-ZА-Я]{2})\\s+"
+            + "(?<thpl>[A-ZА-Я]{2})\\s+(?<thpv>[A-ZА-Я]{2})\\s+"
+            + "(?<thcs>[A-ZА-Я]{2})\\s+(?<thrf>[A-ZА-Я]{2})\\s+"
+            + "(?<thpr>[A-ZА-Я]{2})\\s+(?<thcmv>[A-ZА-Я]{3})\\s+"
+            + "(?<th94>\\d{2})\\s+(?<thzvg>[A-ZА-Я]{3})\\s+"
+            + "(?<thftg>[A-ZА-Я]{3})\\s+(?<thmvz>[A-ZА-Я]{3})*/
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thvsg"));
+//            result.addCell(matcher.group("thkr"));
+//            result.addCell(matcher.group("thpl"));
+//            result.addCell(matcher.group("thpv"));
+//            result.addCell(matcher.group("thcs"));
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thsbst"));
+//            result.addCell(matcher.group("thsbst"));
+            for (int i = 2; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-//            result.addCell("ТГНЛ");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -130,64 +168,49 @@ public class Spravka3290Reader implements TableReaderInterface {
 
         int n = 1;
         while (matcher.find()) {
-            result.addCell("" + n++);
-            if (matcher.group("poluch") != null) {
-                result.addCell(matcher.group("poluch"));
+
+            if ("ВСГ ГРЗ.ВГ".equals(matcher.group("tdvcggrzvg"))) {
+                result.addCell("<b>РП</b>");
+//                result.addCell("<b>" + period + "</b>");
+                result.addCell("<b>СДАЧА</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdvcggrzvg")) + "</b>");
+                result.addCell(delNull(matcher.group("tdvsg")));
+                result.addCell(delNull(matcher.group("tdkr")));
+                result.addCell(delNull(matcher.group("tdpl")));
+                result.addCell(delNull(matcher.group("tdpv")));
+                result.addCell(delNull(matcher.group("tdcs")));
+                result.addCell(delNull(matcher.group("tdrf")));
+                result.addCell(delNull(matcher.group("tdpr")));
+                result.addCell(delNull(matcher.group("tdcmv")));
+                result.addCell(delNull(matcher.group("td94")));
+                result.addCell(delNull(matcher.group("tdzrv")));
+                result.addCell(delNull(matcher.group("tdftg")));
+                result.addCell(delNull(matcher.group("tdmvz")));
+
+                result.markCurrentRowAsRegularUnderlining();
             } else {
                 result.addCell("");
-            }
-            if (matcher.group("vg") != null) {
-                result.addCell(matcher.group("vg"));
-            } else {
+//                result.addCell("");
                 result.addCell("");
-            }
-            if (matcher.group("ves") != null) {
-                result.addCell(matcher.group("ves"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("gr") != null) {
-                result.addCell(matcher.group("gr"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("np") != null) {
-                result.addCell(matcher.group("np"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("idx") != null) {
-                result.addCell(matcher.group("idx"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("disl") != null) {
-                result.addCell(matcher.group("disl"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("oper") != null) {
-                result.addCell(matcher.group("oper"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("vrop") != null) {
-                result.addCell(matcher.group("vrop"));
-            } else {
-                result.addCell("");
-            }
-            if (matcher.group("vroj") != null) {
-                result.addCell(matcher.group("vroj"));
-            } else {
-                result.addCell("");
+                if ("НИХ\r\nСОБСТ.ВАГ".equals(matcher.group("tdvcggrzvg"))) {
+                    result.addCell("<b>ИЗ " + delNull(matcher.group("tdvcggrzvg")) + "</b>");
+                } else {
+                    result.addCell(delNull(matcher.group("tdvcggrzvg")));
+                }
+                result.addCell(delNull(matcher.group("tdvsg")));
+                result.addCell(delNull(matcher.group("tdkr")));
+                result.addCell(delNull(matcher.group("tdpl")));
+                result.addCell(delNull(matcher.group("tdpv")));
+                result.addCell(delNull(matcher.group("tdcs")));
+                result.addCell(delNull(matcher.group("tdrf")));
+                result.addCell(delNull(matcher.group("tdpr")));
+                result.addCell(delNull(matcher.group("tdcmv")));
+                result.addCell(delNull(matcher.group("td94")));
+                result.addCell(delNull(matcher.group("tdzrv")));
+                result.addCell(delNull(matcher.group("tdftg")));
+                result.addCell(delNull(matcher.group("tdmvz")));
             }
 
-//            String bidx = "";
-//            for (int i = 1; i <= matcher.groupCount(); i++) {
-//                result.addCell(matcher.group(i));
-////                bidx = matcher.group("tbidx");
-//            }
-//            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
@@ -208,6 +231,18 @@ public class Spravka3290Reader implements TableReaderInterface {
             System.out.println("can not reading SPR3290 " + result);
             return null;
         }
+    }
+
+    private String delNull(String s) {
+        if (s != null) {
+            return s;
+        } else {
+            return "";
+        }
+    }
+
+    private String plusToSpace(String s) {
+        return s.replace("+", " ");
     }
 
     @Override

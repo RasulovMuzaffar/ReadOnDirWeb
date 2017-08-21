@@ -31,7 +31,7 @@ public class Spravka64Reader implements TableReaderInterface {
             + "(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s"
             + "((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+"
             + "(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+"
-            + "((?<tbstate2>[A-ZА-Я]{4}\\-?\\d{0,2})\\s"
+            + "((?<tbstate2>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+"
             + "(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}"
             + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s"
             + "(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}"

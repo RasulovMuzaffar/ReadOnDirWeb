@@ -63,6 +63,7 @@ public class ReadOnDir extends Thread {
     private static void pathListener() {
 // init composite reader - register all reader types
         tableReader.registerReader(new Spravka02Reader());
+        tableReader.registerReader(new Spravka1296Reader());
         tableReader.registerReader(new Spravka3290Reader());
         tableReader.registerReader(new Spravka5065Reader());
         tableReader.registerReader(new Spravka5072Reader());
