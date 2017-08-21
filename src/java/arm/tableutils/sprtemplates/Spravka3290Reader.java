@@ -163,33 +163,33 @@ public class Spravka3290Reader implements TableReaderInterface {
         while (matcher.find()) {
 
             if ("ВСГ ГРЗ.ВГ".equals(matcher.group("tdvcggrzvg"))) {
-                if (tip==1 || tip==2) {
-                    park="<b>РП</b>";
-                }else{
-                    park="<b>НРП</b>";
+                if (tip == 1 || tip == 2) {
+                    park = "<b>РП</b>";
+                } else {
+                    park = "<b>НРП</b>";
                 }
                 if (tip % 2 != 0) {
                     type = "<b>СДАЧА</b>";
-                }else{
+                } else {
                     type = "<b>ПРИЕМ</b>";
                 }
-                
+
                 result.addCell(park);
 //                result.addCell("<b>" + period + "</b>");
                 result.addCell(type);
                 result.addCell("<b>" + delNull(matcher.group("tdvcggrzvg")) + "</b>");
-                result.addCell(delNull(matcher.group("tdvsg")));
-                result.addCell(delNull(matcher.group("tdkr")));
-                result.addCell(delNull(matcher.group("tdpl")));
-                result.addCell(delNull(matcher.group("tdpv")));
-                result.addCell(delNull(matcher.group("tdcs")));
-                result.addCell(delNull(matcher.group("tdrf")));
-                result.addCell(delNull(matcher.group("tdpr")));
-                result.addCell(delNull(matcher.group("tdcmv")));
-                result.addCell(delNull(matcher.group("td94")));
-                result.addCell(delNull(matcher.group("tdzrv")));
-                result.addCell(delNull(matcher.group("tdftg")));
-                result.addCell(delNull(matcher.group("tdmvz")));
+                result.addCell("<b>" + delNull(matcher.group("tdvsg")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdkr")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdpl")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdpv")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdcs")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdrf")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdpr")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdcmv")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("td94")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdzrv")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdftg")) + "</b>");
+                result.addCell("<b>" + delNull(matcher.group("tdmvz")) + "</b>");
 
                 result.markCurrentRowAsRegularUnderlining();
             } else {
