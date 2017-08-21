@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arm.tableutils.sprtemplates;
 
 import arm.tableutils.HtmlTable;
@@ -17,10 +12,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Muzaffar
- */
 public class Spravka3290Reader implements TableReaderInterface {
 
     final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+"
@@ -104,9 +95,9 @@ public class Spravka3290Reader implements TableReaderInterface {
             result.addCell(matcher.group("dhvc73"));
             result.addCell(matcher.group("dhpvps"));
             result.addCell("<br/><b>" + matcher.group("dhst") + "</b>");
-            
+
             park = matcher.group("dhrp");
-           
+
             result.addCell(matcher.group("dhper"));
             result.addCell(matcher.group("dhperiod"));
 
@@ -129,7 +120,7 @@ public class Spravka3290Reader implements TableReaderInterface {
             result.addCell("ПАРК");
 //            result.addCell("ПЕРИОД");
             result.addCell("ТИП");
-            
+
             /*(?<thtype>[A-ZА-Я]{4,7})\\:\\s+(?<thsbst>[A-ZА-Я]{6}\\.)\\s+\\:\\s+"
             + "(?<thvsg>[A-ZА-Я]{3})\\s+(?<thkr>[A-ZА-Я]{2})\\s+"
             + "(?<thpl>[A-ZА-Я]{2})\\s+(?<thpv>[A-ZА-Я]{2})\\s+"
@@ -161,18 +152,25 @@ public class Spravka3290Reader implements TableReaderInterface {
 
             tHead = true;
             result.advanceToNextRow();
+            break;
         }
 
         pattern = Pattern.compile(regexTBody);
         matcher = pattern.matcher(f);
 
-        int n = 1;
+        int tip = 1;
+        int prk = 1;
         while (matcher.find()) {
 
             if ("ВСГ ГРЗ.ВГ".equals(matcher.group("tdvcggrzvg"))) {
+                if (tip % 2 != 0) {
+                    type = "<b>СДАЧА</b>";
+                }else{
+                    type = "<b>ПРИЕМ</b>";
+                }
                 result.addCell("<b>РП</b>");
 //                result.addCell("<b>" + period + "</b>");
-                result.addCell("<b>СДАЧА</b>");
+                result.addCell(type);
                 result.addCell("<b>" + delNull(matcher.group("tdvcggrzvg")) + "</b>");
                 result.addCell(delNull(matcher.group("tdvsg")));
                 result.addCell(delNull(matcher.group("tdkr")));
@@ -210,6 +208,7 @@ public class Spravka3290Reader implements TableReaderInterface {
                 result.addCell(delNull(matcher.group("tdftg")));
                 result.addCell(delNull(matcher.group("tdmvz")));
             }
+            tip++;
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
