@@ -1,4 +1,4 @@
-package arm.tableutils.sprtemplates;
+package arm.tableutils.sprtemplates.st;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -14,26 +14,17 @@ import java.util.regex.Pattern;
 
 public class Spravka93Reader implements TableReaderInterface {
 
-//    final static String regexDocHead = "(?<dhOrg>[А-ЯA-Z]{2,6})\\s+"
-//            + "(?<dhUTY>[А-ЯA-Z]{2,6})\\s+"
-//            + "(?<dhSpr>\\d{2,4})\\s+"
-//            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
-//            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
-//            + "(?<dhOrg2>[А-ЯA-Z]{2,6})\\s+"
-//            + "(?<dhnum>\\d{2,4})\\s+"
-//            + "(?<dhnpn>[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,7}\\s+[А-ЯA-Z]{2,11}\\s+[А-ЯA-Z]{2})\\s+"
-//            + "(?<dhSt>[А-ЯA-Z]{2}.\\s+[А-ЯA-Z\\d+]{2,8})";
-    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
-//            + "(?<dhcode>\\d{2})\\s+"
+//regexDocHead
+    final static String RDH = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
             + "(?<dhcode>93)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
             + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
-            //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAXOДЯЩИXCЯ\\s+HA\\s+CT.)\\s+"
             + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{11}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2}.)\\s+"
             + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
 
-    final static String regexTHead = "(?<hnum>[А-ЯA-Z]{5})\\s+"
+//    regexTHead
+    final static String RTH = "(?<hnum>[А-ЯA-Z]{5})\\s+"
             + "(?<hidx>[А-ЯA-Z]{6})\\s+"
             + "(?<hstate>[А-ЯA-Z]{4})\\s+"
             + "(?<hdate>[А-ЯA-Z]{4})\\s+"
@@ -43,7 +34,8 @@ public class Spravka93Reader implements TableReaderInterface {
             + "(?<hudl>[А-ЯA-Z]{3})\\s+"
             + "(?<hbrutt>[А-ЯA-Z]{5})";
 
-    final static String regexTBody = "(?<bnum>\\d{4})\\s+"
+//    regexTBody
+    final static String RTB = "(?<bnum>\\d{4})\\s+"
             + "(?<bidx>\\d{4}\\s+\\d{2,3}\\s\\d{4})\\s+"
             + "(?<bstate>[А-ЯA-Z]{2,4})\\s+"
             + "(?<bdate>\\d{2}.\\d{2})\\s+"
@@ -75,7 +67,7 @@ public class Spravka93Reader implements TableReaderInterface {
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f = TextReplace.getText(str);
 
@@ -85,7 +77,7 @@ public class Spravka93Reader implements TableReaderInterface {
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
+        pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
@@ -107,7 +99,7 @@ public class Spravka93Reader implements TableReaderInterface {
             return null;
         }
 
-        pattern = Pattern.compile(regexTHead);
+        pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
 
@@ -131,7 +123,7 @@ public class Spravka93Reader implements TableReaderInterface {
             return null;
         }
 
-        pattern = Pattern.compile(regexTBody);
+        pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
         int n = 1;
@@ -161,14 +153,11 @@ public class Spravka93Reader implements TableReaderInterface {
         System.out.println("tHead93 === " + tHead);
         System.out.println("tBody93 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-//            System.out.println("can reading SPR93 " + result);
+            System.out.println("can reading SPR93 " + result);
             ReadOnDir.spr = "sprDefault";
-//            System.out.println("+++++++++++++++++++++++++93++++++++++++++++++++++++");
-//            System.out.println("" + result.generateHtml());
-//            System.out.println("-------------------------93------------------------");
             return result;
         } else {
-//            System.out.println("can not reading SPR93 " + result);
+            System.out.println("can not reading SPR93 " + result);
             return null;
         }
     }

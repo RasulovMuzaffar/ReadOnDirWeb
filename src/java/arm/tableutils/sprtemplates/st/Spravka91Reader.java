@@ -1,4 +1,4 @@
-package arm.tableutils.sprtemplates;
+package arm.tableutils.sprtemplates.st;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -6,59 +6,44 @@ import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Spravka92Reader implements TableReaderInterface {
+public class Spravka91Reader implements TableReaderInterface {
 
-//    final static String regexDocHead = "(?<dhvcuty>[А-ЯA-Z]{2} [А-ЯA-Z]{3})\\s+"
-//            + "(?<dhcode>\\d{2})\\s+"
-//            + "(?<dhdate>\\d{2}.\\d{2})\\s+"
-//            + "(?<dhtime>\\d{2}-\\d{2})\\s+"
-//            + "(?<dhvc73>[А-ЯA-Z]{2} \\d{2})\\s+"
-//            + "(?<dhnpsst>[А-ЯA-Z]{7} [А-ЯA-Z]{7} [А-ЯA-Z]{14} [А-ЯA-Z]{2}.)\\s+"
-//            + "(?<dhst>[А-ЯA-Z]{5})";
-    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3})\\s+"
-            //            + "(?<dhcode>\\d{2})\\s+"
-            + "(?<dhcode>92)\\s+"
+//    regexDocHead
+    final static String RDH = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3,4})\\s+"
+            + "(?<dhcode>91)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
-            + "(?<dhvc73>[А-ЯA-Z]{2}\\s\\d{2})\\s+"
-            //            + "(?<dhnpsst>HAЛИЧИE\\s+ПOEЗДOB\\s+HAЗHAЧEHИEM\\s+HA\\s+CT.)\\s+"
-            + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{11}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2}.)\\s+"
-            //            + "(?<dhst>[А-ЯA-Z\\d+]{2,8})";
+            + "(?<dhvc73>[A-ZА-Я]{2}\\s\\d{2})\\s+"
+            + "(?<dhnpsst>[A-ZА-Я]{7}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{14}\\s[A-ZА-Я]{2}.)\\s+"
             + "(?<dhst>[A-ZА-Я]{0,6}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})";
 
-    final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
+//    regexTHead
+    final static String RTH = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
             + "(?<thstate>[A-ZА-Я]{4})\\s+"
             + "(?<thst>[A-ZА-Я]{4})\\s+"
             + "(?<thdate>[A-ZА-Я]{4})\\s+"
             + "(?<thtime>[A-ZА-Я]{5})";
 
-    final static String regexTBody = "(?<tbnum>\\d{4})\\s+"
-            + "(?<tbidx>\\d{4}\\s+\\d{2,3}\\s+\\d{4})\\s+"
+//    regexTBody
+    final static String RTB = "(?<tbnum>\\d{4})\\s+"
+            + "(?<tbidx>\\d{4,6}\\s+\\d{2,3}\\s+\\d{4,6})\\s+"
             + "(?<tbstate>[A-ZА-Я]{2,4})\\s+"
             + "(?<tbst>[A-ZА-Я]{0,6}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})\\s+"
             + "(?<tbdate>\\d{2}.\\d{2})\\s+"
             + "(?<tbtime>\\d{2}-\\d{2})";
 
-    String str = null;
-    String f = null;
-    Pattern pattern;
-    Matcher matcher;
-    boolean reading = false;
-    boolean docHead = false;
-    boolean tHead = false;
-    boolean tBody = false;
-    String doroga = "";
-
     @Override
     public HtmlTable processFile(String fileName) {
+
+        String str = null;
+        String f = null;
 
         /*
         * пока условно будем считать что файл всегда есть!
@@ -72,14 +57,13 @@ public class Spravka92Reader implements TableReaderInterface {
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f = TextReplace.getSha(TextReplace.getText(str));
-            //asdasdasd
 
         } catch (IOException ex) {
-            Logger.getLogger(Spravka92Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka92Reader : " + ex);
+            Logger.getLogger(Spravka91Reader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception in Spravka91Reader : " + ex);
         }
 
         String[] lines = f.split("ВЦ УТИ");
@@ -87,28 +71,34 @@ public class Spravka92Reader implements TableReaderInterface {
         HtmlTable result = new HtmlTable();
         if (lines.length > 1) {
             for (String l : lines) {
-                if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("92")) {
+                if (l.trim().length() > 0 && l.trim().substring(0, 2).equals("91")) {
                     result = getResult("ВЦ УТИ" + l);
                     break;
                 } else {
                     result = null;
                 }
             }
+
             return result;
         } else {
             return getResult(f);
         }
     }
 
-    private HtmlTable getResult(String text) {
-//        System.out.println("tttttttttttttttttttttttttttttttt");
-//        System.out.println(text);
-//        System.out.println("ttttttttttttttttttttttttttttttttt");
+    private HtmlTable getResult(String str) {
+        
+        Pattern pattern;
+        Matcher matcher;
+        boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
+        String doroga = "";
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
-        matcher = pattern.matcher(text);
+        pattern = Pattern.compile(RDH);
+        matcher = pattern.matcher(str);
 
         boolean tableHeaderProcessed = false;
 
@@ -129,11 +119,11 @@ public class Spravka92Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
         if (docHead == false) {
-            System.out.println("fignya v 92 docHead!!!");
+            System.out.println("fignya v 91 docHead!!!");
             return null;
         }
-        pattern = Pattern.compile(regexTHead);
-        matcher = pattern.matcher(text);
+        pattern = Pattern.compile(RTH);
+        matcher = pattern.matcher(str);
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
@@ -157,11 +147,11 @@ public class Spravka92Reader implements TableReaderInterface {
         }
 
         if (tHead == false) {
-            System.out.println("fignya v 92 tHead!!!");
+            System.out.println("fignya v 91 tHead!!!");
             return null;
         }
-        pattern = Pattern.compile(regexTBody);
-        matcher = pattern.matcher(text);
+        pattern = Pattern.compile(RTB);
+        matcher = pattern.matcher(str);
 
         int n = 1;
         while (matcher.find()) {
@@ -184,21 +174,18 @@ public class Spravka92Reader implements TableReaderInterface {
         }
 
         if (tBody == false) {
-            System.out.println("fignya v 92 tBody!!!");
+            System.out.println("fignya v 91 tBody!!!");
             return null;
         }
-        System.out.println("docHead92 === " + docHead);
-        System.out.println("tHead92 === " + tHead);
-        System.out.println("tBody92 === " + tBody);
+        System.out.println("docHead91 === " + docHead);
+        System.out.println("tHead91 === " + tHead);
+        System.out.println("tBody91 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-//            System.out.println("can reading SPR92 " + result);
+            System.out.println("can reading SPR91 " + result);
             ReadOnDir.spr = "sprDefault";
-//            System.out.println("+++++++++++++++++++++++++92++++++++++++++++++++++++");
-//            System.out.println("" + result.generateHtml());
-//            System.out.println("-------------------------92------------------------");
             return result;
         } else {
-//            System.out.println("can not reading SPR92 " + result);
+            System.out.println("can not reading SPR91 " + result);
             return null;
         }
     }

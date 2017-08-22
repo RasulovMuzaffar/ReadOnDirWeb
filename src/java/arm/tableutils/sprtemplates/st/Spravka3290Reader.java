@@ -1,4 +1,4 @@
-package arm.tableutils.sprtemplates;
+package arm.tableutils.sprtemplates.st;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 
 public class Spravka3290Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "(?<dhvc>[A-ZА-Я]{2})\\s+"
+//    regexDocHead
+    final static String RDH = "(?<dhvc>[A-ZА-Я]{2})\\s+"
             + "(?<dhdor>[A-ZА-Я]{3})\\s+"
             + "(?<dhcode>3290)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
@@ -26,7 +27,8 @@ public class Spravka3290Reader implements TableReaderInterface {
             + "(?<dhper>[A-ZА-Я]{6}\\:)"
             + "(?<dhperiod>\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{3}\\.)";
 
-    final static String regexTHead = "(?<thtype>[A-ZА-Я]{4,7})\\:\\s+(?<thsbst>[A-ZА-Я]{6}\\.)\\s+\\:\\s+"
+//    RTH
+    final static String RTH = "(?<thtype>[A-ZА-Я]{4,7})\\:\\s+(?<thsbst>[A-ZА-Я]{6}\\.)\\s+\\:\\s+"
             + "(?<thvsg>[A-ZА-Я]{3})\\s+(?<thkr>[A-ZА-Я]{2})\\s+"
             + "(?<thpl>[A-ZА-Я]{2})\\s+(?<thpv>[A-ZА-Я]{2})\\s+"
             + "(?<thcs>[A-ZА-Я]{2})\\s+(?<thrf>[A-ZА-Я]{2})\\s+"
@@ -34,28 +36,29 @@ public class Spravka3290Reader implements TableReaderInterface {
             + "(?<th94>\\d{2})\\s+(?<thzvg>[A-ZА-Я]{3})\\s+"
             + "(?<thftg>[A-ZА-Я]{3})\\s+(?<thmvz>[A-ZА-Я]{3})";
 
-//    final static String regexTBody = "(?<tdvcggrzvg>[A-ZА-Я]{2,3}\\s[A-ZА-Я]{0,3}\\.?[A-ZА-Я]{0,2})\\s{0,}\\:\\s{1,4}"
+//    final static String RTB = "(?<tdvcggrzvg>[A-ZА-Я]{2,3}\\s[A-ZА-Я]{0,3}\\.?[A-ZА-Я]{0,2})\\s{0,}\\:\\s{1,4}"
 //            + "(?<tdvsg>\\d{1,3})?\\s{1,4}(?<tdkr>\\d{1,3})?\\s{1,4}"
 //            + "(?<tdpl>\\d{1,3})?\\s{1,4}(?<tdpv>\\d{1,3})?\\s{1,4}"
 //            + "(?<tdcs>\\d{1,3})?\\s{1,4}(?<tdrf>\\d{1,3})?\\s{1,4}"
 //            + "(?<tdpr>\\d{1,3})?\\s{1,4}(?<tdcmv>\\d{1,3})?\\s{1,4}"
 //            + "(?<td94>\\d{1,3})?\\s{1,4}(?<tdzrv>\\d{1,3})?\\s{1,4}"
 //            + "(?<tdftg>\\d{1,3})?\\s{1,4}(?<tdmvz>\\d{1,3})?";
-    final static String regexTBody = "(?<tdvcggrzvg>[A-ZА-Я]{3,5}\\s[A-ZА-Я]{0,3}\\s?[A-ZА-Я]{0,5}\\.?[A-ZА-Я]{0,3})\\s{0,}\\:(\\s{1,5}(?<tdvsg>\\d{1,3})?\\s{1,5}(?<tdkr>\\d{1,3})?\\s{1,5}(?<tdpl>\\d{1,3})?\\s{1,5}(?<tdpv>\\d{1,3})?\\s{1,5}(?<tdcs>\\d{1,3})?\\s{1,5}(?<tdrf>\\d{1,3})?\\s{1,5}(?<tdpr>\\d{1,3})?\\s{1,4}(?<tdcmv>\\d{1,3})?\\s{1,4}(?<td94>\\d{1,3})?\\s{1,4}(?<tdzrv>\\d{1,3})?\\s{1,4}(?<tdftg>\\d{1,3})?\\s{1,4}(?<tdmvz>\\d{1,3})?)?";
+//    RTB
+    final static String RTB = "(?<tdvcggrzvg>[A-ZА-Я]{3,5}\\s[A-ZА-Я]{0,3}\\s?[A-ZА-Я]{0,5}\\.?[A-ZА-Я]{0,3})\\s{0,}\\:(\\s{1,5}(?<tdvsg>\\d{1,3})?\\s{1,5}(?<tdkr>\\d{1,3})?\\s{1,5}(?<tdpl>\\d{1,3})?\\s{1,5}(?<tdpv>\\d{1,3})?\\s{1,5}(?<tdcs>\\d{1,3})?\\s{1,5}(?<tdrf>\\d{1,3})?\\s{1,5}(?<tdpr>\\d{1,3})?\\s{1,4}(?<tdcmv>\\d{1,3})?\\s{1,4}(?<td94>\\d{1,3})?\\s{1,4}(?<tdzrv>\\d{1,3})?\\s{1,4}(?<tdftg>\\d{1,3})?\\s{1,4}(?<tdmvz>\\d{1,3})?)?";
 
+    @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
+        String str;// = null;
         String f = null;
-        String f1 = "";
+        String f1;// = "";
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
-        String park = "";
-        String period = "";
-        String type = "";
+        String park;// = "";
+        String type;// = "";
 
         /*
         * пока условно будем считать что файл всегда есть!
@@ -69,7 +72,7 @@ public class Spravka3290Reader implements TableReaderInterface {
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f1 = TextReplace.getText(str);
             f = TextReplace.getSha(f1);
@@ -81,7 +84,7 @@ public class Spravka3290Reader implements TableReaderInterface {
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
+        pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
@@ -110,7 +113,7 @@ public class Spravka3290Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        pattern = Pattern.compile(regexTHead);
+        pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
 
@@ -133,7 +136,7 @@ public class Spravka3290Reader implements TableReaderInterface {
             break;
         }
 
-        pattern = Pattern.compile(regexTBody);
+        pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
         int tip = 1;

@@ -1,10 +1,23 @@
 package arm.wr;
 
+import arm.tableutils.sprtemplates.st.Spravka5065Reader;
+import arm.tableutils.sprtemplates.st.Spravka3290Reader;
+import arm.tableutils.sprtemplates.st.Spravka91Reader;
+import arm.tableutils.sprtemplates.st.Spravka64Reader;
+import arm.tableutils.sprtemplates.st.Spravka57Reader;
+import arm.tableutils.sprtemplates.st.Spravka1296Reader;
+import arm.tableutils.sprtemplates.st.Spravka95Reader;
+import arm.tableutils.sprtemplates.st.Spravka7401Reader;
+import arm.tableutils.sprtemplates.st.Spravka93Reader;
+import arm.tableutils.sprtemplates.st.Spravka92Reader;
+import arm.tableutils.sprtemplates.st.Spravka5072Reader;
 import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
 import arm.tableutils.sprtemplates.*;
+import arm.tableutils.sprtemplates.pzd.Spravka12Reader;
+import arm.tableutils.sprtemplates.pzd.Spravka216Reader;
 //import static arm.tableutils.tablereaders.CompositeReader.lht;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.test.Auth;
@@ -75,6 +88,10 @@ public class ReadOnDir extends Thread {
         tableReader.registerReader(new Spravka92Reader());
         tableReader.registerReader(new Spravka93Reader());
         tableReader.registerReader(new Spravka95Reader());
+        ////////Работа с Поездами
+        tableReader.registerReader(new Spravka216Reader());
+        tableReader.registerReader(new Spravka12Reader());
+        
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {

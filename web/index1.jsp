@@ -459,7 +459,7 @@
                                 case 'pf23':
                                     console.log('(:3122 74:XXXX XXX XXXX 12 60 42 902:)');
                                     alert("на стадии разработки!");
-//                                    return '(:3122 74:XXXX XXX XXXX 12 60 42 902:)';
+//                                    return '(:3122 74:'+idx+'12 60 42 902:)';
                                     break;
                                 case 'pf24':
                                     console.log('(:3122 75:XXXX XXX XXXX 12 60 42 902:)');
@@ -468,8 +468,9 @@
                                     break;
                                 case 'pf25':
                                     console.log('(:213 0: XXXX XXX XXXX 12 42 60 902 104:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:213 0: XXXX XXX XXXX 12 42 60 902 104:)';
+//                                    alert("на стадии разработки!");
+//                                    return '(:213 0: '+idx+' 12 42 60 902 104:)';
+                                    return '(:213 0: '+idx+' 12:)';
                                     break;
 
                                     ////////////////////////////////////////////////

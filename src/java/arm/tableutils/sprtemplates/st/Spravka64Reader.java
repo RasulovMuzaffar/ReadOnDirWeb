@@ -1,4 +1,4 @@
-package arm.tableutils.sprtemplates;
+package arm.tableutils.sprtemplates.st;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -14,39 +14,24 @@ import java.util.regex.Pattern;
 
 public class Spravka64Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{2,4})\\s+"
+//    regexDocHead
+    final static String RDH = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{2,4})\\s+"
             + "(64)\\s+(\\d{2}.\\d{2})\\s+(\\d{2}\\-\\d{2})\\s+"
             + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{6})\\s+([A-ZА-Я]{7})\\s+"
             + "([A-ZА-Я]{1,6}\\-?\\.?[A-ZА-Я]{0,4}\\.?\\d{0,2}\\.?)\\s+"
             + "([A-ZА-Я]{1}\\s[A-ZА-Я]{8})";
 
-    final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
+//    regexTHead
+    final static String RTH = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
             + "(?<thstate>[A-ZА-Я]{4})\\s+"
             + "(?<thst>[A-ZА-Я]{4})\\s+"
             + "(?<thdate>[A-ZА-Я]{4})\\s+"
             + "(?<thtime>[A-ZА-Я]{5})";
 
-    final static String regexTBody = "(?<tbnp>\\d{4})\\s+"
-            + "(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s"
-            + "((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+"
-            + "(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+"
-            + "((?<tbstate2>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+"
-            + "(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}"
-            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s"
-            + "(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}"
-            + "(?<tbxz5>\\d{1,4}))?"
-            + "(\\s{11}(?<tbxz6>\\d{4}))?";
-    
-//    final static String regexTBody = "(?<tbnp>\\d{4})\\s+"
-//            + "(?<tbidx>\\d{4,6}\\+\\d{2,3}\\+\\d{4,6})\\s+"
-//            + "((?<tbstate1>[A-ZА-Я]{2,4})\\s+"
-//            + "(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+"
-//            + "((?<tbstate2>[A-ZА-Я]{2,4})\\s+"
-//            + "(?<tbtime2>\\d{2}\\-\\d{2}))?\\s+"
-//            + "((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{0,4})\\s"
-//            + "(?<tbxz3>\\d{0,3})\\s+"
-//            + "(?<tbxz4>[A-ZА-Я]{0,4})\\s+(?<tbxz5>\\d{0,4}))?";
+//    regexTBody
+    final static String RTB = "(?<tbnp>\\d{4})\\s+(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+((?<tbstate2>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}(?<tbxz5>\\d{1,4}))?(\\s{11}(?<tbxz6>\\d{4}))?";
+
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -71,18 +56,18 @@ public class Spravka64Reader implements TableReaderInterface {
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
-            f = TextReplace.getText(str);
+            f = (TextReplace.getText(str)).replace("\r\n\r\n", "\r\n");
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka64Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka93Reader : " + ex);
+            System.out.println("exception in Spravka64Reader : " + ex);
         }
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
+        pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
@@ -128,7 +113,7 @@ public class Spravka64Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        pattern = Pattern.compile(regexTBody);
+        pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
         int n = 1;
@@ -147,7 +132,17 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz4")));
             result.addCell(delNull(matcher.group("tbxz5")));
             result.addCell(delNull(matcher.group("tbxz6")));
-
+            System.out.println("64 ---> tbnp "+matcher.group("tbnp"));
+            System.out.println("        tbidx "+matcher.group("tbidx"));
+            System.out.println("        tbstate1 "+matcher.group("tbstate1"));
+            System.out.println("        tbstate2 "+matcher.group("tbstate2"));
+            System.out.println("        tbtime2 "+matcher.group("tbtime2"));
+            System.out.println("        tbxz1 "+matcher.group("tbxz1"));
+            System.out.println("        tbxz2 "+matcher.group("tbxz2"));
+            System.out.println("        tbxz3 "+matcher.group("tbxz3"));
+            System.out.println("        tbxz4 "+matcher.group("tbxz4"));
+            System.out.println("        tbxz5 "+matcher.group("tbxz5"));
+            System.out.println("        tbxz6 "+matcher.group("tbxz6"));
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

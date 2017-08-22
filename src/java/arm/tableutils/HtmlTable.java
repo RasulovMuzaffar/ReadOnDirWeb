@@ -17,15 +17,16 @@ public class HtmlTable {
     public void markCurrentRowAsDocHeader() {
         currentRow.type = RowType.DocHeader;
     }
-    
-    public void markCurrentRowAsRegularUnderlining(){
+
+    public void markCurrentRowAsRegularUnderlining() {
         currentRow.type = RowType.RegularUnderlining;
     }
-    public void markCurrentRowAsRegularUnderscore(){
+
+    public void markCurrentRowAsRegularUnderscore() {
         currentRow.type = RowType.RegularUnderscore;
     }
-    
-    public void markCurrentRowAsRegularHead(){
+
+    public void markCurrentRowAsRegularHead() {
         currentRow.type = RowType.RegularHead;
     }
 
@@ -46,9 +47,7 @@ public class HtmlTable {
                     result.append(THEAD_OPEN).append(ROW_OPEN);
                     for (String value : row.cells) {
                         if (row.type == RowType.Header) {
-                            result.append(HEADER_CELL_OPEN);
-                            result.append(value);
-                            result.append(HEADER_CELL_CLOSE);
+                            result.append(HEADER_CELL_OPEN).append(value).append(HEADER_CELL_CLOSE);
                         }
                     }
                     result.append(ROW_CLOSE).append(THEAD_CLOSE);
@@ -57,39 +56,31 @@ public class HtmlTable {
                     result.append(ROW_OPEN);
                     for (String value : row.cells) {
                         if (row.type == RowType.Regular) {
-                            result.append(CELL_OPEN);
-                            result.append(value);
-                            result.append(CELL_CLOSE);
+                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
                         }
                     }
                     result.append(ROW_CLOSE);
-                }else if(row.type.name().equals("RegularUnderlining")){
+                } else if (row.type.name().equals("RegularUnderlining")) {
                     result.append(ROW_OPEN_UNDERLINE);
                     for (String value : row.cells) {
                         if (row.type == RowType.RegularUnderlining) {
-                            result.append(CELL_OPEN);
-                            result.append(value);
-                            result.append(CELL_CLOSE);
+                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
                         }
                     }
                     result.append(ROW_CLOSE_UNDERLINE);
-                }else if(row.type.name().equals("RegularUnderscore")){
+                } else if (row.type.name().equals("RegularUnderscore")) {
                     result.append(ROW_OPEN_UNDERSCORE);
                     for (String value : row.cells) {
                         if (row.type == RowType.RegularUnderscore) {
-                            result.append(CELL_OPEN);
-                            result.append(value);
-                            result.append(CELL_CLOSE);
+                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
                         }
                     }
                     result.append(ROW_CLOSE_UNDERSCORE);
-                }else if(row.type.name().equals("RegularHead")){
+                } else if (row.type.name().equals("RegularHead")) {
                     result.append(ROW_OPEN);
                     for (String value : row.cells) {
                         if (row.type == RowType.RegularHead) {
-                            result.append(CELL_OPEN);
-                            result.append(value);
-                            result.append(CELL_CLOSE);
+                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
                         }
                     }
                     result.append(ROW_CLOSE);
@@ -102,7 +93,7 @@ public class HtmlTable {
 
     public String generateHtml() {
         StringBuilder result = new StringBuilder();
-                result.append(LABELDOC_OPEN);
+        result.append("<br/>").append(LABELDOC_OPEN);
         for (TableRow row : tableData) {
             for (String value : row.cells) {
                 if (row.type == RowType.DocHeader) {
@@ -110,11 +101,7 @@ public class HtmlTable {
                 }
             }
         }
-        result.append(LABELDOC_CLOSE);
-        result.append(DIV_TABL_OPEN);
-        result.append("\n");
-        result.append(generateHtmlTable());
-        result.append(DIV_TABL_CLOSE);
+        result.append(LABELDOC_CLOSE).append(DIV_TABL_OPEN).append(generateHtmlTable()).append(DIV_TABL_CLOSE);
         return result.toString();
     }
 
@@ -144,7 +131,7 @@ public class HtmlTable {
     private static final String ROW_CLOSE_UNDERLINE = "</tr>";
     private static final String ROW_OPEN_UNDERSCORE = "<tr class = 'RegularUnderscore'>";
     private static final String ROW_CLOSE_UNDERSCORE = "</tr>";
-    
+
 }
 
 enum RowType {

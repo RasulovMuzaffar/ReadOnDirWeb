@@ -1,4 +1,4 @@
-package arm.tableutils.sprtemplates;
+package arm.tableutils.sprtemplates.st;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 
 public class Spravka5072Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{3})\\s+"
+//    regexDocHead
+    final static String RDH = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{3})\\s+"
             + "(\\d{4})\\s+(\\d{2}.\\d{2}\\s+\\d{2}-\\d{2})\\s"
             + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{8})\\s"
             + "(\\\"[A-ZА-Я]{5}\\\")\\s([A-ZА-Я]{7})\\s([A-ZА-Я]{3}.[A-ZА-Я]{5})\\s"
@@ -22,7 +23,8 @@ public class Spravka5072Reader implements TableReaderInterface {
             + "([A-ZА-Я]{2,10}-{0,1}[A-ZА-Я]{0,5}\\d{0,4})\\s+"
             + "(,[A-ZА-Я]{5}\\s[A-ZА-Я]{3}.[A-ZА-Я]{6}\\s\\d{0,3}\\s[A-ZА-Я]{3}.)";
 
-    final static String regexTHead = "(?<nvag>[A-ZА-Я]{1}\\s[A-ZА-Я]{6}):"
+//    regexTHead
+    final static String RTH = "(?<nvag>[A-ZА-Я]{1}\\s[A-ZА-Я]{6}):"
             + "(?<stn>[A-ZА-Я]{2}.[A-ZА-Я]{2}):"
             + "(?<gr>[A-ZА-Я]{4})\\s:"
             + "(?<oper>[A-ZА-Я]{4}):"
@@ -33,11 +35,11 @@ public class Spravka5072Reader implements TableReaderInterface {
             + "(?<gos>[A-ZА-Я]{3})\\s:"
             + "(?<sto>[A-ZА-Я]{2}.[A-ZА-Я]{2})";
 
-//    final static String regexTBody = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}((?<tbnvag>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+(?<tbgr>\\d{5})\\s+(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})){0,1}\\s{0,}(?<tbvkv>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4}){0,1}(\\s+(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
-    final static String regexTBody = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}(?<tbnvag>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+(?<tbgr>\\d{5})\\s+(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s{0,}([A-ZА-Я]{5}:[A-ZА-Я]{10}\\s(?<tbvkv>[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}(\\s+(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
-//    final static String regexTBody = "(?<tbnvag>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+(?<tbgr>\\d{5})\\s+(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})";
-//    final static String regexTBody = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}(?<tbnvag>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+(?<tbgr>\\d{5})\\s+(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})";
+//    regexTBody
+    
+    final static String RTB = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}(?<tbnvag>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+(?<tbgr>\\d{5})\\s+(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s{0,}([A-ZА-Я]{5}:[A-ZА-Я]{10}\\s(?<tbvkv>[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}(\\s+(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
 
+    @Override
     public HtmlTable processFile(String fileName) {
         String str = null;
         String f = null;
@@ -60,19 +62,18 @@ public class Spravka5072Reader implements TableReaderInterface {
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f1 = TextReplace.getText(str);
             f = TextReplace.getSha(f1);
-            System.out.println("**************************************");
         } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Spravka5072Reader.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("exception in Spravka5072Reader : " + ex);
         }
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
+        pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
@@ -80,7 +81,6 @@ public class Spravka5072Reader implements TableReaderInterface {
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
-//                System.out.println("===>> " + matcher.group(i));
             }
 
             if (!tableHeaderProcessed) {
@@ -91,7 +91,7 @@ public class Spravka5072Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        pattern = Pattern.compile(regexTHead);
+        pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
 
@@ -114,14 +114,14 @@ public class Spravka5072Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        pattern = Pattern.compile(regexTBody);
+        pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
         int n = 1;
         while (matcher.find()) {
             result.addCell("" + n++);
 
-            result.addCell(delNull(matcher.group("tbsobst")));
+            result.addCell("<b>"+delNull(matcher.group("tbsobst"))+"</b>");
             result.addCell(delNull(matcher.group("tbnvag")));
             result.addCell(delNull(matcher.group("tbstn")));
             result.addCell(delNull(matcher.group("tbgr")));
@@ -134,14 +134,7 @@ public class Spravka5072Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbsto")));
             String column = htmlParse(delNull(matcher.group("tbvkv")));
             result.addCell(column);
-//            result.addCell(delNull(matcher.group("tbobwk")));
 
-//            String bidx = "";
-//            for (int i = 1; i <= matcher.groupCount(); i++) {
-//                result.addCell(matcher.group(i));
-////                bidx = matcher.group("tbidx");
-//            }
-//            result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
@@ -176,7 +169,7 @@ public class Spravka5072Reader implements TableReaderInterface {
     }
 
     private String htmlParse(String s) {
-        if (s != "") {
+        if (!"".equals(s)) {
             String[] str = s.split("\\s+");
             String s1 = str[0];
             String s2 = str[1];

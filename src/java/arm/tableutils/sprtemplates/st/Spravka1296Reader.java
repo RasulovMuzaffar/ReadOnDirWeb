@@ -1,4 +1,4 @@
-package arm.tableutils.sprtemplates;
+package arm.tableutils.sprtemplates.st;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 
 public class Spravka1296Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "(?<vc>[A-ZА-Я]{2})\\s+"
+//    regexDocHead
+    final static String RDH = "(?<vc>[A-ZА-Я]{2})\\s+"
             + "(?<dor>[A-ZА-Я]{2,4})\\s+(?<nspr>1296)\\s+"
             + "(?<date>\\d{2}\\.\\d{2})\\s+"
             + "(?<time>\\d{1,2}\\-\\d{1,2})\\s+"
@@ -24,20 +25,22 @@ public class Spravka1296Reader implements TableReaderInterface {
             + "(?<per>[A-ZА-Я]{6}\\:)\\s?"
             + "(?<pertime>\\d{1,2}\\-\\d{2}\\s[A-ZА-Я]{3})";
 
-    final static String regexTHead = "(?<thnum>[A-ZА-Я]{5})\\s+"
+//    regexTHead
+    final static String RTH = "(?<thnum>[A-ZА-Я]{5})\\s+"
             + "(?<thidx>[A-ZА-Я]{6})\\s+"
             + "(?<thstate>[A-ZА-Я]{4})\\s+"
             + "(?<thst>[A-ZА-Я]{4})\\s+"
             + "(?<thdate>[A-ZА-Я]{4})\\s+"
             + "(?<thtime>[A-ZА-Я]{5})";
 
-    final static String regexTBody1 = "\\n(?<tdnp1>\\d{4})\\s+"
+//regexTBody1
+    final static String RTB1 = "\\n(?<tdnp1>\\d{4})\\s+"
             + "(?<tdidx1>\\d{4,6}\\+\\d{3}\\+\\d{4,6})\\s+"
             + "(?<tdkv1>\\d{2})\\s+"
             + "(?<tddate1>\\d{2}\\.\\d{2})\\s+"
             + "(?<tdtime1>\\d{1,2}\\-\\d{1,2})";
-
-    final static String regexTBody2 = " (?<tdnp2>\\d{4})\\s+"
+//regexTBody2
+    final static String RTB2 = " (?<tdnp2>\\d{4})\\s+"
             + "(?<tdidx2>\\d{4,6}\\+\\d{3}\\+\\d{4,6})\\s+"
             + "(?<tdkv2>\\d{2})\\s+"
             + "(?<tddate2>\\d{2}\\.\\d{2})\\s+"
@@ -55,7 +58,6 @@ public class Spravka1296Reader implements TableReaderInterface {
         boolean tBody1 = false;
         boolean tBody2 = false;
 
-//        int pzdNet = 1;
 
         /*
         * пока условно будем считать что файл всегда есть!
@@ -69,7 +71,7 @@ public class Spravka1296Reader implements TableReaderInterface {
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            str = str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f = TextReplace.getText(str);
 
@@ -80,7 +82,7 @@ public class Spravka1296Reader implements TableReaderInterface {
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
+        pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
@@ -99,17 +101,6 @@ public class Spravka1296Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-//        tableHeaderProcessed = false;
-//        {
-//
-//            result.addCell("<br/><b style='color:red'>ПРИЕМ</b>");
-//
-//            if (!tableHeaderProcessed) {
-//                tableHeaderProcessed = true;
-//                result.markCurrentRowAsDocHeader();
-//            }
-//            result.advanceToNextRow();
-//        }
         tableHeaderProcessed = false;
 
         {
@@ -130,7 +121,7 @@ public class Spravka1296Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        pattern = Pattern.compile(regexTBody1);
+        pattern = Pattern.compile(RTB1);
         matcher = pattern.matcher(f);
 
         int n = 1;
@@ -140,23 +131,13 @@ public class Spravka1296Reader implements TableReaderInterface {
             } else {
                 result.addCell("");
             }
-//            if (matcher.group("pnet") != null) {
             result.addCell("" + n++);
             result.addCell(matcher.group("tdnp1"));
             result.addCell(plusToSpace(matcher.group("tdidx1")));
             result.addCell(delNull(matcher.group("tdkv1")));
             result.addCell(delNull(matcher.group("tddate1")));
             result.addCell(delNull(matcher.group("tdtime1")));
-//            } else {
-//                result.addCell("<b style='color:#51697E'>Поездов нет</b>");
-//                pzdNet = 0;
-//
-//                reading = true;
-//                tBody1 = true;
-//                result.advanceToNextRow();
-//
-//                break;
-//            }
+
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
@@ -168,39 +149,32 @@ public class Spravka1296Reader implements TableReaderInterface {
 
         tableHeaderProcessed = false;
 
-        {
-            result.addCell("Состояние");
-            result.addCell("№");
-            result.addCell("№ поезда");
-            result.addCell("Индекс поезда");
-            result.addCell("КВ");
-            result.addCell("Дата");
-            result.addCell("Время");
-
-            if (!tableHeaderProcessed) {
-                tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
-            }
-
-            tHead = true;
-            result.advanceToNextRow();
-        }
-
-//        System.out.println("pzdNet = " + pzdNet);
-//        if (pzdNet == 0) {
-//            result.addCell("<b style='color:#51697E'>Поездов нет</b>");
+//        {
+//            result.addCell("Состояние");
+//            result.addCell("№");
+//            result.addCell("№ поезда");
+//            result.addCell("Индекс поезда");
+//            result.addCell("КВ");
+//            result.addCell("Дата");
+//            result.addCell("Время");
 //
-//            reading = true;
-//            tBody2 = true;
+//            if (!tableHeaderProcessed) {
+//                tableHeaderProcessed = true;
+//                result.markCurrentRowAsHeader();
+//            }
+//
+//            tHead = true;
 //            result.advanceToNextRow();
-//
-//        } else {
-        pattern = Pattern.compile(regexTBody2);
+//        }
+
+
+        pattern = Pattern.compile(RTB2);
         matcher = pattern.matcher(f);
         int m = 1;
         while (matcher.find()) {
             if (m == 1) {
                 result.addCell("<b style='color:#51697E'>СДАЧА</b>");
+                result.markCurrentRowAsRegularUnderscore();
             } else {
                 result.addCell("");
             }
@@ -212,22 +186,21 @@ public class Spravka1296Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tddate2")));
             result.addCell(delNull(matcher.group("tdtime2")));
 
-            if (!tableHeaderProcessed) {
-                tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
-            }
+//            if (!tableHeaderProcessed) {
+//                tableHeaderProcessed = true;
+                
+//            }
             reading = true;
             tBody2 = true;
             result.advanceToNextRow();
         }
-//        }
 
         System.out.println("docHead1296 === " + docHead);
         System.out.println("tHead1296 === " + tHead);
         System.out.println("tBody1296-1 === " + tBody1);
         System.out.println("tBody1296-2 === " + tBody2);
-        if (reading == true && (docHead == true && tHead == true && tBody1
-                == true && tBody2 == true)) {
+        if (reading == true && (docHead == true && tHead == true && (tBody1
+                == true || tBody2 == true))) {
             System.out.println("can reading SPR1296 " + result);
             ReadOnDir.spr = "sprDefault";
             return result;

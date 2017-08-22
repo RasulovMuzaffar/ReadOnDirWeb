@@ -1,6 +1,7 @@
 
 package arm.tableutils.sprtemplates;
 
+import arm.tableutils.sprtemplates.st.Spravka93Reader;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
@@ -15,7 +16,8 @@ import java.util.regex.Pattern;
 
 public class Spravka902Reader implements TableReaderInterface {
 
-    final static String regexDocHead = "(?<dcode>\\d{3})\\s+"
+//    RDH
+    final static String RDH = "(?<dcode>\\d{3})\\s+"
             + "(?<dst>\\d{4,5})\\s+"
             + "(?<dnp>\\d{4})\\s+"
             + "(?<dindx>\\d{4}\\s\\d{2,3}\\s\\d{4})\\s+"
@@ -26,14 +28,16 @@ public class Spravka902Reader implements TableReaderInterface {
             + "(?<dxz1>\\d{4,5})\\s+"
             + "(?<dxz2>\\d \\d{4} \\d \\d)";
 
-    final static String regexTHead = "(?<hnum>[А-ЯA-Z]{5})\\s+"
+//    RTH
+    final static String RTH = "(?<hnum>[А-ЯA-Z]{5})\\s+"
             + "(?<hidx>[А-ЯA-Z]{6})\\s+"
             + "(?<hstate>[А-ЯA-Z]{4})\\s+"
             + "(?<hst>[А-ЯA-Z]{4})\\s+"
             + "(?<hdate>[А-ЯA-Z]{4})\\s+"
             + "(?<htime>[А-ЯA-Z]{5})";
 
-    final static String regexTBody = "(?<thnum>\\d{2})\\s+"
+//    RTB
+    final static String RTB = "(?<thnum>\\d{2})\\s+"
             + "(?<thnvag>\\d{8})\\s+"
             + "(?<thediz>\\d{4})\\s+"
             + "(?<thvesgr>\\d{3})\\s+"
@@ -77,7 +81,7 @@ public class Spravka902Reader implements TableReaderInterface {
 
         HtmlTable result = new HtmlTable();
 
-        pattern = Pattern.compile(regexDocHead);
+        pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
@@ -119,7 +123,7 @@ public class Spravka902Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        pattern = Pattern.compile(regexTBody);
+        pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
         while (matcher.find()) {

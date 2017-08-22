@@ -1,4 +1,9 @@
-package arm.tableutils.sprtemplates;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package arm.tableutils.sprtemplates.pzd;
 
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -12,51 +17,46 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Spravka02Reader implements TableReaderInterface {
+/**
+ *
+ * @author Muzaffar
+ */
+public class Spravka12Reader implements TableReaderInterface {
 
 //    regexDocHead
-    final static String RDH = "(?<dcode>\\d{2})\\s+"
-            + "(?<dst>\\d{4,5})\\s+"
-            + "(?<dnp>\\d{4})\\s+"
-            + "(?<dindx>\\d{4}\\s\\d{2,3}\\s\\d{4})\\s+"
-            + "(?<dediz>\\d{1})\\s+"
-            + "(?<ddate>\\d{2} \\d{2})\\s+"
-            + "(?<dtime>\\d{2} \\d{2})\\s+"
-            + "(?<duddl>\\d{2,3})\\s+"
-            + "(?<dxz1>\\d{4})\\s+"
-            + "(?<dxz2>\\d \\d{4} \\d \\d)";
+    final static String RDH = "(?<title>[A-ZА-Я]{2,3}\\s[A-ZА-Я]{2,4}\\s+12\\s+"
+            + "\\d{2}\\.\\d{2}\\s+\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{1,4}\\s+"
+            + "[A-ZА-Я]{6}\\s+[A-ZА-Я]{1}\\s+[A-ZА-Я]{7})\\s+"
+            + "\\((?<idx>\\d{4,6}\\s?\\+?\\s?\\d{1,3}\\s?\\+?\\s?\\d{4,6})\\)";
 
 //    regexTHead
-    final static String RTH = "(?<hnum>[А-ЯA-Z]{5})\\s+"
-            + "(?<hidx>[А-ЯA-Z]{6})\\s+"
-            + "(?<hstate>[А-ЯA-Z]{4})\\s+"
-            + "(?<hst>[А-ЯA-Z]{4})\\s+"
-            + "(?<hdate>[А-ЯA-Z]{4})\\s+"
-            + "(?<htime>[А-ЯA-Z]{5})";
+    final static String RTH = "(?<thst>[A-ZА-Я]{4})\\s+"
+            + "(?<thoper>[A-ZА-Я]{4})\\s+"
+            + "(?<thdate>[A-ZА-Я]{4})\\s+"
+            + "(?<thtime>[A-ZА-Я]{5})\\s+"
+            + "(?<thnapr>[A-ZА-Я]{4})\\s+"
+            + "(?<thnp>[A-ZА-Я]{5})";
 
 //    regexTBody
-    final static String RTB = "(?<thnum>\\d{2})\\s+"
-            + "(?<thnvag>\\d{8})\\s+"
-            + "(?<thediz>\\d{1})\\s+"
-            + "(?<thvesgr>\\d{3})\\s+"
-            + "(?<thstnaz>\\d{5})\\s+"
-            + "(?<thcodgr>\\d{5})\\s+"
-            + "(?<thcodpoluch>\\d{4,6})\\s+"
-            + "(?<thxz1>\\d \\d \\d \\d)\\s+"
-            + "(?<thkont>\\d{2}\\/\\d{2})\\s+"
-            + "(?<thxz2>\\d{5})\\s+"
-            + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
+    final static String RTB = "(?<tbst>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,2}\\.?)\\s+"
+            + "(?<tboper>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+"
+            + "(?<tbdate>\\d{2}\\.\\d{2})\\s+"
+            + "(?<tbtime>\\d{2}\\-\\d{2})\\s+"
+            + "(?<tbnapr>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,2}\\.?)\\s+"
+            + "(?<tbnp>\\d{4}\\s?\\+?\\-?\\d{0,3})";
 
     @Override
     public HtmlTable processFile(String fileName) {
         String str = null;
         String f = null;
+        String f1 = "";
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
+
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -71,10 +71,12 @@ public class Spravka02Reader implements TableReaderInterface {
 
             str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
-            f = TextReplace.getText(str);
+            f1 = TextReplace.getText(str);
+            f = TextReplace.getSha(f1);
 
         } catch (IOException ex) {
-            Logger.getLogger(Spravka02Reader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Spravka12Reader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception in Spravka12Reader : " + ex);
         }
 
         HtmlTable result = new HtmlTable();
@@ -83,10 +85,13 @@ public class Spravka02Reader implements TableReaderInterface {
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
+
         while (matcher.find()) {
-            for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
-            }
+//            for (int i = 1; i <= matcher.groupCount(); i++) {
+//                result.addCell(matcher.group(i));
+//            }
+            result.addCell(matcher.group("title"));
+            result.addCell("<b>" + matcher.group("idx") + "</b>");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -97,21 +102,17 @@ public class Spravka02Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        {
-            tableHeaderProcessed = false;
+        pattern = Pattern.compile(RTH);
+        matcher = pattern.matcher(f);
+        tableHeaderProcessed = false;
 
-            result.addCell("№");
-            result.addCell("№ вагона");
-            result.addCell("ед.изм");
-            result.addCell("вес груза");
-            result.addCell("ст. назнач");
-            result.addCell("код груза");
-            result.addCell("код получателя");
-            result.addCell("хз");
-            result.addCell("контейнер (гр/пор)");
-            result.addCell("хз");
-            result.addCell("охраняемый");
+        while (matcher.find()) {
 
+            result.addCell("№");  
+             for (int i = 1; i <= matcher.groupCount(); i++) {
+                result.addCell(matcher.group(i));
+            }
+            
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();
@@ -124,7 +125,9 @@ public class Spravka02Reader implements TableReaderInterface {
         pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
+        int n = 1;
         while (matcher.find()) {
+            result.addCell("" + n++);
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
@@ -138,18 +141,29 @@ public class Spravka02Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        System.out.println("docHead02 === " + docHead);
-        System.out.println("tHead02 === " + tHead);
-        System.out.println("tBody02 === " + tBody);
+        System.out.println("docHead12 === " + docHead);
+        System.out.println("tHead12 === " + tHead);
+        System.out.println("tBody12 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR02 " + result);
-            ReadOnDir.spr = "sprPopup";
+            System.out.println("can reading SPR12 " + result);
+            ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR02 " + result);
+            System.out.println("can not reading SPR12 " + result);
             return null;
         }
+    }
 
+    private String delNull(String s) {
+        if (s != null) {
+            return s;
+        } else {
+            return "";
+        }
+    }
+
+    private String plusToSpace(String s) {
+        return s.replace("+", " ");
     }
 
     @Override
