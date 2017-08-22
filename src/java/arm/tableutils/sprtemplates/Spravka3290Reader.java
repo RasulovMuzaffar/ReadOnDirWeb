@@ -116,31 +116,9 @@ public class Spravka3290Reader implements TableReaderInterface {
 
         while (matcher.find()) {
 
-//            result.addCell("№");
             result.addCell("ПАРК");
-//            result.addCell("ПЕРИОД");
             result.addCell("ТИП");
 
-            /*(?<thtype>[A-ZА-Я]{4,7})\\:\\s+(?<thsbst>[A-ZА-Я]{6}\\.)\\s+\\:\\s+"
-            + "(?<thvsg>[A-ZА-Я]{3})\\s+(?<thkr>[A-ZА-Я]{2})\\s+"
-            + "(?<thpl>[A-ZА-Я]{2})\\s+(?<thpv>[A-ZА-Я]{2})\\s+"
-            + "(?<thcs>[A-ZА-Я]{2})\\s+(?<thrf>[A-ZА-Я]{2})\\s+"
-            + "(?<thpr>[A-ZА-Я]{2})\\s+(?<thcmv>[A-ZА-Я]{3})\\s+"
-            + "(?<th94>\\d{2})\\s+(?<thzvg>[A-ZА-Я]{3})\\s+"
-            + "(?<thftg>[A-ZА-Я]{3})\\s+(?<thmvz>[A-ZА-Я]{3})*/
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thvsg"));
-//            result.addCell(matcher.group("thkr"));
-//            result.addCell(matcher.group("thpl"));
-//            result.addCell(matcher.group("thpv"));
-//            result.addCell(matcher.group("thcs"));
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thsbst"));
-//            result.addCell(matcher.group("thsbst"));
             for (int i = 2; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
@@ -173,9 +151,9 @@ public class Spravka3290Reader implements TableReaderInterface {
                 } else {
                     type = "<b>ПРИЕМ</b>";
                 }
+                
 
                 result.addCell(park);
-//                result.addCell("<b>" + period + "</b>");
                 result.addCell(type);
                 result.addCell("<b>" + delNull(matcher.group("tdvcggrzvg")) + "</b>");
                 result.addCell("<b>" + delNull(matcher.group("tdvsg")) + "</b>");
@@ -194,7 +172,6 @@ public class Spravka3290Reader implements TableReaderInterface {
                 result.markCurrentRowAsRegularUnderlining();
             } else {
                 result.addCell("");
-//                result.addCell("");
                 result.addCell("");
                 if ("НИХ\r\nСОБСТ.ВАГ".equals(matcher.group("tdvcggrzvg"))) {
                     result.addCell("<b>ИЗ " + delNull(matcher.group("tdvcggrzvg")) + "</b>");
