@@ -37,7 +37,18 @@ public class Spravka5072Reader implements TableReaderInterface {
 
 //    regexTBody
     
-    final static String RTB = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}(?<tbnvag>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+(?<tbgr>\\d{5})\\s+(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s{0,}([A-ZА-Я]{5}:[A-ZА-Я]{10}\\s(?<tbvkv>[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}(\\s+(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
+    final static String RTB = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}"
+            + "(?<tbnvag>\\d{8})\\s+"
+            + "(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+"
+            + "(?<tbgr>\\d{5})\\s+"
+            + "(?<tboper>[A-ZА-Я]{3,5}\\d{0,3})\\s+"
+            + "(?<tbdt1>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+"
+            + "(?<tbstp>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s+"
+            + "(?<tbdt2>\\d{2}.\\d{2}\\s\\d{2}-\\d{2})\\s+"
+            + "(?<tbdor>\\d{1,3})\\s+(?<tbgos>\\d{1,3})\\s+"
+            + "(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s{0,}([A-ZА-Я]{5}:[A-ZА-Я]{10}\\s"
+            + "(?<tbvkv>[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}(\\s+"
+            + "(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
 
     @Override
     public HtmlTable processFile(String fileName) {

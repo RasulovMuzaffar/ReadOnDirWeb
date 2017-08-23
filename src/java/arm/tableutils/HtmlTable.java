@@ -10,6 +10,11 @@ public class HtmlTable {
         tableData.add(currentRow);
     }
 
+    public void advanceToNextTable(){
+        currentTable = new Table();
+        tableD.add(currentTable);
+    }
+    
     public void markCurrentRowAsHeader() {
         currentRow.type = RowType.Header;
     }
@@ -28,6 +33,10 @@ public class HtmlTable {
 
     public void markCurrentRowAsRegularHead() {
         currentRow.type = RowType.RegularHead;
+    }
+    
+    public void markNextTable(){
+        currentRow.type = RowType.NextTable;
     }
 
     public void addCell(String value) {
@@ -51,8 +60,7 @@ public class HtmlTable {
                         }
                     }
                     result.append(ROW_CLOSE).append(THEAD_CLOSE);
-                }
-                if (row.type.name().equals("Regular")) {
+                }else if (row.type.name().equals("Regular")) {
                     result.append(ROW_OPEN);
                     for (String value : row.cells) {
                         if (row.type == RowType.Regular) {
@@ -60,7 +68,10 @@ public class HtmlTable {
                         }
                     }
                     result.append(ROW_CLOSE);
-                } else if (row.type.name().equals("RegularUnderlining")) {
+                } else if (row.type.name().equals("NextTable")) {
+                    System.out.println("NEXT TABLE!!!");
+                    result.append(TABLE_CLOSE).append("<br/>").append(TABLE_OPEN);
+                }else if (row.type.name().equals("RegularUnderlining")) {
                     result.append(ROW_OPEN_UNDERLINE);
                     for (String value : row.cells) {
                         if (row.type == RowType.RegularUnderlining) {
@@ -87,7 +98,7 @@ public class HtmlTable {
                 }
             }
         }
-        result.append(TABLE_CLOSE);
+        result.append(TABLE_CLOSE).append("<br/>");
         return result.toString();
     }
 
@@ -106,7 +117,9 @@ public class HtmlTable {
     }
 
     private List<TableRow> tableData = new LinkedList<>();
+    private List<Table> tableD = new LinkedList<>();
     private TableRow currentRow = null;
+    private Table currentTable = null;
     private static final String HTML_OPEN = "<html>\n";
     private static final String HTML_CLOSE = "</html>";
     private static final String BODY_OPEN = "<body>\n";
@@ -140,11 +153,16 @@ enum RowType {
     Regular,
     RegularUnderlining,
     RegularUnderscore,
-    RegularHead
+    RegularHead,
+    NextTable
 }
 
 class TableRow {
 
     public List<String> cells = new LinkedList<>();
     public RowType type = RowType.Regular;
+}
+
+class Table{
+    public RowType type = RowType.NextTable;
 }
