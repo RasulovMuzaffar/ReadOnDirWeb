@@ -84,7 +84,7 @@ public class Spravka12Reader implements TableReaderInterface {
 //                result.addCell(matcher.group(i));
 //            }
             result.addCell(matcher.group("title"));
-            result.addCell("<b>" + matcher.group("idx") + "</b>");
+            result.addCell("<b>" + plusToSpace(matcher.group("idx")) + "</b>");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

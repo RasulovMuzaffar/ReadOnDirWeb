@@ -5,16 +5,16 @@ import java.util.List;
 
 public class HtmlTable {
 
+    public void advanceToNextTable() {
+        currentTable = new Table();
+        tables.add(currentTable);
+    }
+
     public void advanceToNextRow() {
         currentRow = new TableRow();
         tableData.add(currentRow);
     }
 
-    public void advanceToNextTable(){
-        currentTable = new Table();
-        tableD.add(currentTable);
-    }
-    
     public void markCurrentRowAsHeader() {
         currentRow.type = RowType.Header;
     }
@@ -34,8 +34,8 @@ public class HtmlTable {
     public void markCurrentRowAsRegularHead() {
         currentRow.type = RowType.RegularHead;
     }
-    
-    public void markNextTable(){
+
+    public void markNextTable() {
         currentRow.type = RowType.NextTable;
     }
 
@@ -43,58 +43,69 @@ public class HtmlTable {
         if (currentRow == null) {
             advanceToNextRow();
         }
-
         currentRow.cells.add(value);
     }
 
+    public void addTable(HtmlTable value) {
+        if (currentTable == null) {
+            advanceToNextTable();
+        }
+        currentTable.tables.add(value);
+    }
+
     public String generateHtmlTable() {
-        StringBuilder result = new StringBuilder();//HTML_OPEN + BODY_OPEN;
+        StringBuilder result = new StringBuilder();
         result.append(TABLE_OPEN);
         for (TableRow row : tableData) {
             if (!row.cells.isEmpty() && !row.type.name().equals("DocHeader")) {
-                if (row.type.name().equals("Header")) {
-                    result.append(THEAD_OPEN).append(ROW_OPEN);
-                    for (String value : row.cells) {
-                        if (row.type == RowType.Header) {
-                            result.append(HEADER_CELL_OPEN).append(value).append(HEADER_CELL_CLOSE);
+                switch (row.type.name()) {
+                    case "Header":
+                        result.append(THEAD_OPEN).append(ROW_OPEN);
+                        for (String value : row.cells) {
+                            if (row.type == RowType.Header) {
+                                result.append(HEADER_CELL_OPEN).append(value).append(HEADER_CELL_CLOSE);
+                            }
                         }
-                    }
-                    result.append(ROW_CLOSE).append(THEAD_CLOSE);
-                }else if (row.type.name().equals("Regular")) {
-                    result.append(ROW_OPEN);
-                    for (String value : row.cells) {
-                        if (row.type == RowType.Regular) {
-                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                        result.append(ROW_CLOSE).append(THEAD_CLOSE);
+                        break;
+                    case "Regular":
+                        result.append(ROW_OPEN);
+                        for (String value : row.cells) {
+                            if (row.type == RowType.Regular) {
+                                result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                            }
                         }
-                    }
-                    result.append(ROW_CLOSE);
-                } else if (row.type.name().equals("NextTable")) {
-                    System.out.println("NEXT TABLE!!!");
-                    result.append(TABLE_CLOSE).append("<br/>").append(TABLE_OPEN);
-                }else if (row.type.name().equals("RegularUnderlining")) {
-                    result.append(ROW_OPEN_UNDERLINE);
-                    for (String value : row.cells) {
-                        if (row.type == RowType.RegularUnderlining) {
-                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                        result.append(ROW_CLOSE);
+                        break;
+                    case "RegularUnderlining":
+                        result.append(ROW_OPEN_UNDERLINE);
+                        for (String value : row.cells) {
+                            if (row.type == RowType.RegularUnderlining) {
+                                result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                            }
                         }
-                    }
-                    result.append(ROW_CLOSE_UNDERLINE);
-                } else if (row.type.name().equals("RegularUnderscore")) {
-                    result.append(ROW_OPEN_UNDERSCORE);
-                    for (String value : row.cells) {
-                        if (row.type == RowType.RegularUnderscore) {
-                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                        result.append(ROW_CLOSE_UNDERLINE);
+                        break;
+                    case "RegularUnderscore":
+                        result.append(ROW_OPEN_UNDERSCORE);
+                        for (String value : row.cells) {
+                            if (row.type == RowType.RegularUnderscore) {
+                                result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                            }
                         }
-                    }
-                    result.append(ROW_CLOSE_UNDERSCORE);
-                } else if (row.type.name().equals("RegularHead")) {
-                    result.append(ROW_OPEN);
-                    for (String value : row.cells) {
-                        if (row.type == RowType.RegularHead) {
-                            result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                        result.append(ROW_CLOSE_UNDERSCORE);
+                        break;
+                    case "RegularHead":
+                        result.append(ROW_OPEN);
+                        for (String value : row.cells) {
+                            if (row.type == RowType.RegularHead) {
+                                result.append(CELL_OPEN).append(value).append(CELL_CLOSE);
+                            }
                         }
-                    }
-                    result.append(ROW_CLOSE);
+                        result.append(ROW_CLOSE);
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -104,20 +115,40 @@ public class HtmlTable {
 
     public String generateHtml() {
         StringBuilder result = new StringBuilder();
-        result.append("<br/>").append(LABELDOC_OPEN);
-        for (TableRow row : tableData) {
-            for (String value : row.cells) {
-                if (row.type == RowType.DocHeader) {
-                    result.append(value).append(" ");
+
+        if (tables.size() > 1) {
+            for (Table t : tables) {
+                for (HtmlTable t2 : t.tables) {
+                    result.append("<br/>").append(LABELDOC_OPEN);
+                    for (TableRow row : t2.tableData) {
+                        for (String value : row.cells) {
+                            if (row.type == RowType.DocHeader) {
+                                result.append(value).append(" ");
+                            }
+                        }
+                    }
+                    result.append(LABELDOC_CLOSE);
+
+                    result.append(DIV_TABL_OPEN).append(t2.generateHtmlTable()).append(DIV_TABL_CLOSE);
                 }
             }
+        } else {
+            result.append("<br/>").append(LABELDOC_OPEN);
+            for (TableRow row : tableData) {
+                for (String value : row.cells) {
+                    if (row.type == RowType.DocHeader) {
+                        result.append(value).append(" ");
+                    }
+                }
+            }
+            result.append(LABELDOC_CLOSE);
+            result.append(DIV_TABL_OPEN).append(generateHtmlTable()).append(DIV_TABL_CLOSE);
         }
-        result.append(LABELDOC_CLOSE).append(DIV_TABL_OPEN).append(generateHtmlTable()).append(DIV_TABL_CLOSE);
         return result.toString();
     }
 
     private List<TableRow> tableData = new LinkedList<>();
-    private List<Table> tableD = new LinkedList<>();
+    private List<Table> tables = new LinkedList<>();
     private TableRow currentRow = null;
     private Table currentTable = null;
     private static final String HTML_OPEN = "<html>\n";
@@ -163,6 +194,8 @@ class TableRow {
     public RowType type = RowType.Regular;
 }
 
-class Table{
+class Table {
+
+    public List<HtmlTable> tables = new LinkedList<>();
     public RowType type = RowType.NextTable;
 }

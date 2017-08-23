@@ -41,12 +41,16 @@ public class Spravka104Reader implements TableReaderInterface {
             + "(?<thgos>[A-ZА-Я]{3})";
 
 //    regexTBody
+//    final static String RTB2 = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{2,4})\\s+)?"
+//            + "(?<tbnv>\\d{8})\\s+"
+//            + "(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+"
+//            + "(?<tbgr>\\d{5})\\s+"
+//            + "(?<tbdor>\\d{1,2})\\s+"
+//            + "(?<tbgos>\\d{1,2})";
     final static String RTB2 = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{2,4})\\s+)?"
-            + "(?<tbnv>\\d{8})\\s+"
-            + "(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+"
-            + "(?<tbgr>\\d{5})\\s+"
-            + "(?<tbdor>\\d{1,2})\\s+"
-            + "(?<tbgos>\\d{1,2})";
+            + "(?<tbnv>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+"
+            + "(?<tbgr>\\d{5})\\s+(?<tbdor>\\d{1,2})\\s+(?<tbgos>\\d{1,2})(\\s[A-ZА-Я]{2,4}\\s+(?<tbiv>\\d{1,3}))?";
+    //https://regex101.com/r/JCkg1B/1
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -82,7 +86,9 @@ public class Spravka104Reader implements TableReaderInterface {
             System.out.println("exception in Spravka104Reader : " + ex);
         }
 
-        HtmlTable result = new HtmlTable();
+        HtmlTable result1 = new HtmlTable();
+        HtmlTable result2 = new HtmlTable();
+        HtmlTable resultT = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
@@ -90,18 +96,17 @@ public class Spravka104Reader implements TableReaderInterface {
         boolean tableHeaderProcessed = false;
 
         while (matcher.find()) {
-
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
+                result1.addCell(matcher.group(i));
             }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
-                result.markCurrentRowAsDocHeader();
+                result1.markCurrentRowAsDocHeader();
             }
 
             docHead = true;
-            result.advanceToNextRow();
+            result1.advanceToNextRow();
         }
 
         pattern = Pattern.compile(RTH1);
@@ -109,19 +114,19 @@ public class Spravka104Reader implements TableReaderInterface {
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
-            result.addCell("№");
+            result1.addCell("№");
 
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
+                result1.addCell(matcher.group(i));
             }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
+                result1.markCurrentRowAsHeader();
             }
 
             tHead = true;
-            result.advanceToNextRow();
+            result1.advanceToNextRow();
         }
 
         pattern = Pattern.compile(RTB1);
@@ -129,88 +134,98 @@ public class Spravka104Reader implements TableReaderInterface {
 
         int n = 1;
         while (matcher.find()) {
-            result.addCell("" + n++);
+            result1.addCell("" + n++);
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
+                result1.addCell(matcher.group(i));
             }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
+                result1.markCurrentRowAsHeader();
             }
             reading = true;
             tBody = true;
-            result.advanceToNextRow();
+            result1.advanceToNextRow();
         }
-        System.out.println("result.markNextTable();");
-        result.advanceToNextTable();
-        System.out.println("result.markNextTable();");
-        
+        resultT.addTable(result1);
+        resultT.advanceToNextTable();
+
         pattern = Pattern.compile(RTH2);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
 
-            result.addCell("№");
-            result.addCell("СОБСТВЕННИК");
+            result2.addCell("№");
+            result2.addCell("СОБСТВЕННИК");
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
+                result2.addCell(matcher.group(i));
             }
-            result.addCell("КОЛИЧЕСТВО");
+            result2.addCell("КОЛИЧЕСТВО");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
+                result2.markCurrentRowAsHeader();
             }
 
             tHead = true;
-            result.advanceToNextRow();
+            result2.advanceToNextRow();
         }
 
         pattern = Pattern.compile(RTB2);
         matcher = pattern.matcher(f);
 
         int m = 1;
-        int k=0;
-        while (matcher.find()) {
-            if (matcher.group("tbsobst") != null) {
-                k = 0;
-            }
-                k++;
-            
-                result.addCell("" + m++);
+        int k = 0;
+        int l = 0;
+//        boolean x = matcher.find();
+//        while (x) {
+//            if (matcher.group("tbsobst") != null) {
+//                k = 0;
+//            }
+//            k++;
+while(matcher.find()){
+            result2.addCell("" + m++);
 
-                result.addCell("<b>" + delNull(matcher.group("tbsobst")) + "</b>");
-                result.addCell(delNull(matcher.group("tbnv")));
-                result.addCell(delNull(matcher.group("tbstn")));
-                result.addCell(delNull(matcher.group("tbgr")));
-                result.addCell(delNull(matcher.group("tbdor")));
-                result.addCell(delNull(matcher.group("tbgos")));
+            result2.addCell("<b>" + delNull(matcher.group("tbsobst")) + "</b>");
+            result2.addCell(delNull(matcher.group("tbnv")));
+            result2.addCell(delNull(matcher.group("tbstn")));
+            result2.addCell(delNull(matcher.group("tbgr")));
+            result2.addCell(delNull(matcher.group("tbdor")));
+            result2.addCell(delNull(matcher.group("tbgos")));
 //            String column = htmlParse(k);
-                result.addCell("Вагонов " + k);
 
-                if (!tableHeaderProcessed) {
-                    tableHeaderProcessed = true;
-                    result.markCurrentRowAsHeader();
-                }
+//            x = matcher.find();
+//            if (!x || l == 0) {
+//                result2.addCell(htmlParse("Вагонов " + k));
+//            } else {
+//                result2.addCell("");
+//            }
+//            l++;
+            if (!tableHeaderProcessed) {
+                tableHeaderProcessed = true;
+                result2.markCurrentRowAsHeader();
+            }
 //            if (!column.equals("")) {
 //                result.markCurrentRowAsRegularUnderlining();
 //            }
             reading = true;
             tBody = true;
-            result.advanceToNextRow();
+            result2.advanceToNextRow();
         }
+        resultT.addTable(result2);
+//        resultT.advanceToNextTable();
 
         System.out.println("docHead104 === " + docHead);
         System.out.println("tHead104 === " + tHead);
         System.out.println("tBody104 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR104 " + result);
+            System.out.println("can reading SPR104 result1 --- " + result1);
+            System.out.println("can reading SPR104 result2 --- " + result2);
             ReadOnDir.spr = "sprDefault";
-            return result;
+            return resultT;
         } else {
-            System.out.println("can not reading SPR104 " + result);
+//            System.out.println("can not reading SPR104 " + result);
             return null;
         }
     }
