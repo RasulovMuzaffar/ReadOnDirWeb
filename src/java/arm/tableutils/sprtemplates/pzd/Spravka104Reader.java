@@ -47,9 +47,7 @@ public class Spravka104Reader implements TableReaderInterface {
 //            + "(?<tbgr>\\d{5})\\s+"
 //            + "(?<tbdor>\\d{1,2})\\s+"
 //            + "(?<tbgos>\\d{1,2})";
-    final static String RTB2 = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{2,4})\\s+)?"
-            + "(?<tbnv>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+"
-            + "(?<tbgr>\\d{5})\\s+(?<tbdor>\\d{1,2})\\s+(?<tbgos>\\d{1,2})(\\s[A-ZА-Я]{2,4}\\s+(?<tbiv>\\d{1,3}))?";
+    final static String RTB2 = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{2,4})\\s+)?(?<tbnv>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+(?<tbgr>\\d{5})\\s+(?<tbdor>\\d{1,2})\\s+(?<tbgos>\\d{1,2})(\\s+[A-ZА-Я]{5}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2,4}\\s+(?<tbiv>\\d{1,3}))?";
     //https://regex101.com/r/JCkg1B/1
 
     @Override
@@ -79,7 +77,7 @@ public class Spravka104Reader implements TableReaderInterface {
             str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
 
             f1 = TextReplace.getText(str);
-            f = TextReplace.getSha(f1);
+            f = TextReplace.getSha(f1).replace("-----------------------------", "");
 
         } catch (IOException ex) {
             Logger.getLogger(Spravka104Reader.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,7 +134,11 @@ public class Spravka104Reader implements TableReaderInterface {
         while (matcher.find()) {
             result1.addCell("" + n++);
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result1.addCell(matcher.group(i));
+                if (matcher.group("tbidx").equals(matcher.group(i))) {
+                    result1.addCell(plusToSpace(matcher.group(i)));
+                } else {
+                    result1.addCell(matcher.group(i));
+                }
             }
 
             if (!tableHeaderProcessed) {
@@ -176,15 +178,7 @@ public class Spravka104Reader implements TableReaderInterface {
         matcher = pattern.matcher(f);
 
         int m = 1;
-        int k = 0;
-        int l = 0;
-//        boolean x = matcher.find();
-//        while (x) {
-//            if (matcher.group("tbsobst") != null) {
-//                k = 0;
-//            }
-//            k++;
-while(matcher.find()){
+        while (matcher.find()) {
             result2.addCell("" + m++);
 
             result2.addCell("<b>" + delNull(matcher.group("tbsobst")) + "</b>");
@@ -193,22 +187,18 @@ while(matcher.find()){
             result2.addCell(delNull(matcher.group("tbgr")));
             result2.addCell(delNull(matcher.group("tbdor")));
             result2.addCell(delNull(matcher.group("tbgos")));
-//            String column = htmlParse(k);
+            if (matcher.group("tbiv") != null) {
+                result2.addCell(htmlParse("Вагонов " + delNull(matcher.group("tbiv"))));
+                result2.markCurrentRowAsRegularUnderlining();
+            } else {
+                result2.addCell("");
+            }
 
-//            x = matcher.find();
-//            if (!x || l == 0) {
-//                result2.addCell(htmlParse("Вагонов " + k));
-//            } else {
-//                result2.addCell("");
-//            }
-//            l++;
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result2.markCurrentRowAsHeader();
             }
-//            if (!column.equals("")) {
-//                result.markCurrentRowAsRegularUnderlining();
-//            }
+
             reading = true;
             tBody = true;
             result2.advanceToNextRow();
@@ -248,6 +238,10 @@ while(matcher.find()){
         } else {
             return "";
         }
+    }
+
+    private String plusToSpace(String s) {
+        return s.replace("+", " ");
     }
 
     @Override

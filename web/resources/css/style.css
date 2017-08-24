@@ -20,6 +20,10 @@
     font-size:24px;
     font-weight: bold;
 }
+
+.smallH3{
+    font-size: 20px;
+}
 /*table*/
 .RegularUnderlining td{
 /*    border-bottom: 3px solid #E1C3C3 !important;*/
