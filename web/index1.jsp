@@ -19,6 +19,7 @@
         <script src="resources/js/html5shiv.min.js"></script>
         <script src="resources/js/respond.min.js"></script>
         <![endif]-->
+        <link rel="stylesheet" href="resources/css/font-awesome.min.css">
     </head>
     <body>
         <div class="container-fluid">
@@ -35,7 +36,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-inline" role="form">
+                <div class="form-inline col-md-8" role="form">
                     <div class="form-group">
                         <label class="sr-only" for="numMess">Mess</label>
                         <select class="form-control" id="numMess" onchange="loadSpr(this);">
@@ -70,6 +71,11 @@
 
                     <button type="button" class="btn btn-info" onclick="writing();" id="btnOK">OK</button>
                 </div>
+                <div id="o-wrapper" class="o-wrapper">
+                    <div class="c-buttons">
+                        <button id="c-button--slide-right" class="c-button fa fa-history"> История</button>
+                    </div>
+                </div><!-- /o-wrapper -->
 
             </div>
             <div class="row">
@@ -79,7 +85,19 @@
 
             </div>
         </div>
+        <!--БОКОВОЕ МЕНЮ-->
+        <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
+            <button class="c-menu__close">Закрыть историю &rarr;</button>
+            <ul class="c-menu__items">
+                <li class="c-menu__item"><a href="#" class="c-menu__link">Home</a></li>
+                <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
+                <li class="c-menu__item"><a href="#" class="c-menu__link">Services</a></li>
+                <li class="c-menu__item"><a href="#" class="c-menu__link">Work</a></li>
+                <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>
+            </ul>
+        </nav><!-- /c-menu slide-right -->
 
+        <div id="c-mask" class="c-mask"></div><!-- /c-mask -->
         <!-- Наше модальное всплывающее окно -->
         <div id="popupWin" class="modalwin">
             <div id="popup" class="row pt">
@@ -91,7 +109,7 @@
         <script src="resources/js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="resources/js/bootstrap.js"></script>
-
+        <script src="resources/js/dist/menu.js"></script>
         <script src="resources/js/modalwin.js"></script>
 
 
@@ -447,9 +465,9 @@
 
                                     ////////////////////////////////////////////////
                                 case 'pf21':
-                                    console.log('(:216 '+idx+':)');
+                                    console.log('(:216 ' + idx + ':)');
 //                                    alert("на стадии разработки!");
-                                    return '(:216 '+idx+':)';
+                                    return '(:216 ' + idx + ':)';
                                     break;
                                 case 'pf22':
                                     console.log('(:215*XXXX XXX XXXX*(10 7300 1)09:)');
@@ -470,7 +488,7 @@
                                     console.log('(:213 0: XXXX XXX XXXX 12 42 60 902 104:)');
 //                                    alert("на стадии разработки!");
 //                                    return '(:213 0: '+idx+' 12 42 60 902 104:)';
-                                    return '(:213 0: '+idx+' 12 42 60 104:)';
+                                    return '(:213 0: ' + idx + ' 12 42 60 104:)';
                                     break;
 
                                     ////////////////////////////////////////////////
@@ -500,6 +518,24 @@
                         function cod4(codSt) {
                             return codSt.substring(0, 4);
                         }
+
+                        /**
+                         * Slide right instantiation and action.
+                         */
+                        var slideRight = new Menu({
+                            wrapper: '#o-wrapper',
+                            type: 'slide-right',
+                            menuOpenerClass: '.c-button',
+                            maskId: '#c-mask'
+                        });
+
+                        var slideRightBtn = document.querySelector('#c-button--slide-right');
+
+                        slideRightBtn.addEventListener('click', function (e) {
+                            e.preventDefault;
+                            slideRight.open();
+                        });
+
         </script>
         <script src="resources/js/findStation.js"></script>
     </body>
