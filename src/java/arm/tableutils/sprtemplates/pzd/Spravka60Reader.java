@@ -23,8 +23,6 @@ public class Spravka60Reader implements TableReaderInterface {
             + "(?<ippv>[A-ZА-Я]{4}\\s?[A-ZА-Я]{0,20}\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?)?\\s+"
             + "(?<sppv>[A-ZА-Я]{4}\\s?\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?)?(?<otstv>[A-ZА-Я]{0,20})?";
 
-    
-    
 //    regexTHead
     final static String RTH = "";
 
