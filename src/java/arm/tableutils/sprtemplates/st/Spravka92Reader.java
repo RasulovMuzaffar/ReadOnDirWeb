@@ -181,11 +181,11 @@ public class Spravka92Reader implements TableReaderInterface {
         System.out.println("tHead92 === " + tHead);
         System.out.println("tBody92 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR92 " + result);
+            System.out.println("can reading SPR92 " );
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR92 " + result);
+            System.out.println("can not reading SPR92 " );
             return null;
         }
     }

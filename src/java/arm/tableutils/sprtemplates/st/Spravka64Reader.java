@@ -148,11 +148,11 @@ public class Spravka64Reader implements TableReaderInterface {
         System.out.println("tBody64 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody
                 == true)) {
-            System.out.println("can reading SPR64 " + result);
+            System.out.println("can reading SPR64 " );
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR64 " + result);
+            System.out.println("can not reading SPR64 " );
             return null;
         }
     }

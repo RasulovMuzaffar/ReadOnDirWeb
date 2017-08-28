@@ -4,6 +4,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.forPopup;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -217,12 +218,18 @@ public class Spravka104Reader implements TableReaderInterface {
         System.out.println("tHead104 === " + tHead);
         System.out.println("tBody104 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR104 result1 --- " + result1);
-            System.out.println("can reading SPR104 result2 --- " + result2);
-            ReadOnDir.spr = "sprPopup";
+//            System.out.println("can reading SPR104 result1 --- " + result1);
+//            System.out.println("can reading SPR104 result2 --- " + result2);
+            System.out.println("can reading SPR104 ");
+            if (forPopup == true) {
+                ReadOnDir.spr = "sprPopup";
+            } else {
+                ReadOnDir.spr = "sprDefault";
+            }
+//            forPopup=false;
             return resultT;
         } else {
-//            System.out.println("can not reading SPR104 " + result);
+            System.out.println("can not reading SPR104 ");
             return null;
         }
     }
@@ -240,7 +247,6 @@ public class Spravka104Reader implements TableReaderInterface {
             String[] str = s.split("\\s+");
             String s1 = str[0];
             String s2 = str[1];
-            System.out.println("<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>");
             return "<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>";
         } else {
             return "";

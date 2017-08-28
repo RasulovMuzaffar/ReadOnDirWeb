@@ -5,6 +5,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.forPopup;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -138,11 +139,16 @@ public class Spravka12Reader implements TableReaderInterface {
         System.out.println("tHead12 === " + tHead);
         System.out.println("tBody12 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR12 " + result);
-            ReadOnDir.spr = "sprPopup";
+            System.out.println("can reading SPR12 ");
+            if (forPopup == true) {
+                ReadOnDir.spr = "sprPopup";
+            } else {
+                ReadOnDir.spr = "sprDefault";
+            }
+//            forPopup=false;
             return result;
         } else {
-            System.out.println("can not reading SPR12 " + result);
+            System.out.println("can not reading SPR12 ");
             return null;
         }
     }

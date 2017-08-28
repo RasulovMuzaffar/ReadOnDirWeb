@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import javax.websocket.Session;
 
 public class Write {
-
+public static boolean forPopup=false;
 //    static String path = "c:\\testFolder\\out";
     static String path = "c:\\soob\\out";
     String autoNo;
@@ -46,12 +46,14 @@ public class Write {
             case "getTGNL":
                 System.out.println("TELEGRAMMA NATURNIY LIST");
 //                (:213 0:7200 89 7258 902:)
+                forPopup = true;
                 createFile("(:213 0:" + s[1] + " 902:)");
                 break;
             case "getRS":
                 System.out.println("Full SPR");
 //                (:213 0: ' + idx + ' 12 42 60 902 104:)
-                createFile("(:213 0:" + s[1] + " 12 42:)");
+                forPopup = true;
+                createFile("(:213 0:" + s[1] + " 12 42 60 902 104:)");
                 break;
         }
 

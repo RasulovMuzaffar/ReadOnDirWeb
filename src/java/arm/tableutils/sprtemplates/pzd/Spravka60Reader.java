@@ -4,6 +4,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.forPopup;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -92,11 +93,17 @@ public class Spravka60Reader implements TableReaderInterface {
 
         System.out.println("docHead60 === " + docHead);
         if (reading == true && docHead == true) {
-            System.out.println("can reading SPR60 " + result);
-            ReadOnDir.spr = "sprPopup";
+            System.out.println("can reading SPR60 ");
+            if (forPopup == true) {
+                ReadOnDir.spr = "sprPopup";
+            } else {
+                ReadOnDir.spr = "sprDefault";
+            }
+//            forPopup=false;
+            
             return result;
         } else {
-            System.out.println("can not reading SPR60 " + result);
+            System.out.println("can not reading SPR60 ");
             return null;
         }
     }
@@ -114,7 +121,6 @@ public class Spravka60Reader implements TableReaderInterface {
             String[] str = s.split("\\s+");
             String s1 = str[0];
             String s2 = str[1];
-            System.out.println("<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>");
             return "<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>";
         } else {
             return "";

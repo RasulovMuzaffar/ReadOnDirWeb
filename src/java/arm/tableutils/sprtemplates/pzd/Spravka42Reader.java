@@ -4,6 +4,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.forPopup;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -71,7 +72,7 @@ public class Spravka42Reader implements TableReaderInterface {
             String[] arrDoc = f.split("[ВЦ]{2} [A-ZA-Я]{2,4}\\s+");
             for (String s : arrDoc) {
                 if ("42".equals(s.substring(0, 2))) {
-                    result.addCell(spr42.append(s).toString().replace("\r\n", "<br/>"));
+                    result.addCell(spr42.append(s).toString().replace("\r\n", "<br/>").replace("42", "<b>42</b>"));
                     break;
                 }
             }
@@ -87,11 +88,16 @@ public class Spravka42Reader implements TableReaderInterface {
 
         System.out.println("docHead42 === " + docHead);
         if (reading == true && docHead == true) {
-            System.out.println("can reading SPR42 " + result);
-            ReadOnDir.spr = "sprPopup";
+            System.out.println("can reading SPR42 " );
+            if (forPopup == true) {
+                ReadOnDir.spr = "sprPopup";
+            } else {
+                ReadOnDir.spr = "sprDefault";
+            }
+//            forPopup=false;
             return result;
         } else {
-            System.out.println("can not reading SPR42 " + result);
+            System.out.println("can not reading SPR42 " );
             return null;
         }
     }
@@ -109,7 +115,6 @@ public class Spravka42Reader implements TableReaderInterface {
             String[] str = s.split("\\s+");
             String s1 = str[0];
             String s2 = str[1];
-            System.out.println("<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>");
             return "<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>";
         } else {
             return "";

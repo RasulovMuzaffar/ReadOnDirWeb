@@ -66,24 +66,28 @@
                     <div class="form-group">                  
                         <div>
                             <!--<input type="hidden" name="id_user" value="1" id="id_user"/>-->
-                             <input type="hidden" name="id_user" value="${user.id}" id="id_user"/> 
+                            <input type="hidden" name="id_user" value="${user.id}" id="id_user"/> 
                         </div>
                     </div>
 
                     <button type="button" class="btn btn-info" onclick="writing();" id="btnOK">OK</button>
                 </div>
-                <div id="o-wrapper" class="o-wrapper">
+                <div id="o-wrapper" class="o-wrapper col-md-2">
+
                     <div class="c-buttons">
                         <button id="c-button--slide-right" class="c-button fa fa-history"> История</button>
                     </div>
                 </div><!-- /o-wrapper -->
-
             </div>
             <div class="row">
                 <p class="progressInfo"></p>
             </div>
-            <div class="row" id="tbl">
+            <div>
+                <button type="button" class="btn btn-info fa fa-download" id="expToExc"></button>
+                <div class="row" id="tbl">
+                </div>
             </div>
+
         </div>
         <!--БОКОВОЕ МЕНЮ-->
         <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
@@ -91,11 +95,11 @@
             <ul class="c-menu__items">
                 <c:forEach begin="1" end="20" step="1" var="i">
                     <li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>
-                </c:forEach>
-<!--                <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
-                <li class="c-menu__item"><a href="#" class="c-menu__link">Services</a></li>
-                <li class="c-menu__item"><a href="#" class="c-menu__link">Work</a></li>
-                <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>-->
+                    </c:forEach>
+                <!--                <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
+                                <li class="c-menu__item"><a href="#" class="c-menu__link">Services</a></li>
+                                <li class="c-menu__item"><a href="#" class="c-menu__link">Work</a></li>
+                                <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>-->
             </ul>
         </nav><!-- /c-menu slide-right -->
 
@@ -178,8 +182,8 @@
                             console.log(x);
                             webSocket.send("getTGNL\u0003" + x);
                         }
-                        
-                        <%-- получаем Расширенную справку поезда  --%>
+
+            <%-- получаем Расширенную справку поезда  --%>
                         function getRS(p) {
                             var x = p.replace("  ", " ");
                             console.log(x);
@@ -210,6 +214,7 @@
                             document.getElementById("popup").innerHTML = p;
                         }
                         function sprDefault(p) {
+                            
                             document.getElementById("tbl").innerHTML = p;
                         }
                         function getSt(p) {
@@ -484,20 +489,18 @@
                                     break;
                                 case 'pf23':
                                     console.log('(:3122 74:XXXX XXX XXXX 12 60 42 902:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:3122 74:'+idx+'12 60 42 902:)';
+//                                    alert("на стадии разработки!");
+                                    return '(:3122 74:' + idx + '12 60 42 902:)';
                                     break;
                                 case 'pf24':
                                     console.log('(:3122 75:XXXX XXX XXXX 12 60 42 902:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:3122 75:XXXX XXX XXXX 12 60 42 902:)';
+//                                    alert("на стадии разработки!");
+                                    return '(:3122 75:' + idx + '12 60 42 902:)';
                                     break;
                                 case 'pf25':
                                     console.log('(:213 0: XXXX XXX XXXX 12 42 60 902 104:)');
 //                                    alert("на стадии разработки!");
-//                                    return '(:213 0: '+idx+' 12 42 60 902 104:)';
-//                                    return '(:213 0: ' + idx + ' 12 42 60 902 104:)';
-                                    return '(:213 0: ' + idx + ' 12:)';
+                                    return '(:213 0: ' + idx + ' 12 42 60 902 104:)';
                                     break;
 
                                     ////////////////////////////////////////////////
@@ -508,18 +511,18 @@
                                     break;
                                 case 'pf32':
                                     console.log('(:216 XXXXXXXX:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:216 XXXXXXXX:)';
+//                                    alert("на стадии разработки!");
+                                    return '(:216 ' + vagon + ':)';
                                     break;
                                 case 'pf33':
                                     console.log('(:1367 0 2610:XXXXXXXX:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:1367 0 2610:XXXXXXXX:)';
+//                                    alert("на стадии разработки!");
+                                    return '(:1367 0 2610:' + vagon + ':)';
                                     break;
                                 case 'pf34':
                                     console.log('(:217 0:1839 XXXXXXXX:)');
-                                    alert("на стадии разработки!");
-//                                    return '(:217 0:1839 XXXXXXXX:)';
+//                                    alert("на стадии разработки!");
+                                    return '(:217 0:1839 ' + vagon + ':)';
                                     break;
                             }
                         }

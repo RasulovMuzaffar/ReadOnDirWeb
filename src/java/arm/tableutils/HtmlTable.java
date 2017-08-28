@@ -133,7 +133,7 @@ public class HtmlTable {
                 }
             }
         } else {
-            result.append("<br/>").append(LABELDOC_OPEN);
+            result.append(LABELDOC_OPEN);
             for (TableRow row : tableData) {
                 for (String value : row.cells) {
                     if (row.type == RowType.DocHeader) {

@@ -38,8 +38,16 @@
 
 .tabl{
     padding: 0px;
-    height: 95%;
+    /*max-height: 95%;*/
 }
+
+#expToExc{
+    margin-right: 20px;
+    margin-top: 15px;
+    float: right;
+    display: none !important;
+}
+
 .pt{
     overflow-y: auto;
     height: 100%;
@@ -168,8 +176,11 @@
     position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
     padding: 15px;
     border: 1px solid #383838;
-    text-align: center;
+    /*text-align: center;*/
 
+}
+.modalwin h3{
+    margin-left: 20px;
 }
 #shadow { 
     position: fixed;

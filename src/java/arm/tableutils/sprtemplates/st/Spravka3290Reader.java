@@ -209,11 +209,11 @@ public class Spravka3290Reader implements TableReaderInterface {
         System.out.println("tHead3290 === " + tHead);
         System.out.println("tBody3290 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR3290 " + result);
+            System.out.println("can reading SPR3290 " );
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR3290 " + result);
+            System.out.println("can not reading SPR3290 " );
             return null;
         }
     }

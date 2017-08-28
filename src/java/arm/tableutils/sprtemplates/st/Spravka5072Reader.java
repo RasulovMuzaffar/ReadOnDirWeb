@@ -162,11 +162,11 @@ public class Spravka5072Reader implements TableReaderInterface {
         System.out.println("tHead5072 === " + tHead);
         System.out.println("tBody5072 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR5072 " + result);
+            System.out.println("can reading SPR5072 " );
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR5072 " + result);
+            System.out.println("can not reading SPR5072 " );
             return null;
         }
     }
@@ -184,7 +184,6 @@ public class Spravka5072Reader implements TableReaderInterface {
             String[] str = s.split("\\s+");
             String s1 = str[0];
             String s2 = str[1];
-            System.out.println("<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>");
             return "<b>" + s1 + " <div style='color:red'>" + s2 + "</div></b>";
         } else {
             return "";

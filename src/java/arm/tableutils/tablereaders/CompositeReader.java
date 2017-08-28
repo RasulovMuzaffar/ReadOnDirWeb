@@ -11,18 +11,14 @@ public class CompositeReader implements TableReaderInterface {
     @Override
     public HtmlTable processFile(String fileName) throws MultipleResultsException {
         List<HtmlTable> results = new ArrayList<>();
-        System.out.println("RESULTS SIZE =====>>> " + results.size());
         int i = 0;
         for (TableReaderInterface reader : readersList) {
             HtmlTable table = reader.processFile(fileName);
-            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-            System.out.println(++i + " ===== " + table);
             if (table != null) {
                 results.add(table);
 //                break;
-                System.out.println(i + " ===table not null=== " + table.generateHtml());
+//                System.out.println(i + " ===table not null=== " + table.generateHtml());
             }
-            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         }
         
         switch (results.size()) {

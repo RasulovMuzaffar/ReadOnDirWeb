@@ -142,11 +142,11 @@ public class Spravka02Reader implements TableReaderInterface {
         System.out.println("tHead02 === " + tHead);
         System.out.println("tBody02 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR02 " + result);
+            System.out.println("can reading SPR02 ");
             ReadOnDir.spr = "sprPopup";
             return result;
         } else {
-            System.out.println("can not reading SPR02 " + result);
+            System.out.println("can not reading SPR02 ");
             return null;
         }
 

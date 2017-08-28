@@ -201,11 +201,11 @@ public class Spravka1296Reader implements TableReaderInterface {
         System.out.println("tBody1296-2 === " + tBody2);
         if (reading == true && (docHead == true && tHead == true && (tBody1
                 == true || tBody2 == true))) {
-            System.out.println("can reading SPR1296 " + result);
+            System.out.println("can reading SPR1296 " );
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR1296 " + result);
+            System.out.println("can not reading SPR1296 " );
             return null;
         }
     }
