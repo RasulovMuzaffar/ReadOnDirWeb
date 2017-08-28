@@ -132,17 +132,7 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz4")));
             result.addCell(delNull(matcher.group("tbxz5")));
             result.addCell(delNull(matcher.group("tbxz6")));
-            System.out.println("64 ---> tbnp "+matcher.group("tbnp"));
-            System.out.println("        tbidx "+matcher.group("tbidx"));
-            System.out.println("        tbstate1 "+matcher.group("tbstate1"));
-            System.out.println("        tbstate2 "+matcher.group("tbstate2"));
-            System.out.println("        tbtime2 "+matcher.group("tbtime2"));
-            System.out.println("        tbxz1 "+matcher.group("tbxz1"));
-            System.out.println("        tbxz2 "+matcher.group("tbxz2"));
-            System.out.println("        tbxz3 "+matcher.group("tbxz3"));
-            System.out.println("        tbxz4 "+matcher.group("tbxz4"));
-            System.out.println("        tbxz5 "+matcher.group("tbxz5"));
-            System.out.println("        tbxz6 "+matcher.group("tbxz6"));
+            
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

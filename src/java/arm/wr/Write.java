@@ -48,6 +48,11 @@ public class Write {
 //                (:213 0:7200 89 7258 902:)
                 createFile("(:213 0:" + s[1] + " 902:)");
                 break;
+            case "getRS":
+                System.out.println("Full SPR");
+//                (:213 0: ' + idx + ' 12 42 60 902 104:)
+                createFile("(:213 0:" + s[1] + " 12 42:)");
+                break;
         }
 
     }

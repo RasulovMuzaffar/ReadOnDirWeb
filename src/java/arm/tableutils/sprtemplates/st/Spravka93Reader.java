@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class Spravka93Reader implements TableReaderInterface {
 
 //regexDocHead
-    final static String RDH = "(?<dhvcuty>[А-ЯA-Z]{2}\\s[А-ЯA-Z]{3})\\s+"
+    final static String RDH = "(?<dhvc>[A-ZА-Я]{2})\\s+(?<dhdor>[A-ZА-Я]{3,4})\\s+"
             + "(?<dhcode>93)\\s+"
             + "(?<dhdate>\\d{2}.\\d{2})\\s+"
             + "(?<dhtime>\\d{2}-\\d{2})\\s+"
@@ -55,6 +55,7 @@ public class Spravka93Reader implements TableReaderInterface {
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
+        String doroga = "";
         /*
         * пока условно будем считать что файл всегда есть!
          */
@@ -86,6 +87,7 @@ public class Spravka93Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
+            doroga = matcher.group("dhdor");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -109,7 +111,10 @@ public class Spravka93Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-            result.addCell("ТГНЛ");
+            if (doroga.equals("УТИ")) {
+                result.addCell("ТГНЛ");
+                result.addCell("Расш. Спр.");
+            }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -135,6 +140,7 @@ public class Spravka93Reader implements TableReaderInterface {
                 bidx = matcher.group("bidx");
             }
             result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
+            result.addCell("<button type='button' class='btn btn-default' onclick='getRS(\"" + bidx + "\");'>Показать</button>");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

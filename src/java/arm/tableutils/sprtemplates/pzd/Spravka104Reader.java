@@ -47,7 +47,14 @@ public class Spravka104Reader implements TableReaderInterface {
 //            + "(?<tbgr>\\d{5})\\s+"
 //            + "(?<tbdor>\\d{1,2})\\s+"
 //            + "(?<tbgos>\\d{1,2})";
-    final static String RTB2 = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{2,4})\\s+)?(?<tbnv>\\d{8})\\s+(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+(?<tbgr>\\d{5})\\s+(?<tbdor>\\d{1,2})\\s+(?<tbgos>\\d{1,2})(\\s+[A-ZА-Я]{5}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2,4}\\s+(?<tbiv>\\d{1,3}))?";
+    final static String RTB2 = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{2,4})\\s+)?"
+            + "(?<tbnv>\\d{8})\\s+"
+            + "(?<tbstn>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,6}\\.?)\\s+"
+            + "(?<tbgr>\\d{5})\\s+"
+            + "(?<tbdor>\\d{0,2})\\s+"
+            + "(?<tbgos>\\d{0,2})\\s"
+            + "(\\s+[A-ZА-Я]{5}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{2,4}\\s+"
+            + "(?<tbiv>\\d{1,3}))?";
     //https://regex101.com/r/JCkg1B/1
 
     @Override
@@ -212,7 +219,7 @@ public class Spravka104Reader implements TableReaderInterface {
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR104 result1 --- " + result1);
             System.out.println("can reading SPR104 result2 --- " + result2);
-            ReadOnDir.spr = "sprDefault";
+            ReadOnDir.spr = "sprPopup";
             return resultT;
         } else {
 //            System.out.println("can not reading SPR104 " + result);

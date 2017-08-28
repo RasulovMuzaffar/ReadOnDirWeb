@@ -134,6 +134,7 @@ public class Spravka91Reader implements TableReaderInterface {
             }
             if (doroga.equals("УТИ")) {
                 result.addCell("ТГНЛ");
+                result.addCell("Расш. Спр.");
             }
 
             if (!tableHeaderProcessed) {
@@ -163,6 +164,7 @@ public class Spravka91Reader implements TableReaderInterface {
             }
             if (doroga.equals("УТИ")) {
                 result.addCell("<button type='button' class='btn btn-default' onclick='getTGNL(\"" + bidx + "\");'>Показать</button>");
+                result.addCell("<button type='button' class='btn btn-default' onclick='getRS(\"" + bidx + "\");'>Показать</button>");
             }
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

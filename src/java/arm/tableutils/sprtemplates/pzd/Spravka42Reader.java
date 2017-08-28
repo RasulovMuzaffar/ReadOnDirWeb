@@ -12,16 +12,10 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Spravka60Reader implements TableReaderInterface {
+public class Spravka42Reader implements TableReaderInterface {
 
 //    regexDocHead
-    final static String RDH = "(?<dh>[A-ZА-Я]{2}\\s+[A-ZА-Я]{2,4}\\s+60\\s+\\d{2}\\.\\d{2}\\s+\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{2}\\s+\\d{4})\\s+"
-            + "\\((?<idx>\\d{4,6}\\s?\\+\\s?\\d{3,4}\\s?\\+\\s?\\d{4,6})\\)\\s+"
-            + "(?<pros>[A-ZА-Я]{4}\\s?\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?[A-ZА-Я]{0,20})?\\s+"
-            + "(?<napr>[A-ZА-Я]{4}\\s?\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?[A-ZА-Я]{0,20})?\\s?"
-            + "(?<nppv>[A-ZА-Я]{4}\\s?\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?[A-ZА-Я]{0,20})?\\s?"
-            + "(?<ippv>[A-ZА-Я]{4}\\s?[A-ZА-Я]{0,20}\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?)?\\s+"
-            + "(?<sppv>[A-ZА-Я]{4}\\s?\\-?\\s?\\d{4,6}\\s{0,}\\d{0,2}\\.?\\d{0,2}\\s?\\d{0,2}\\-?\\d{0,2}\\s?)?(?<otstv>[A-ZА-Я]{0,20})?";
+    final static String RDH = "(?<vcdor>[A-ZA-Я]{2} [A-ZA-Я]{2,4})\\s+42";
 
 //    regexTHead
     final static String RTH = "";
@@ -57,46 +51,47 @@ public class Spravka60Reader implements TableReaderInterface {
             f1 = TextReplace.getText(str);
             f = TextReplace.getSha(f1);
         } catch (IOException ex) {
-            Logger.getLogger(Spravka60Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka60Reader : " + ex);
+            Logger.getLogger(Spravka42Reader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception in Spravka42Reader : " + ex);
         }
-
         HtmlTable result = new HtmlTable();
+
+        boolean tableHeaderProcessed = false;
+
+        String vcdor = "";
+        StringBuilder spr42 = new StringBuilder();
 
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
-        boolean tableHeaderProcessed = false;
-
         while (matcher.find()) {
-//            for (int i = 1; i <= matcher.groupCount(); i++) {
-//                result.addCell(matcher.group(i));
-//            }
-            result.addCell(matcher.group("dh"));
-            result.addCell("<b>" + plusToSpace(matcher.group("idx")) + "</b>");
-            result.addCell("<br/><div class='smallH3'>" + delNull(matcher.group("pros")));
-            result.addCell("<br/>" + delNull(matcher.group("napr")));
-            result.addCell("<br/>" + delNull(matcher.group("nppv")));
-            result.addCell("<br/>" + delNull(matcher.group("ippv")));
-            result.addCell("<br/>" + delNull(matcher.group("sppv")));
-            result.addCell(" " + delNull(matcher.group("otstv"))+"</div>");
+            vcdor = matcher.group("vcdor");
+            
+            spr42.append(vcdor).append(" ");
+            String[] arrDoc = f.split("[ВЦ]{2} [A-ZA-Я]{2,4}\\s+");
+            for (String s : arrDoc) {
+                if ("42".equals(s.substring(0, 2))) {
+                    result.addCell(spr42.append(s).toString().replace("\r\n", "<br/>"));
+                    break;
+                }
+            }
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsDocHeader();
             }
+
             reading = true;
             docHead = true;
-            result.advanceToNextRow();
         }
 
-        System.out.println("docHead60 === " + docHead);
+        System.out.println("docHead42 === " + docHead);
         if (reading == true && docHead == true) {
-            System.out.println("can reading SPR60 " + result);
+            System.out.println("can reading SPR42 " + result);
             ReadOnDir.spr = "sprPopup";
             return result;
         } else {
-            System.out.println("can not reading SPR60 " + result);
+            System.out.println("can not reading SPR42 " + result);
             return null;
         }
     }

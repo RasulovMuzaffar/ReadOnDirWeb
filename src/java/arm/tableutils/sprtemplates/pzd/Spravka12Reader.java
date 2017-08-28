@@ -139,7 +139,7 @@ public class Spravka12Reader implements TableReaderInterface {
         System.out.println("tBody12 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR12 " + result);
-            ReadOnDir.spr = "sprDefault";
+            ReadOnDir.spr = "sprPopup";
             return result;
         } else {
             System.out.println("can not reading SPR12 " + result);

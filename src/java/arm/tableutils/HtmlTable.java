@@ -195,7 +195,6 @@ class TableRow {
 }
 
 class Table {
-
     public List<HtmlTable> tables = new LinkedList<>();
     public RowType type = RowType.NextTable;
 }

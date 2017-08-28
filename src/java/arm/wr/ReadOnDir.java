@@ -47,12 +47,12 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -81,8 +81,8 @@ public class ReadOnDir extends Thread {
         tableReader.registerReader(new Spravka12Reader());
         tableReader.registerReader(new Spravka104Reader());
         tableReader.registerReader(new Spravka216Reader());
+        tableReader.registerReader(new Spravka42Reader());
         tableReader.registerReader(new Spravka60Reader());
-        
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
@@ -188,6 +188,7 @@ public class ReadOnDir extends Thread {
                 StringBuilder s = new StringBuilder();
                 if (result != null) {
                     String answer = result.generateHtml();
+                    System.out.println("ANSWER------->>>>> " + answer);
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
@@ -213,7 +214,7 @@ public class ReadOnDir extends Thread {
                         armUsers.stream().forEach((Session x) -> {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003" + moreSprs);
+                                    x.getBasicRemote().sendText(spr + "\u0003" + moreSprs);
                                     CompositeReader.lht.removeAll(list);
                                     return;
                                 } catch (IOException ex) {
@@ -227,7 +228,7 @@ public class ReadOnDir extends Thread {
                         armUsers.stream().forEach((Session x) -> {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer+"</h3></label>");
+                                    x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer + "</h3></label>");
                                     return;
                                 } catch (IOException ex) {
                                     Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);

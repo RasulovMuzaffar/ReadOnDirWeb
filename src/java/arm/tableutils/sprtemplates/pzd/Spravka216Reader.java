@@ -144,7 +144,7 @@ public class Spravka216Reader implements TableReaderInterface {
         System.out.println("tBody216 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
             System.out.println("can reading SPR216 " + result);
-            ReadOnDir.spr = "sprDefault";
+            ReadOnDir.spr = "sprPopup";
             return result;
         } else {
             System.out.println("can not reading SPR216 " + result);

@@ -1,4 +1,5 @@
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -36,7 +37,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-inline col-md-8" role="form">
+                <div class="form-inline col-md-10" role="form">
                     <div class="form-group">
                         <label class="sr-only" for="numMess">Mess</label>
                         <select class="form-control" id="numMess" onchange="loadSpr(this);">
@@ -64,8 +65,8 @@
                     </div>
                     <div class="form-group">                  
                         <div>
-                            <input type="hidden" name="id_user" value="1" id="id_user"/>
-                            <!-- <input type="hidden" name="id_user" value="${user.id}" id="id_user"/> -->
+                            <!--<input type="hidden" name="id_user" value="1" id="id_user"/>-->
+                             <input type="hidden" name="id_user" value="${user.id}" id="id_user"/> 
                         </div>
                     </div>
 
@@ -82,18 +83,19 @@
                 <p class="progressInfo"></p>
             </div>
             <div class="row" id="tbl">
-
             </div>
         </div>
         <!--БОКОВОЕ МЕНЮ-->
         <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
             <button class="c-menu__close">Закрыть историю &rarr;</button>
             <ul class="c-menu__items">
-                <li class="c-menu__item"><a href="#" class="c-menu__link">Home</a></li>
-                <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
+                <c:forEach begin="1" end="20" step="1" var="i">
+                    <li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>
+                </c:forEach>
+<!--                <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
                 <li class="c-menu__item"><a href="#" class="c-menu__link">Services</a></li>
                 <li class="c-menu__item"><a href="#" class="c-menu__link">Work</a></li>
-                <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>
+                <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>-->
             </ul>
         </nav><!-- /c-menu slide-right -->
 
@@ -101,7 +103,6 @@
         <!-- Наше модальное всплывающее окно -->
         <div id="popupWin" class="modalwin">
             <div id="popup" class="row pt">
-
             </div>
         </div>
 
@@ -176,6 +177,13 @@
                             var x = p.replace("  ", " ");
                             console.log(x);
                             webSocket.send("getTGNL\u0003" + x);
+                        }
+                        
+                        <%-- получаем Расширенную справку поезда  --%>
+                        function getRS(p) {
+                            var x = p.replace("  ", " ");
+                            console.log(x);
+                            webSocket.send("getRS\u0003" + x);
                         }
 
                         function findSt(p) {
@@ -488,7 +496,8 @@
                                     console.log('(:213 0: XXXX XXX XXXX 12 42 60 902 104:)');
 //                                    alert("на стадии разработки!");
 //                                    return '(:213 0: '+idx+' 12 42 60 902 104:)';
-                                    return '(:213 0: ' + idx + ' 12 42 60 104:)';
+//                                    return '(:213 0: ' + idx + ' 12 42 60 902 104:)';
+                                    return '(:213 0: ' + idx + ' 12:)';
                                     break;
 
                                     ////////////////////////////////////////////////
