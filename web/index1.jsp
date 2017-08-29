@@ -83,7 +83,7 @@
                 <p class="progressInfo"></p>
             </div>
             <div>
-                <button type="button" class="btn btn-info fa fa-download" id="expToExc"></button>
+                <button type="button" class="btn btn-info fa fa-download" id="expToExc" style="display: none;"></button>
                 <div class="row" id="tbl">
                 </div>
             </div>
@@ -214,7 +214,7 @@
                             document.getElementById("popup").innerHTML = p;
                         }
                         function sprDefault(p) {
-                            
+                            document.getElementById("expToExc").style.display = "block";
                             document.getElementById("tbl").innerHTML = p;
                         }
                         function getSt(p) {
