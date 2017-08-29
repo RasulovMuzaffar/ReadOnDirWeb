@@ -1,9 +1,11 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,11 +18,11 @@ public class Spravka5072Reader implements TableReaderInterface {
 
 //    regexDocHead
     final static String RDH = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{3})\\s+"
-            + "(\\d{4})\\s+(\\d{2}.\\d{2}\\s+\\d{2}-\\d{2})\\s"
+            + "(?<spr>\\d{4})\\s+(?<date>\\d{2}.\\d{2})\\s+(?<time>\\d{2}-\\d{2})\\s"
             + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{8})\\s"
             + "(\\\"[A-ZА-Я]{5}\\\")\\s([A-ZА-Я]{7})\\s([A-ZА-Я]{3}.[A-ZА-Я]{5})\\s"
             + "([A-ZА-Я]{2}\\s[A-ZА-Я]{7}\\s[A-ZА-Я]{3}.\\s[A-ZА-Я]{2}\\s[A-ZА-Я]{6})\\s+"
-            + "([A-ZА-Я]{2,10}-{0,1}[A-ZА-Я]{0,5}\\d{0,4})\\s+"
+            + "(?<st>[A-ZА-Я]{2,10}-{0,1}[A-ZА-Я]{0,5}\\d{0,4})\\s+"
             + "(,[A-ZА-Я]{5}\\s[A-ZА-Я]{3}.[A-ZА-Я]{6}\\s\\d{0,3}\\s[A-ZА-Я]{3}.)";
 
 //    regexTHead
@@ -48,6 +50,8 @@ public class Spravka5072Reader implements TableReaderInterface {
             + "(?<tbsto>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,3})\\s{0,}([A-ZА-Я]{5}:[A-ZА-Я]{10}\\s"
             + "(?<tbvkv>[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}(\\s+"
             + "(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -92,6 +96,13 @@ public class Spravka5072Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
+
+            History h = new History();
+            h.setSprN(matcher.group("spr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            h.setObj(matcher.group("st"));
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

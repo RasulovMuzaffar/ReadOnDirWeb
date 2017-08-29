@@ -1,10 +1,12 @@
 package arm.tableutils.sprtemplates.pzd;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,8 +18,8 @@ import java.util.regex.Pattern;
 public class Spravka12Reader implements TableReaderInterface {
 
 //    regexDocHead
-    final static String RDH = "(?<title>[A-ZА-Я]{2,3}\\s[A-ZА-Я]{2,4}\\s+12\\s+"
-            + "\\d{2}\\.\\d{2}\\s+\\d{2}\\-\\d{2}\\s+[A-ZА-Я]{1,4}\\s+"
+    final static String RDH = "(?<title>[A-ZА-Я]{2,3}\\s[A-ZА-Я]{2,4}\\s+(?<spr>12)\\s+"
+            + "(?<date>\\d{2}\\.\\d{2})\\s+(?<time>\\d{2}\\-\\d{2})\\s+[A-ZА-Я]{1,4}\\s+"
             + "[A-ZА-Я]{6}\\s+[A-ZА-Я]{1}\\s+[A-ZА-Я]{7})\\s+"
             + "\\((?<idx>\\d{4,6}\\s?\\+?\\s?\\d{1,3}\\s?\\+?\\s?\\d{4,6})\\)";
 
@@ -36,6 +38,8 @@ public class Spravka12Reader implements TableReaderInterface {
             + "(?<tbtime>\\d{2}\\-\\d{2})\\s+"
             + "(?<tbnapr>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,2}\\.?)\\s+"
             + "(?<tbnp>\\d{4}\\s?\\+?\\-?\\d{0,3})";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -84,6 +88,15 @@ public class Spravka12Reader implements TableReaderInterface {
 //            }
             result.addCell(matcher.group("title"));
             result.addCell("<b>" + plusToSpace(matcher.group("idx")) + "</b>");
+
+            History h = new History();
+            h.setSprN(matcher.group("spr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            String obj = matcher.group("idx").replace("+0", "+").replace(" ", "");
+            System.out.println("obj "+obj);
+            h.setObj(plusToSpace(obj));
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

@@ -1,9 +1,11 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,9 +18,9 @@ public class Spravka64Reader implements TableReaderInterface {
 
 //    regexDocHead
     final static String RDH = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{2,4})\\s+"
-            + "(64)\\s+(\\d{2}.\\d{2})\\s+(\\d{2}\\-\\d{2})\\s+"
+            + "(?<spr>64)\\s+(?<date>\\d{2}.\\d{2})\\s+(?<time>\\d{2}\\-\\d{2})\\s+"
             + "([A-ZА-Я]{2}\\s\\d{2})\\s+([A-ZА-Я]{6})\\s+([A-ZА-Я]{7})\\s+"
-            + "([A-ZА-Я]{1,6}\\-?\\.?[A-ZА-Я]{0,4}\\.?\\d{0,2}\\.?)\\s+"
+            + "(?<st>[A-ZА-Я]{1,6}\\-?\\.?[A-ZА-Я]{0,4}\\.?\\d{0,2}\\.?)\\s+"
             + "([A-ZА-Я]{1}\\s[A-ZА-Я]{8})";
 
 //    regexTHead
@@ -31,6 +33,8 @@ public class Spravka64Reader implements TableReaderInterface {
 
 //    regexTBody
     final static String RTB = "(?<tbnp>\\d{4})\\s+(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+((?<tbstate2>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}(?<tbxz5>\\d{1,4}))?(\\s{11}(?<tbxz6>\\d{4}))?";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -75,6 +79,17 @@ public class Spravka64Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
+
+            History h = new History();
+            h.setSprN(matcher.group("spr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            if ("С-АГЧ".equals(matcher.group("st"))) {
+                h.setObj("САРЫ-АГАЧ");
+            } else {
+                h.setObj(matcher.group("st"));
+            }
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

@@ -5,11 +5,14 @@
  */
 package arm.wr;
 
+import arm.ent.History;
+
 /**
  *
  * @author Muzaffar
  */
 public interface HistoryInterface {
 
-    String infoFromSpr(String str);
+    void infoFromSpr(History h);
+
 }

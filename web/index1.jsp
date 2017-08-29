@@ -92,11 +92,11 @@
         <!--БОКОВОЕ МЕНЮ-->
         <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
             <button class="c-menu__close">Закрыть историю &rarr;</button>
-            <ul class="c-menu__items">
-                <li class="c-menu__item"><a href="#" class="c-menu__link">20.09 15-30 | ст. Чукурсай | Спр: 91 92 93</a></li>
-                <c:forEach begin="1" end="20" step="1" var="i">
-                    <li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>
-                </c:forEach>
+            <ul class="c-menu__items" id="history">
+                <!--<li class="c-menu__item"><a href="#" class="c-menu__link">20.09 15-30 | ст. Чукурсай | Спр: 91 92 93</a></li>-->
+                    <%--<c:forEach begin="1" end="20" step="1" var="i">--%>
+                    <!--<li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>-->
+                    <%--</c:forEach>--%>
 
             </ul>
         </nav><!-- /c-menu slide-right -->
@@ -139,23 +139,8 @@
                         }
                         var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
                         function writing() {
-//                        var kodOrg = 0; //document.getElementById('q').value;
-//                        var numMess = document.getElementById('numMess').value;
-//                        var numSpr = document.getElementById('numSpr').value;
-//                        var id_user = document.getElementById('id_user').value;
-//                        var object;
-//                        if (isFinite(document.getElementById('st').value)) {
-//                            object = document.getElementById('st').value;
-//                        } else {
-//                            object = document.getElementById('st').dataset['stcod'];
-//                        }
-////                            var el = document.querySelector('#stations tbody');
-////                            var object = el.dataset.value;
-//                        console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
-//                        
                             console.log("spr\u0003" + getMess());
                             webSocket.send("spr\u0003" + getMess());
-//                        webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
                             if (document.getElementById('stations')) {
                                 document.getElementById('stations').style.display = 'none';
                             }
@@ -218,6 +203,11 @@
                         function getSt(p) {
                             document.getElementById('stations').style.display = 'table';
                             document.getElementById('stations').innerHTML = p;
+                        }
+
+//    Формируем лист истории
+                        function histList(p) {
+                            document.getElementById('history').innerHTML = p;
                         }
                         function warning(p) {
                             console.log(p);

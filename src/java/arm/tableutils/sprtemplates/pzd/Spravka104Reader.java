@@ -1,10 +1,12 @@
 package arm.tableutils.sprtemplates.pzd;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +19,7 @@ public class Spravka104Reader implements TableReaderInterface {
 
 //    regexDocHead
     final static String RDH = "([A-ZА-Я]{2,4})\\s+([A-ZА-Я]{2,4})\\s+"
-            + "(104)\\s+(\\d{2}\\.\\d{2})\\s+(\\d{2}\\-\\d{2})\\s+"
+            + "(?<spr>104)\\s+(?<date>\\d{2}\\.\\d{2})\\s+(?<time>\\d{2}\\-\\d{2})\\s+"
             + "([A-ZА-Я]{2}\\s+[A-ZА-Я]{0,6}\\d{0,3})\\s+([A-ZА-Я]{8})\\s+"
             + "(\\\"[A-ZА-Я]{5}\\\")\\s+([A-ZА-Я]{7})\\s+"
             + "([A-ZА-Я]{3}\\.[A-ZА-Я]{5})\\s+([A-ZА-Я]{1})\\s+([A-ZА-Я]{6})";
@@ -58,6 +60,8 @@ public class Spravka104Reader implements TableReaderInterface {
             + "(?<tbiv>\\d{1,3}))?";
     //https://regex101.com/r/JCkg1B/1
 
+    final WriteToHist hist = new WriteToHist();
+
     @Override
     public HtmlTable processFile(String fileName) {
 //        String str = null;
@@ -96,6 +100,11 @@ public class Spravka104Reader implements TableReaderInterface {
         HtmlTable result2 = new HtmlTable();
         HtmlTable resultT = new HtmlTable();
 
+        String spr = "";
+        String date = "";
+        String time = "";
+        String obj = "";
+
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
@@ -105,6 +114,10 @@ public class Spravka104Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result1.addCell(matcher.group(i));
             }
+
+            spr = matcher.group("spr");
+            date = matcher.group("date");
+            time = matcher.group("time");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -148,6 +161,14 @@ public class Spravka104Reader implements TableReaderInterface {
                     result1.addCell(matcher.group(i));
                 }
             }
+            obj = plusToSpace(matcher.group("tbidx").replace("+0", "+").replace(" ", ""));
+
+            History h = new History();
+            h.setSprN(spr);
+            h.setDate(date);
+            h.setTime(time);
+            h.setObj(obj);
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

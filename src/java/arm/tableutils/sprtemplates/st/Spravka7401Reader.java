@@ -1,9 +1,11 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,14 +18,14 @@ public class Spravka7401Reader implements TableReaderInterface {
 
 //    regexDocHead
     final static String RDH = "([A-ZА-Я]{2}\\s[A-ZА-Я]{3})\\s+"
-            + "(\\d{4})\\s+"
-            + "(\\d{2}.\\d{2})\\s+"
-            + "(\\d{2}-\\d{2})\\s+"
+            + "(?<spr>\\d{4})\\s+"
+            + "(?<date>\\d{2}.\\d{2})\\s+"
+            + "(?<time>\\d{2}-\\d{2})\\s+"
             + "([A-ZА-Я]{2}\\s\\d{2})\\s+"
             + "([A-ZА-Я]{7})\\s+"
             + "([A-ZА-Я]{8})\\s+"
             + "([A-ZА-Я]{6})\\s+"
-            + "([A-ZА-Я]{6})";
+            + "(?<st>[A-ZА-Я]{6})";
 
 //    regexTHead
     final static String RTH = "(?<thpoluch>[A-ZА-Я]{5})"
@@ -40,6 +42,8 @@ public class Spravka7401Reader implements TableReaderInterface {
 
 //    regexTBody
     final static String RTB = "((?<poluch>\\d{4}){0,1}\\s+)(\\D+\\s){0,1}(?<vg>\\d{8})\\s+(?<ves>\\d{1,2})(\\s(?<gr>\\d{5})\\s+(?<np>\\d{4})\\s+(?<idx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+(?<disl>\\d{5})\\s+(?<oper>[A-ZА-Я]{4})\\s+(?<vrop>\\d{2}\\s+\\d{2}\\-\\d{2})(?<vroj>\\s+\\d{2}\\s+\\d{2}\\-\\d{2}){0,1}){0,1}";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -86,6 +90,13 @@ public class Spravka7401Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
+
+            History h = new History();
+            h.setSprN(matcher.group("spr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            h.setObj(matcher.group("st"));
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

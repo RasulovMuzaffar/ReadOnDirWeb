@@ -48,13 +48,13 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-//    static String p = "c:\\testFolder\\in";
-    static String p = "C:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "C:\\soob\\in";
 
 //    static List<String> histTitle = new ArrayList<>();
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -211,7 +211,7 @@ public class ReadOnDir extends Thread {
                 
                 StringBuilder s = new StringBuilder();
                 if (result != null) {
-                    WriteToHist.writeToDB(user);
+                    WriteToHist.writeToDB(user,str);
                     String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
@@ -226,7 +226,7 @@ public class ReadOnDir extends Thread {
                     });
 
                 } else {
-                    WriteToHist.writeToDB(user);
+                    WriteToHist.writeToDB(user,str);
                     StringBuilder moreSprs = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
 //                    System.out.println("list.size() ---->>>> "+list.size());

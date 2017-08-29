@@ -1,15 +1,12 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import arm.wr.WriteToHist;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,9 +106,16 @@ public class Spravka91Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
-                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
-            hist.infoFromSpr(sb.toString());
+            History h = new History();
+            h.setSprN(matcher.group("dhcode"));
+            h.setDate(matcher.group("dhdate"));
+            h.setTime(matcher.group("dhtime"));
+            h.setObj(matcher.group("dhst"));
+            hist.infoFromSpr(h);
+//            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
+//                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
+//            hist.infoFromSpr(sb.toString());
+            
             doroga = matcher.group("dhdor");
 
             if (!tableHeaderProcessed) {

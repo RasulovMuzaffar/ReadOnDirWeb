@@ -1,9 +1,11 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,11 +18,11 @@ public class Spravka57Reader implements TableReaderInterface {
 
 //    regexDocHead
     final static String RDH = "([A-ZА-Я]{2})\\s+"
-            + "(?<dhdor>[A-ZА-Я]{1,4})\\s+(57)\\s+"
-            + "(\\d{2}\\.\\d{2})\\s+(\\d{2}\\-\\d{2})\\s+"
+            + "(?<dhdor>[A-ZА-Я]{1,4})\\s+(?<spr>57)\\s+"
+            + "(?<date>\\d{2}\\.\\d{2})\\s+(?<time>\\d{2}\\-\\d{2})\\s+"
             + "([A-ZА-Я]{2})\\s+(\\d{1,2})\\s+([A-ZА-Я]{6})\\s+"
             + "([A-ZА-Я]{7})\\s+([A-ZА-Я]{1})\\s+([A-ZА-Я]{2}\\.)\\s+"
-            + "([A-ZА-Я]{0,15}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})";
+            + "(?<st>[A-ZА-Я]{0,15}-{0,1}.{0,1}[A-ZА-Я]{0,5}\\d{0,2}.{0,1})";
 
 //    regexTHead
     final static String RTH = "([A-ZА-Я]{1})\\s+([A-ZА-Я]{4}\\.)\\s+"
@@ -33,6 +35,8 @@ public class Spravka57Reader implements TableReaderInterface {
             + "((?<tbidx>\\d{4,6}\\+\\s?\\d{1,3}\\+\\d{4,6})\\)"
             + "(?<tbstate>[A-ZА-Я]{2,4})\\s+"
             + "(?<tbxz1>\\d{1,2})\\s+(?<tbtime>\\d{2}\\-\\d{2}))";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -85,6 +89,13 @@ public class Spravka57Reader implements TableReaderInterface {
             }
 
             doroga = matcher.group("dhdor");
+
+            History h = new History();
+            h.setSprN(matcher.group("spr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            h.setObj(matcher.group("st"));
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

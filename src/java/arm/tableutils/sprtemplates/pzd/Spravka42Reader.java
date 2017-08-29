@@ -1,10 +1,12 @@
 package arm.tableutils.sprtemplates.pzd;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,13 +18,19 @@ import java.util.regex.Pattern;
 public class Spravka42Reader implements TableReaderInterface {
 
 //    regexDocHead
-    final static String RDH = "(?<vcdor>[A-ZA-Я]{2} [A-ZA-Я]{2,4})\\s+42";
+    final static String RDH = "(?<vcdor>[A-ZA-Я]{2} [A-ZA-Я]{2,4})\\s+"
+            + "(?<spr>42)\\s+"
+            + "(?<date>\\d{2}.\\d{2})\\s+"
+            + "(?<time>\\d{2}-\\d{2})\\s+\\S+\\s+\\S+\\s+\\d{4}\\("
+            + "(?<idx>\\d{4}\\+\\s?\\d{2,3}\\+\\d{4})\\)";
 
 //    regexTHead
     final static String RTH = "";
 
 //    regexTBody
     final static String RTB = "";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -77,6 +85,14 @@ public class Spravka42Reader implements TableReaderInterface {
                     break;
                 }
             }
+
+            History h = new History();
+            h.setSprN(matcher.group("spr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            System.out.println("---- "+matcher.group("idx").replace(" ", "0"));
+            h.setObj(plusToSpace(matcher.group("idx").replace("+0", "+").replace(" ", "")));
+            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

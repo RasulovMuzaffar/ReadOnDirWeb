@@ -288,7 +288,7 @@ a:hover {
 
 @media all and (min-width: 320px) {
     .c-menu--slide-right {
-        width: 300px
+        width: 320px
     }
 }
 
@@ -333,9 +333,9 @@ a:hover {
 
 @media all and (min-width: 320px) {
     .c-menu--slide-right {
-        -webkit-transform: translateX(300px);
-        -ms-transform: translateX(300px);
-        transform: translateX(300px)
+        -webkit-transform: translateX(320px);
+        -ms-transform: translateX(320px);
+        transform: translateX(320px)
     }
 }
 

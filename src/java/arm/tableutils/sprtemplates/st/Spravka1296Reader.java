@@ -1,9 +1,11 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -45,6 +47,8 @@ public class Spravka1296Reader implements TableReaderInterface {
             + "(?<tdkv2>\\d{2})\\s+"
             + "(?<tddate2>\\d{2}\\.\\d{2})\\s+"
             + "(?<tdtime2>\\d{1,2}\\-\\d{1,2})";
+
+    final WriteToHist hist = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -91,7 +95,14 @@ public class Spravka1296Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-
+            
+            History h = new History();
+            h.setSprN(matcher.group("nspr"));
+            h.setDate(matcher.group("date"));
+            h.setTime(matcher.group("time"));
+            h.setObj(matcher.group("st"));
+            hist.infoFromSpr(h);
+            
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsDocHeader();
