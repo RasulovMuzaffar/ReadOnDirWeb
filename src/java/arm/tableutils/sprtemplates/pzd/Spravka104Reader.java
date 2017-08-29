@@ -60,9 +60,9 @@ public class Spravka104Reader implements TableReaderInterface {
 
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
-        String f1 = "";
+//        String str = null;
+//        String f = null;
+//        String f1 = "";
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -73,25 +73,25 @@ public class Spravka104Reader implements TableReaderInterface {
         /*
         * пока условно будем считать что файл всегда есть!
          */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f1 = TextReplace.getText(str);
-            f = TextReplace.getSha(f1).replace("-----------------------------", "");
-
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka104Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka104Reader : " + ex);
-        }
-
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f1 = TextReplace.getText(str);
+//            f = TextReplace.getSha(f1).replace("-----------------------------", "");
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka104Reader.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("exception in Spravka104Reader : " + ex);
+//        }
+        String f = TextReplace.getSha(TextReplace.getText(fileName)).replace("-----------------------------", "");
         HtmlTable result1 = new HtmlTable();
         HtmlTable result2 = new HtmlTable();
         HtmlTable resultT = new HtmlTable();

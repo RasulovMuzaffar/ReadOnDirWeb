@@ -48,8 +48,8 @@ public class Spravka1296Reader implements TableReaderInterface {
 
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
+//        String str = null;
+//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -62,24 +62,24 @@ public class Spravka1296Reader implements TableReaderInterface {
         /*
         * пока условно будем считать что файл всегда есть!
          */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f = TextReplace.getText(str);
-
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka1296Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka1296Reader : " + ex);
-        }
-
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f = TextReplace.getText(str);
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka1296Reader.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("exception in Spravka1296Reader : " + ex);
+//        }
+        String f = TextReplace.getText(fileName);
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
@@ -166,8 +166,6 @@ public class Spravka1296Reader implements TableReaderInterface {
 //            tHead = true;
 //            result.advanceToNextRow();
 //        }
-
-
         pattern = Pattern.compile(RTB2);
         matcher = pattern.matcher(f);
         int m = 1;
@@ -188,7 +186,6 @@ public class Spravka1296Reader implements TableReaderInterface {
 
 //            if (!tableHeaderProcessed) {
 //                tableHeaderProcessed = true;
-                
 //            }
             reading = true;
             tBody2 = true;
@@ -201,11 +198,11 @@ public class Spravka1296Reader implements TableReaderInterface {
         System.out.println("tBody1296-2 === " + tBody2);
         if (reading == true && (docHead == true && tHead == true && (tBody1
                 == true || tBody2 == true))) {
-            System.out.println("can reading SPR1296 " );
+            System.out.println("can reading SPR1296 ");
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR1296 " );
+            System.out.println("can not reading SPR1296 ");
             return null;
         }
     }

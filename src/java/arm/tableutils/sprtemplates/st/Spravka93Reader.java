@@ -4,6 +4,7 @@ import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -45,10 +46,13 @@ public class Spravka93Reader implements TableReaderInterface {
             + "(?<budl>\\d{1,2})\\s+"
             + "(?<bbrutt>\\d{2,4})";
 
+    
+    final WriteToHist hist = new WriteToHist();
+    
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
+//        String str = null;
+//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -59,34 +63,41 @@ public class Spravka93Reader implements TableReaderInterface {
         /*
         * пока условно будем считать что файл всегда есть!
          */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f = TextReplace.getText(str);
-
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f = TextReplace.getText(str);
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        String f = TextReplace.getText(fileName);
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
+        StringBuilder sb = new StringBuilder();
         boolean tableHeaderProcessed = false;
 
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
+            
+            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
+                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
+            hist.infoFromSpr(sb.toString());
+
+            
             doroga = matcher.group("dhdor");
 
             if (!tableHeaderProcessed) {
@@ -159,11 +170,11 @@ public class Spravka93Reader implements TableReaderInterface {
         System.out.println("tHead93 === " + tHead);
         System.out.println("tBody93 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR93 " );
+            System.out.println("can reading SPR93 ");
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR93 " );
+            System.out.println("can not reading SPR93 ");
             return null;
         }
     }

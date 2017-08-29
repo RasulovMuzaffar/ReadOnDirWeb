@@ -36,29 +36,29 @@ public class Spravka57Reader implements TableReaderInterface {
 
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("File size: " + fis.available() + " bytes");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f = TextReplace.getSha(TextReplace.getText(str));
-
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka57Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka57Reader : " + ex);
-        }
-
+//        String str = null;
+//        String f = null;
+//        /*
+//        * пока условно будем считать что файл всегда есть!
+//         */
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("File size: " + fis.available() + " bytes");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f = TextReplace.getSha(TextReplace.getText(str));
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka57Reader.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("exception in Spravka57Reader : " + ex);
+//        }
+        String f = TextReplace.getSha(TextReplace.getText(fileName));
         return getResult(f);
     }
 
@@ -70,7 +70,7 @@ public class Spravka57Reader implements TableReaderInterface {
         boolean tHead = false;
         boolean tBody = false;
         String doroga = "";
-        
+
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
@@ -151,11 +151,11 @@ public class Spravka57Reader implements TableReaderInterface {
         System.out.println("tHead57 === " + tHead);
         System.out.println("tBody57 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR57 " );
+            System.out.println("can reading SPR57 ");
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR57 " );
+            System.out.println("can not reading SPR57 ");
             return null;
         }
     }

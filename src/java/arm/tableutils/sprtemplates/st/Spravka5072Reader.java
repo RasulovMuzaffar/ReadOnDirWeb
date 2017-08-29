@@ -36,7 +36,6 @@ public class Spravka5072Reader implements TableReaderInterface {
             + "(?<sto>[A-ZА-Я]{2}.[A-ZА-Я]{2})";
 
 //    regexTBody
-    
     final static String RTB = "([A-ZА-Я]{11}\\s(?<tbsobst>[A-ZА-Я]{1,4})){0,1}\\s{0,}"
             + "(?<tbnvag>\\d{8})\\s+"
             + "(?<tbstn>[A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,5}\\d{0,5})\\s+"
@@ -52,9 +51,9 @@ public class Spravka5072Reader implements TableReaderInterface {
 
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
-        String f1 = "";
+//        String str = null;
+//        String f = null;
+//        String f1 = "";
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -64,24 +63,24 @@ public class Spravka5072Reader implements TableReaderInterface {
         /*
         * пока условно будем считать что файл всегда есть!
          */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f1 = TextReplace.getText(str);
-            f = TextReplace.getSha(f1);
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka5072Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka5072Reader : " + ex);
-        }
-
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f1 = TextReplace.getText(str);
+//            f = TextReplace.getSha(f1);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka5072Reader.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("exception in Spravka5072Reader : " + ex);
+//        }
+        String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
@@ -132,7 +131,7 @@ public class Spravka5072Reader implements TableReaderInterface {
         while (matcher.find()) {
             result.addCell("" + n++);
 
-            result.addCell("<b>"+delNull(matcher.group("tbsobst"))+"</b>");
+            result.addCell("<b>" + delNull(matcher.group("tbsobst")) + "</b>");
             result.addCell(delNull(matcher.group("tbnvag")));
             result.addCell(delNull(matcher.group("tbstn")));
             result.addCell(delNull(matcher.group("tbgr")));
@@ -153,7 +152,7 @@ public class Spravka5072Reader implements TableReaderInterface {
             if (!column.equals("")) {
                 result.markCurrentRowAsRegularUnderlining();
             }
-            
+
             reading = true;
             tBody = true;
             result.advanceToNextRow();
@@ -162,11 +161,11 @@ public class Spravka5072Reader implements TableReaderInterface {
         System.out.println("tHead5072 === " + tHead);
         System.out.println("tBody5072 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR5072 " );
+            System.out.println("can reading SPR5072 ");
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR5072 " );
+            System.out.println("can not reading SPR5072 ");
             return null;
         }
     }

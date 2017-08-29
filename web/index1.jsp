@@ -93,13 +93,11 @@
         <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
             <button class="c-menu__close">Закрыть историю &rarr;</button>
             <ul class="c-menu__items">
+                <li class="c-menu__item"><a href="#" class="c-menu__link">20.09 15-30 | ст. Чукурсай | Спр: 91 92 93</a></li>
                 <c:forEach begin="1" end="20" step="1" var="i">
                     <li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>
-                    </c:forEach>
-                <!--                <li class="c-menu__item"><a href="#" class="c-menu__link">About</a></li>
-                                <li class="c-menu__item"><a href="#" class="c-menu__link">Services</a></li>
-                                <li class="c-menu__item"><a href="#" class="c-menu__link">Work</a></li>
-                                <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>-->
+                </c:forEach>
+
             </ul>
         </nav><!-- /c-menu slide-right -->
 

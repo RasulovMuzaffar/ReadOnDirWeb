@@ -27,6 +27,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +48,13 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+//    static List<String> histTitle = new ArrayList<>();
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -183,12 +185,34 @@ public class ReadOnDir extends Thread {
         try {
             File f = new File(filePath);
             if (f.exists()) {
-                HtmlTable result = tableReader.processFile(filePath);
+                String str = null;
+                try (FileInputStream fis = new FileInputStream(filePath)) {
 
+                    System.out.println("File size: " + fis.available() + " bytes");
+
+                    byte[] buffer = new byte[fis.available()];
+
+                    // считаем файл в буфер
+                    fis.read(buffer, 0, fis.available());
+
+                    str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+
+                } catch (IOException ex) {
+                    System.out.println("exception in ReadOnDir : " + ex);
+                }
+
+                HtmlTable result = tableReader.processFile(str);
+//                HtmlTable result = tableReader.processFile(filePath);
+
+
+//                WriteToHist.writeToDB(user, str);
+
+                
+                
                 StringBuilder s = new StringBuilder();
                 if (result != null) {
+                    WriteToHist.writeToDB(user);
                     String answer = result.generateHtml();
-                    System.out.println("ANSWER------->>>>> " + answer);
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
@@ -202,6 +226,7 @@ public class ReadOnDir extends Thread {
                     });
 
                 } else {
+                    WriteToHist.writeToDB(user);
                     StringBuilder moreSprs = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
 //                    System.out.println("list.size() ---->>>> "+list.size());

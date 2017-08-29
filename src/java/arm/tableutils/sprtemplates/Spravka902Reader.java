@@ -1,4 +1,3 @@
-
 package arm.tableutils.sprtemplates;
 
 import arm.tableutils.sprtemplates.st.Spravka93Reader;
@@ -52,8 +51,8 @@ public class Spravka902Reader implements TableReaderInterface {
 
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
+//        String str = null;
+//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -63,23 +62,23 @@ public class Spravka902Reader implements TableReaderInterface {
         /*
         * пока условно будем считать что файл всегда есть!
          */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f = TextReplace.getText(str);
-
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f = TextReplace.getText(str);
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
@@ -140,7 +139,7 @@ public class Spravka902Reader implements TableReaderInterface {
             tBody = true;
             result.advanceToNextRow();
         }
-        
+
         System.out.println("docHead902 === " + docHead);
         System.out.println("tHead902 === " + tHead);
         System.out.println("tBody902 === " + tBody);
@@ -151,7 +150,7 @@ public class Spravka902Reader implements TableReaderInterface {
             } else {
                 ReadOnDir.spr = "sprDefault";
             }
-            forPopup=false;
+            forPopup = false;
             return result;
         } else {
             System.out.println("can not reading SPR902 ");

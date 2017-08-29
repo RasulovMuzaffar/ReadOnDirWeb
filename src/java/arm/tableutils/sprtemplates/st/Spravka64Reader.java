@@ -32,11 +32,10 @@ public class Spravka64Reader implements TableReaderInterface {
 //    regexTBody
     final static String RTB = "(?<tbnp>\\d{4})\\s+(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+((?<tbstate2>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}(?<tbxz5>\\d{1,4}))?(\\s{11}(?<tbxz6>\\d{4}))?";
 
-
     @Override
     public HtmlTable processFile(String fileName) {
-        String str = null;
-        String f = null;
+//        String str = null;
+//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -47,24 +46,24 @@ public class Spravka64Reader implements TableReaderInterface {
         /*
         * пока условно будем считать что файл всегда есть!
          */
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-
-            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-
-            byte[] buffer = new byte[fis.available()];
-
-            // считаем файл в буфер
-            fis.read(buffer, 0, fis.available());
-
-            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
-            f = (TextReplace.getText(str)).replace("\r\n\r\n", "\r\n");
-
-        } catch (IOException ex) {
-            Logger.getLogger(Spravka64Reader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("exception in Spravka64Reader : " + ex);
-        }
-
+//        try (FileInputStream fis = new FileInputStream(fileName)) {
+//
+//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
+//
+//            byte[] buffer = new byte[fis.available()];
+//
+//            // считаем файл в буфер
+//            fis.read(buffer, 0, fis.available());
+//
+//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//
+//            f = (TextReplace.getText(str)).replace("\r\n\r\n", "\r\n");
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(Spravka64Reader.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("exception in Spravka64Reader : " + ex);
+//        }
+        String f = (TextReplace.getText(fileName)).replace("\r\n\r\n", "\r\n");
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
@@ -132,7 +131,6 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz4")));
             result.addCell(delNull(matcher.group("tbxz5")));
             result.addCell(delNull(matcher.group("tbxz6")));
-            
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -148,11 +146,11 @@ public class Spravka64Reader implements TableReaderInterface {
         System.out.println("tBody64 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody
                 == true)) {
-            System.out.println("can reading SPR64 " );
+            System.out.println("can reading SPR64 ");
             ReadOnDir.spr = "sprDefault";
             return result;
         } else {
-            System.out.println("can not reading SPR64 " );
+            System.out.println("can not reading SPR64 ");
             return null;
         }
     }
