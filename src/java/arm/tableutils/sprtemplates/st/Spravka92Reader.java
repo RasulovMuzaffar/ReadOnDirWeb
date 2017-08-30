@@ -119,6 +119,7 @@ public class Spravka92Reader implements TableReaderInterface {
             hist.infoFromSpr(h);
             
             
+            
 //            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
 //                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
 //            hist.infoFromSpr(sb.toString());
