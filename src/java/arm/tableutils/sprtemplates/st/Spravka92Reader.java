@@ -42,7 +42,7 @@ public class Spravka92Reader implements TableReaderInterface {
             + "(?<tbtime>\\d{2}-\\d{2})";
 
     final WriteToHist hist = new WriteToHist();
-    
+
     @Override
     public HtmlTable processFile(String fileName) {
 
@@ -110,20 +110,17 @@ public class Spravka92Reader implements TableReaderInterface {
                 result.addCell(matcher.group(i));
 
             }
-            
-            History h = new History();
+
+        History h = new History();
             h.setSprN(matcher.group("dhcode"));
             h.setDate(matcher.group("dhdate"));
             h.setTime(matcher.group("dhtime"));
             h.setObj(matcher.group("dhst"));
-            hist.infoFromSpr(h);
-            
-            
-            
+        hist.infoFromSpr(h);
+
 //            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
 //                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
 //            hist.infoFromSpr(sb.toString());
-
             doroga = matcher.group("dhdor");
 
             if (!tableHeaderProcessed) {

@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 import javax.websocket.Session;
 
 public class Write {
+    HistoryInterface hi;
+    WriteToHist wth = new WriteToHist();
 public static boolean forPopup=false;
 //    static String path = "c:\\testFolder\\out";
     static String path = "c:\\soob\\out";
@@ -23,25 +25,13 @@ public static boolean forPopup=false;
         Users u = (Users) userSession.getUserProperties().get("usrname");
         autoNo = u.getAutoNo();
         String[] s = str.split("\u0003");
-//        String[] zprs = s[1].split(",");
         switch (s[0]) {
             case "spr":
-//                String kodOrg = zprs[0];
-//                String numMess = zprs[1];
-//                String numSpr = zprs[2];
-//                String object = cod4(zprs[3]);
-//                String id_user = zprs[4];
-//                createFile("(:" + numMess + " " + kodOrg + " " + object + ":" + numSpr + ":)");
                 String text = s[1];
                 createFile(text);
-//                 {
-//                    try {
-//                        createFile(new String(text.getBytes(), "Cp866"));
-//                    } catch (UnsupportedEncodingException ex) {
-//                        Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
-//                        System.out.println("UnsupportedEncodingException in Write : " + ex);
-//                    }
-//                }
+                break;
+            case "getHist":
+                wth.sendHist(u, Integer.parseInt(s[1]));
                 break;
             case "getTGNL":
                 System.out.println("TELEGRAMMA NATURNIY LIST");

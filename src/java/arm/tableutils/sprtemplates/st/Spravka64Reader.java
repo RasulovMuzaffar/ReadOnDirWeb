@@ -90,7 +90,7 @@ public class Spravka64Reader implements TableReaderInterface {
                 h.setObj(matcher.group("st"));
             }
             hist.infoFromSpr(h);
-
+            System.out.println("VSE OK V DOCHEAD 64!");
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsDocHeader();
@@ -123,6 +123,7 @@ public class Spravka64Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
 
+            System.out.println("VSE OK V TABHEAD 64!");
             tHead = true;
             result.advanceToNextRow();
         }
@@ -147,6 +148,9 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz5")));
             result.addCell(delNull(matcher.group("tbxz6")));
 
+            
+            System.out.println("VSE OK V TABBODY 64!");
+            
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();

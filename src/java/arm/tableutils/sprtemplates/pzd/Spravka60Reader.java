@@ -91,6 +91,7 @@ public class Spravka60Reader implements TableReaderInterface {
             h.setDate(matcher.group("date"));
             h.setTime(matcher.group("time"));
             h.setObj(plusToSpace(matcher.group("idx").replace("+0", "+").replace(" ", "")));
+            System.out.println("obj 60 "+matcher.group("idx").replace("+0", "+").replace(" ", ""));
             hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {

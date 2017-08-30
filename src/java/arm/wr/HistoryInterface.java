@@ -6,6 +6,7 @@
 package arm.wr;
 
 import arm.ent.History;
+import arm.ent.Users;
 
 /**
  *
@@ -14,5 +15,7 @@ import arm.ent.History;
 public interface HistoryInterface {
 
     void infoFromSpr(History h);
+    
+    void sendHist(Users u, int id);
 
 }

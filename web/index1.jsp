@@ -93,11 +93,6 @@
         <nav id="c-menu--slide-right" class="c-menu c-menu--slide-right">
             <button class="c-menu__close">Закрыть историю &rarr;</button>
             <ul class="c-menu__items" id="history">
-                <!--<li class="c-menu__item"><a href="#" class="c-menu__link">20.09 15-30 | ст. Чукурсай | Спр: 91 92 93</a></li>-->
-                    <%--<c:forEach begin="1" end="20" step="1" var="i">--%>
-                    <!--<li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>-->
-                    <%--</c:forEach>--%>
-
             </ul>
         </nav><!-- /c-menu slide-right -->
 
@@ -173,6 +168,12 @@
                             webSocket.send("getRS\u0003" + x);
                         }
 
+                        function getHist(p) {
+                            var x = p.dataset.idmess;
+                            console.log(p.dataset['idmess']);
+                            webSocket.send("getHist\u0003" + x);
+                        }
+
                         function findSt(p) {
                             console.log(p);
                             webSocket.send("getSt\u0003" + p);
@@ -209,6 +210,7 @@
                         function histList(p) {
                             document.getElementById('history').innerHTML = p;
                         }
+
                         function warning(p) {
                             console.log(p);
                             document.getElementById('xxxx').insertAdjacentHTML('beforeEnd', '<br/><span id="warning" class="warning">' + p + '</span>');

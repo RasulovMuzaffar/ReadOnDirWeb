@@ -1,11 +1,13 @@
 package arm.tableutils.sprtemplates;
 
+import arm.ent.History;
 import arm.tableutils.sprtemplates.st.Spravka93Reader;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +51,8 @@ public class Spravka902Reader implements TableReaderInterface {
             + "(?<thxz2>\\d{5})\\s+"
             + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
 
+    final WriteToHist hist = new WriteToHist();
+
     @Override
     public HtmlTable processFile(String fileName) {
 //        String str = null;
@@ -90,6 +94,15 @@ public class Spravka902Reader implements TableReaderInterface {
                 result.addCell(matcher.group(i));
             }
 
+//            History h = new History();
+//            h.setSprN(matcher.group("dcode"));
+//            h.setDate("");
+//            h.setTime("");
+//            String obj = matcher.group("dindx").replace(" 0", " ").replace(" 00", " ");
+//            System.out.println("obj902 "+obj);
+////            h.setObj(plusToSpace(obj));
+//            hist.infoFromSpr(h);
+            
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsDocHeader();

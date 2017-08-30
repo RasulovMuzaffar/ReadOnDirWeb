@@ -112,6 +112,12 @@ public class Spravka91Reader implements TableReaderInterface {
             h.setTime(matcher.group("dhtime"));
             h.setObj(matcher.group("dhst"));
             hist.infoFromSpr(h);
+            
+            System.out.println("----------->> "+h.getSprN());
+            System.out.println("----------->> "+h.getDate());
+            System.out.println("----------->> "+h.getTime());
+            System.out.println("----------->> "+h.getObj());
+            
 //            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
 //                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
 //            hist.infoFromSpr(sb.toString());

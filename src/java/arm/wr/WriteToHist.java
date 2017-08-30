@@ -3,8 +3,11 @@ package arm.wr;
 import arm.ent.History;
 import arm.ent.InMessages;
 import arm.ent.Users;
+import arm.tableutils.HtmlTable;
+import arm.tableutils.tablereaders.MultipleResultsException;
 import arm.test.Auth;
 import static arm.wr.ReadOnDir.spr;
+import static arm.wr.ReadOnDir.tableReader;
 import arm.ws.WS;
 import static arm.ws.WS.armUsers;
 import java.io.IOException;
@@ -23,9 +26,9 @@ import javax.websocket.Session;
 
 public class WriteToHist implements HistoryInterface {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     final static List<String> lspr = new ArrayList<>();
     final static Set<String> sinf = new HashSet<>();
@@ -45,21 +48,23 @@ public class WriteToHist implements HistoryInterface {
         for (String l : sinf) {
             inf += l;
         }
+        System.out.println("history --->>> " + inf);
         System.out.println("history --->>> " + inf + sprs);
         lspr.clear();
         sinf.clear();
+        if (!"".equals(inf) && !"".equals(sprs)) {
+            String sql = "INSERT INTO in_messages (header, body, id_user) VALUES(?,?,?);";
+            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                    PreparedStatement pstmt = con.prepareStatement(sql);) {
+                pstmt.setString(1, inf + sprs);
+                pstmt.setString(2, str);
+                pstmt.setLong(3, user.getId());
+                pstmt.executeUpdate();
 
-        String sql = "INSERT INTO in_messages (header, body, id_user) VALUES(?,?,?);";
-        try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
-                PreparedStatement pstmt = con.prepareStatement(sql);) {
-            pstmt.setString(1, inf + sprs);
-            pstmt.setString(2, str);
-            pstmt.setLong(3, user.getId());
-            pstmt.executeUpdate();
-
-        } catch (SQLException ex) {
-            System.out.println("exexexexex " + ex);
-            Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                System.out.println("exexexexex " + ex);
+                Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         createHistList(user);
     }
@@ -82,9 +87,9 @@ public class WriteToHist implements HistoryInterface {
             Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
         }
         StringBuilder sb = new StringBuilder();
-//        <li class="c-menu__item"><a href="#" class="c-menu__link">История ${i}</a></li>
         for (InMessages i : lim) {
-            sb.append("<li class='c-menu__item'>").append("<a href='#' class='c-menu__link'>")
+            sb.append("<li class='c-menu__item'>").append("<a href='#' class='c-menu__link' ")
+                    .append("data-idmess='").append(i.getId()).append("' onclick='getHist(this);'>")
                     .append(i.getHeader()).append("</a></li>");
         }
 
@@ -97,5 +102,47 @@ public class WriteToHist implements HistoryInterface {
                 }
             }
         });
+    }
+
+    @Override
+    public void sendHist(Users user, int id) {
+        try {
+            System.out.println("User-->>> " + user.getLogin() + " messId -->" + id);
+            
+            String sql = "SELECT * FROM in_messages WHERE id=" + id;
+            
+            InMessages im = new InMessages();
+            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                    PreparedStatement pstmt = con.prepareStatement(sql);
+                    ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    im = new InMessages(rs.getLong("id"), rs.getString("header"),
+                            rs.getString("body"), rs.getTimestamp("curr_date"),
+                            rs.getLong("id_user"));
+                }
+            } catch (SQLException ex) {
+                System.out.println("exexexexex " + ex);
+                Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            HtmlTable result = tableReader.processFile(im.getBody());
+            
+            String answer = result.generateHtml();
+            armUsers.stream().forEach((Session x) -> {
+                if (x.getUserProperties().containsValue(user)) {
+                    try {
+                        x.getBasicRemote().sendText("sprDefault\u0003" + answer);
+                    } catch (IOException ex) {
+                        Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            });
+            
+        } catch (MultipleResultsException ex) {
+            Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

@@ -161,14 +161,14 @@ public class Spravka104Reader implements TableReaderInterface {
                     result1.addCell(matcher.group(i));
                 }
             }
-            obj = plusToSpace(matcher.group("tbidx").replace("+0", "+").replace(" ", ""));
-
-            History h = new History();
-            h.setSprN(spr);
-            h.setDate(date);
-            h.setTime(time);
-            h.setObj(obj);
-            hist.infoFromSpr(h);
+//            obj = plusToSpace(matcher.group("tbidx").replace("+0", "+").replace(" ", ""));
+//            System.out.println("obj104 --> " + obj);
+//            History h = new History();
+//            h.setSprN(spr);
+//            h.setDate(date);
+//            h.setTime(time);
+//            h.setObj(obj);
+//            hist.infoFromSpr(h);
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

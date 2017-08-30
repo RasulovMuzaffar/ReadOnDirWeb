@@ -94,7 +94,7 @@ public class Spravka12Reader implements TableReaderInterface {
             h.setDate(matcher.group("date"));
             h.setTime(matcher.group("time"));
             String obj = matcher.group("idx").replace("+0", "+").replace(" ", "");
-            System.out.println("obj "+obj);
+            System.out.println("obj12 "+obj);
             h.setObj(plusToSpace(obj));
             hist.infoFromSpr(h);
 

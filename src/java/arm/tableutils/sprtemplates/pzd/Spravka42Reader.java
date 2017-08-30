@@ -90,7 +90,7 @@ public class Spravka42Reader implements TableReaderInterface {
             h.setSprN(matcher.group("spr"));
             h.setDate(matcher.group("date"));
             h.setTime(matcher.group("time"));
-            System.out.println("---- "+matcher.group("idx").replace(" ", "0"));
+            System.out.println("obj42--- "+matcher.group("idx").replace("+0", "+").replace(" ", ""));
             h.setObj(plusToSpace(matcher.group("idx").replace("+0", "+").replace(" ", "")));
             hist.infoFromSpr(h);
 

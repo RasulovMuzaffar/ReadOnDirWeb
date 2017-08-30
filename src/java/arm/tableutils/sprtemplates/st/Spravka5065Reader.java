@@ -18,11 +18,12 @@ public class Spravka5065Reader implements TableReaderInterface {
 
 //regexDocHead
     final static String RDH = "([A-ZА-Я]{2}\\s+[A-ZА-Я]{3})\\s+"
-            + "(?<spr>\\d{4})\\s+(?<date>\\d{2}.\\d{2})\\s+(?<time>\\d{2}-\\d{2})\\s+([A-ZА-Я]{2})\\s+"
-            + "(\\d{2})\\s+([A-ZА-Я]{10})\\s+([A-ZА-Я]{7})\\s+([A-ZА-Я]{7})\\s+"
-            + "(?<st>[A-ZА-Я]{3,8}-{0,1}[A-ZА-Я]{0,8}\\d{0,2})\\s{0,5}"
-            + "([A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,3})\\s{0,5}"
-            + "([A-ZА-Я]{0,3}={0,1}[A-ZА-Я]{0,4}\\s{0,5}\\({0,1}\\d{0,2}\\){0,1})\\s{0,5}([A-ZА-Я]{0,4}={0,1}[A-ZА-Я]{0,3})";
+            + "(?<spr>5065)\\s+(?<date>\\d{2}.\\d{2})\\s+"
+            + "(?<time>\\d{2}-\\d{2})\\s+([A-ZА-Я]{2})\\s+"
+            + "(\\d{2})\\s+([A-ZА-Я]{10})\\s+([A-ZА-Я]{7})\\s+"
+            + "([A-ZА-Я]{7})\\s+(?<st>[A-ZА-Я]{3,8}-{0,1}[A-ZА-Я]{0,8}\\d{0,2})\\s{0,10}"
+            + "([A-ZА-Я]{0,8}-{0,1}[A-ZА-Я]{0,3})\\s{0,5}([A-ZА-Я]{0,3}={0,1}[A-ZА-Я]{0,4}\\s{0,5}\\"
+            + "({0,1}\\d{0,2}\\){0,1})\\s{0,5}([A-ZА-Я]{0,4}={0,1})(?<sost>[A-ZА-Я]{0,3})";
 
 //    RTH
     final static String RTH = "(?<thnv>[A-ZА-Я]{1}\\s+[A-ZА-Я]{6})\\s+"
@@ -92,7 +93,7 @@ public class Spravka5065Reader implements TableReaderInterface {
             }
 
             History h = new History();
-            h.setSprN(matcher.group("spr"));
+            h.setSprN(matcher.group("spr") + " : " + matcher.group("sost"));
             h.setDate(matcher.group("date"));
             h.setTime(matcher.group("time"));
             h.setObj(matcher.group("st"));
