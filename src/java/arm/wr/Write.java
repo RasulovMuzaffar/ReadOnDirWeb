@@ -14,9 +14,9 @@ import java.util.regex.Pattern;
 import javax.websocket.Session;
 
 public class Write {
-    HistoryInterface hi;
-    WriteToHist wth = new WriteToHist();
-public static boolean forPopup=false;
+//    WriteToHist wth = new WriteToHist();
+
+    public static boolean forPopup = false;
 //    static String path = "c:\\testFolder\\out";
     static String path = "c:\\soob\\out";
     String autoNo;
@@ -31,7 +31,10 @@ public static boolean forPopup=false;
                 createFile(text);
                 break;
             case "getHist":
-                wth.sendHist(u, Integer.parseInt(s[1]));
+                HistoryInterface hi = new WriteToHist();
+                System.out.println("uuuuuuu " + u.getLogin());
+                System.out.println("ididididid " + s[1]);
+                hi.sendHist(u, Integer.parseInt(s[1]));
                 break;
             case "getTGNL":
                 System.out.println("TELEGRAMMA NATURNIY LIST");
@@ -68,7 +71,7 @@ public static boolean forPopup=false;
 
         try (OutputStream outputStream = new FileOutputStream(pth);
                 Writer outputStreamWriter = new OutputStreamWriter(outputStream, "Cp866");) {
-        outputStreamWriter.write(text);
+            outputStreamWriter.write(text);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

@@ -17,5 +17,7 @@ public interface HistoryInterface {
     void infoFromSpr(History h);
     
     void sendHist(Users u, int id);
+    
+    void writeToDB(Users user, String str);
 
 }

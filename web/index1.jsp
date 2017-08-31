@@ -170,6 +170,7 @@
 
                         function getHist(p) {
                             var x = p.dataset.idmess;
+                            console.log(p.dataset.idmess);
                             console.log(p.dataset['idmess']);
                             webSocket.send("getHist\u0003" + x);
                         }

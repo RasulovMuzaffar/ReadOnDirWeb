@@ -4,6 +4,7 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
@@ -41,7 +42,7 @@ public class Spravka92Reader implements TableReaderInterface {
             + "(?<tbdate>\\d{2}.\\d{2})\\s+"
             + "(?<tbtime>\\d{2}-\\d{2})";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -105,18 +106,18 @@ public class Spravka92Reader implements TableReaderInterface {
         StringBuilder sb = new StringBuilder();
         boolean tableHeaderProcessed = false;
 
+        History h = new History();
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
 
             }
 
-        History h = new History();
             h.setSprN(matcher.group("dhcode"));
             h.setDate(matcher.group("dhdate"));
             h.setTime(matcher.group("dhtime"));
             h.setObj(matcher.group("dhst"));
-        hist.infoFromSpr(h);
+            hi.infoFromSpr(h);
 
 //            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
 //                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));

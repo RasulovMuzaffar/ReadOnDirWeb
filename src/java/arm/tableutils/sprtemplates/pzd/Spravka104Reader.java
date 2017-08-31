@@ -4,6 +4,7 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
 import arm.wr.WriteToHist;
@@ -61,6 +62,7 @@ public class Spravka104Reader implements TableReaderInterface {
     //https://regex101.com/r/JCkg1B/1
 
     final WriteToHist hist = new WriteToHist();
+    HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -127,7 +129,9 @@ public class Spravka104Reader implements TableReaderInterface {
             docHead = true;
             result1.advanceToNextRow();
         }
-
+        if (docHead == false) {
+            return null;
+        }
         pattern = Pattern.compile(RTH1);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
@@ -146,6 +150,10 @@ public class Spravka104Reader implements TableReaderInterface {
 
             tHead = true;
             result1.advanceToNextRow();
+        }
+
+        if (tHead == false) {
+            return null;
         }
 
         pattern = Pattern.compile(RTB1);
@@ -178,6 +186,11 @@ public class Spravka104Reader implements TableReaderInterface {
             tBody = true;
             result1.advanceToNextRow();
         }
+
+        if (tBody == false) {
+            return null;
+        }
+
         resultT.addTable(result1);
         resultT.advanceToNextTable();
 
@@ -201,6 +214,10 @@ public class Spravka104Reader implements TableReaderInterface {
 
             tHead = true;
             result2.advanceToNextRow();
+        }
+
+        if (tHead == false) {
+            return null;
         }
 
         pattern = Pattern.compile(RTB2);
@@ -231,6 +248,10 @@ public class Spravka104Reader implements TableReaderInterface {
             reading = true;
             tBody = true;
             result2.advanceToNextRow();
+        }
+
+        if (tBody == false) {
+            return null;
         }
         resultT.addTable(result2);
 //        resultT.advanceToNextTable();
