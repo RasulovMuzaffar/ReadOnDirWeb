@@ -7,9 +7,12 @@ import arm.tableutils.tablereaders.utils.TextReplace;
 import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,14 +64,10 @@ public class Spravka104Reader implements TableReaderInterface {
             + "(?<tbiv>\\d{1,3}))?";
     //https://regex101.com/r/JCkg1B/1
 
-    final WriteToHist hist = new WriteToHist();
-    HistoryInterface hi = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
-//        String str = null;
-//        String f = null;
-//        String f1 = "";
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -76,51 +75,25 @@ public class Spravka104Reader implements TableReaderInterface {
         boolean tHead = false;
         boolean tBody = false;
 
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-//        try (FileInputStream fis = new FileInputStream(fileName)) {
-//
-//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-//
-//            byte[] buffer = new byte[fis.available()];
-//
-//            // считаем файл в буфер
-//            fis.read(buffer, 0, fis.available());
-//
-//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//
-//            f1 = TextReplace.getText(str);
-//            f = TextReplace.getSha(f1).replace("-----------------------------", "");
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Spravka104Reader.class.getName()).log(Level.SEVERE, null, ex);
-//            System.out.println("exception in Spravka104Reader : " + ex);
-//        }
         String f = TextReplace.getSha(TextReplace.getText(fileName)).replace("-----------------------------", "");
         HtmlTable result1 = new HtmlTable();
         HtmlTable result2 = new HtmlTable();
         HtmlTable resultT = new HtmlTable();
 
-        String spr = "";
-        String date = "";
-        String time = "";
-        String obj = "";
+        
 
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
+        
+        String obj = "";
 
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result1.addCell(matcher.group(i));
             }
-
-            spr = matcher.group("spr");
-            date = matcher.group("date");
-            time = matcher.group("time");
-
+            
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result1.markCurrentRowAsDocHeader();
@@ -169,14 +142,7 @@ public class Spravka104Reader implements TableReaderInterface {
                     result1.addCell(matcher.group(i));
                 }
             }
-//            obj = plusToSpace(matcher.group("tbidx").replace("+0", "+").replace(" ", ""));
-//            System.out.println("obj104 --> " + obj);
-//            History h = new History();
-//            h.setSprN(spr);
-//            h.setDate(date);
-//            h.setTime(time);
-//            h.setObj(obj);
-//            hist.infoFromSpr(h);
+            obj = plusToSpace(matcher.group("tbidx").replace("+0", "+"));
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -187,6 +153,19 @@ public class Spravka104Reader implements TableReaderInterface {
             result1.advanceToNextRow();
         }
 
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("104");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
+        }
+        
         if (tBody == false) {
             return null;
         }

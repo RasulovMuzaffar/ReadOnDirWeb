@@ -5,11 +5,15 @@ import arm.tableutils.sprtemplates.st.Spravka93Reader;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,37 +55,17 @@ public class Spravka902Reader implements TableReaderInterface {
             + "(?<thxz2>\\d{5})\\s+"
             + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
-//        String str = null;
-//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-//        try (FileInputStream fis = new FileInputStream(fileName)) {
-//
-//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-//
-//            byte[] buffer = new byte[fis.available()];
-//
-//            // считаем файл в буфер
-//            fis.read(buffer, 0, fis.available());
-//
-//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//
-//            f = TextReplace.getText(str);
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        
         String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
@@ -89,19 +73,15 @@ public class Spravka902Reader implements TableReaderInterface {
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
+        
+        String obj = "";
+        
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
 
-//            History h = new History();
-//            h.setSprN(matcher.group("dcode"));
-//            h.setDate("");
-//            h.setTime("");
-//            String obj = matcher.group("dindx").replace(" 0", " ").replace(" 00", " ");
-//            System.out.println("obj902 "+obj);
-////            h.setObj(plusToSpace(obj));
-//            hist.infoFromSpr(h);
+            obj = matcher.group("dindx");
             
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -110,6 +90,19 @@ public class Spravka902Reader implements TableReaderInterface {
 
             docHead = true;
             result.advanceToNextRow();
+        }
+
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("902");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
         }
 
         {

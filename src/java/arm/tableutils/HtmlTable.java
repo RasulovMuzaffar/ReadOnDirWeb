@@ -163,7 +163,7 @@ public class HtmlTable {
     private static final String ROW_CLOSE = "</tr>\n";
     private static final String CELL_OPEN = "<td>";
     private static final String CELL_CLOSE = "</td>";
-    private static final String LABELDOC_OPEN = "<label><h3>";
+    private static final String LABELDOC_OPEN = "<label class='col-md-10'><h3>";
     private static final String LABELDOC_CLOSE = "</h3></label>";
     private static final String DIV_TABL_OPEN = "<div class=\"col-md-12 tabl\">";
     private static final String DIV_TABL_CLOSE = "</div>";

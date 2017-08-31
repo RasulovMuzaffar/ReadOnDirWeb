@@ -4,10 +4,14 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +52,7 @@ public class Spravka3290Reader implements TableReaderInterface {
 //    RTB
     final static String RTB = "(?<tdvcggrzvg>[A-ZА-Я]{3,5}\\s[A-ZА-Я]{0,3}\\s?[A-ZА-Я]{0,5}\\.?[A-ZА-Я]{0,3})\\s{0,}\\:(\\s{1,5}(?<tdvsg>\\d{1,3})?\\s{1,5}(?<tdkr>\\d{1,3})?\\s{1,5}(?<tdpl>\\d{1,3})?\\s{1,5}(?<tdpv>\\d{1,3})?\\s{1,5}(?<tdcs>\\d{1,3})?\\s{1,5}(?<tdrf>\\d{1,3})?\\s{1,5}(?<tdpr>\\d{1,3})?\\s{1,4}(?<tdcmv>\\d{1,3})?\\s{1,4}(?<td94>\\d{1,3})?\\s{1,4}(?<tdzrv>\\d{1,3})?\\s{1,4}(?<tdftg>\\d{1,3})?\\s{1,4}(?<tdmvz>\\d{1,3})?)?";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -93,6 +97,8 @@ public class Spravka3290Reader implements TableReaderInterface {
 
         boolean tableHeaderProcessed = false;
 
+        String obj = "";
+
         while (matcher.find()) {
             result.addCell(matcher.group("dhvc"));
             result.addCell(matcher.group("dhdor"));
@@ -108,12 +114,7 @@ public class Spravka3290Reader implements TableReaderInterface {
             result.addCell(matcher.group("dhper"));
             result.addCell(matcher.group("dhperiod"));
 
-            History h = new History();
-            h.setSprN(matcher.group("dhcode"));
-            h.setDate(matcher.group("dhdate"));
-            h.setTime(matcher.group("dhtime"));
-            h.setObj(matcher.group("dhst"));
-            hist.infoFromSpr(h);
+            obj = matcher.group("dhst");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -122,6 +123,19 @@ public class Spravka3290Reader implements TableReaderInterface {
 
             docHead = true;
             result.advanceToNextRow();
+        }
+
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("3290");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
         }
 
         pattern = Pattern.compile(RTH);

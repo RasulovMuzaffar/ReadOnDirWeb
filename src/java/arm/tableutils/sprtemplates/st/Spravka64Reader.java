@@ -4,10 +4,14 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,12 +38,10 @@ public class Spravka64Reader implements TableReaderInterface {
 //    regexTBody
     final static String RTB = "(?<tbnp>\\d{4})\\s+(?<tbidx>\\d{4}\\+\\d{3}\\+\\d{4})\\s((?<tbstate1>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime1>\\d{2}\\-\\d{2}))?\\s+((?<tbstate2>[A-ZА-Я]{3,4}\\-?\\d{0,2})\\s+(?<tbtime2>\\d{2}\\-{1}\\d{2}))?\\s{0,14}((?<tbxz1>\\d{1}\\/\\d{2})\\s(?<tbxz2>\\d{4})\\s(?<tbxz3>\\d{0,3}))?(\\s(?<tbxz4>[A-ZА-Я]?\\d?)\\s{3,7}(?<tbxz5>\\d{1,4}))?(\\s{11}(?<tbxz6>\\d{4}))?";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
-//        String str = null;
-//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -47,26 +49,6 @@ public class Spravka64Reader implements TableReaderInterface {
         boolean tHead = false;
         boolean tBody = false;
 
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-//        try (FileInputStream fis = new FileInputStream(fileName)) {
-//
-//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-//
-//            byte[] buffer = new byte[fis.available()];
-//
-//            // считаем файл в буфер
-//            fis.read(buffer, 0, fis.available());
-//
-//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//
-//            f = (TextReplace.getText(str)).replace("\r\n\r\n", "\r\n");
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Spravka64Reader.class.getName()).log(Level.SEVERE, null, ex);
-//            System.out.println("exception in Spravka64Reader : " + ex);
-//        }
         String f = (TextReplace.getText(fileName)).replace("\r\n\r\n", "\r\n");
         HtmlTable result = new HtmlTable();
 
@@ -75,22 +57,18 @@ public class Spravka64Reader implements TableReaderInterface {
 
         boolean tableHeaderProcessed = false;
 
+        String obj = "";
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
 
-            History h = new History();
-            h.setSprN(matcher.group("spr"));
-            h.setDate(matcher.group("date"));
-            h.setTime(matcher.group("time"));
             if ("С-АГЧ".equals(matcher.group("st"))) {
-                h.setObj("САРЫ-АГАЧ");
+                obj = "САРЫ-АГАЧ";
             } else {
-                h.setObj(matcher.group("st"));
+                obj = matcher.group("st");
             }
-            hist.infoFromSpr(h);
-            System.out.println("VSE OK V DOCHEAD 64!");
+
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsDocHeader();
@@ -98,6 +76,18 @@ public class Spravka64Reader implements TableReaderInterface {
 
             docHead = true;
             result.advanceToNextRow();
+        }
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("64");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
         }
 
         tableHeaderProcessed = false;
@@ -123,7 +113,6 @@ public class Spravka64Reader implements TableReaderInterface {
                 result.markCurrentRowAsHeader();
             }
 
-            System.out.println("VSE OK V TABHEAD 64!");
             tHead = true;
             result.advanceToNextRow();
         }
@@ -148,9 +137,7 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell(delNull(matcher.group("tbxz5")));
             result.addCell(delNull(matcher.group("tbxz6")));
 
-            
-            System.out.println("VSE OK V TABBODY 64!");
-            
+
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
                 result.markCurrentRowAsHeader();

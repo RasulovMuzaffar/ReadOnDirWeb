@@ -1,10 +1,15 @@
 package arm.tableutils.sprtemplates.st;
 
+import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,12 +42,10 @@ public class Spravka95Reader implements TableReaderInterface {
             + "(?<bdate>\\d{2}.\\d{2})\\s+"
             + "(?<btime>\\d{2}-\\d{2})";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
-//        String str = null;
-//        String f = null;
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -50,34 +53,17 @@ public class Spravka95Reader implements TableReaderInterface {
         boolean tHead = false;
         boolean tBody = false;
         String doroga = "";
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-//        try (FileInputStream fis = new FileInputStream(fileName)) {
-//
-//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-//
-//            byte[] buffer = new byte[fis.available()];
-//
-//            // считаем файл в буфер
-//            fis.read(buffer, 0, fis.available());
-//
-//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//
-//            f = TextReplace.getText(str);
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
         String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
-        StringBuilder sb = new StringBuilder();
-
         boolean tableHeaderProcessed = false;
+
+        String obj = "";
+
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 String s = matcher.group("dhnpsst");
@@ -89,9 +75,7 @@ public class Spravka95Reader implements TableReaderInterface {
                 }
             }
 
-//            sb.append(matcher.group("dhcode")).append(" : ").append(matcher.group("dhdate")).append(" : ")
-//                    .append(matcher.group("dhtime")).append(" : ").append(matcher.group("dhst"));
-//            hist.infoFromSpr(sb.toString());
+            obj = matcher.group("dhst");
 
             doroga = matcher.group("dhdor");
 
@@ -101,6 +85,19 @@ public class Spravka95Reader implements TableReaderInterface {
             }
             docHead = true;
             result.advanceToNextRow();
+        }
+
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("95");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
         }
 
         pattern = Pattern.compile(RTH);

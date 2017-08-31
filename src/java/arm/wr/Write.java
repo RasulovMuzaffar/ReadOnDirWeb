@@ -20,6 +20,7 @@ public class Write {
 //    static String path = "c:\\testFolder\\out";
     static String path = "c:\\soob\\out";
     String autoNo;
+    public static boolean fromDB = false;
 
     public void getWrite(Session userSession, String str) {
         Users u = (Users) userSession.getUserProperties().get("usrname");
@@ -31,9 +32,8 @@ public class Write {
                 createFile(text);
                 break;
             case "getHist":
+                fromDB = true;
                 HistoryInterface hi = new WriteToHist();
-                System.out.println("uuuuuuu " + u.getLogin());
-                System.out.println("ididididid " + s[1]);
                 hi.sendHist(u, Integer.parseInt(s[1]));
                 break;
             case "getTGNL":

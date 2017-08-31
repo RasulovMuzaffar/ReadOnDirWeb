@@ -4,11 +4,12 @@ import arm.ent.History;
 import arm.ent.InMessages;
 import arm.ent.Users;
 import arm.tableutils.HtmlTable;
-import arm.tableutils.sprtemplates.st.*;
 import arm.tableutils.tablereaders.CompositeReader;
 import arm.tableutils.tablereaders.MultipleResultsException;
-import static arm.wr.ReadOnDir.spr;
+import static arm.wr.ReadOnDir.tableReader;
 import arm.ws.WS;
+import static arm.ws.WS.armUsers;
+import static arm.wr.Write.fromDB;
 import static arm.ws.WS.armUsers;
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,9 +27,9 @@ import javax.websocket.Session;
 
 public class WriteToHist implements HistoryInterface {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     final static List<String> lspr = new ArrayList<>();
     final static Set<String> sinf = new HashSet<>();
@@ -43,7 +44,7 @@ public class WriteToHist implements HistoryInterface {
     public void writeToDB(Users user, String str) {
         String sprs = "";
         for (String l : lspr) {
-            sprs += " " + l;
+            sprs += " <b>" + l + "</b>";
         }
         String inf = "";
         for (String l : sinf) {
@@ -104,13 +105,10 @@ public class WriteToHist implements HistoryInterface {
             }
         });
     }
-    static final CompositeReader tReader = new CompositeReader();
 
     @Override
     public void sendHist(Users user, int id) {
-        tReader.registerReader(new Spravka91Reader());
-        tReader.registerReader(new Spravka92Reader());
-        tReader.registerReader(new Spravka93Reader());
+
         System.out.println("User-->>> " + user.getLogin() + " messId -->" + id);
         try {
 
@@ -132,7 +130,7 @@ public class WriteToHist implements HistoryInterface {
             System.out.println("im.getHead " + im.getHeader());
             System.out.println("im.getBody " + im.getBody());
 
-            HtmlTable result = tReader.processFile(im.getBody());
+            HtmlTable result = tableReader.processFile(im.getBody());
 
             if (result != null) {
                 String answer = result.generateHtml();
@@ -150,26 +148,39 @@ public class WriteToHist implements HistoryInterface {
                 });
             } else {
                 StringBuilder moreSprs = new StringBuilder();
-                List<HtmlTable> list = tReader.readersResult();
-                for (HtmlTable l : list) {
-                    moreSprs.append(l.generateHtml());
-                    moreSprs.append("<br/>");
-                }
-                armUsers.stream().forEach((Session x) -> {
-                    if (x.getUserProperties().containsValue(user)) {
-                        try {
-                            x.getBasicRemote().sendText("sprDefault\u0003" + moreSprs);
-                            CompositeReader.lht.removeAll(list);
-                        } catch (IOException ex) {
-                            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                List<HtmlTable> list = tableReader.readersResult();
+                if (list.size() != 0) {
+                        for (HtmlTable l : list) {
+                            moreSprs.append(l.generateHtml());
+                            moreSprs.append("<br/>");
                         }
+                        armUsers.stream().forEach((Session x) -> {
+                            if (x.getUserProperties().containsValue(user)) {
+                                try {
+                                    x.getBasicRemote().sendText("sprDefault\u0003" + moreSprs);
+                                    CompositeReader.lht.removeAll(list);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        });
+                    } else {
+                        String answer = im.getBody();
+                        armUsers.stream().forEach((Session x) -> {
+                            if (x.getUserProperties().containsValue(user)) {
+                                try {
+                                    x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer + "</h3></label>");
+                                } catch (IOException ex) {
+                                    Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        });
                     }
-                });
             }
 
         } catch (MultipleResultsException ex) {
             Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        fromDB = false;
     }
 }

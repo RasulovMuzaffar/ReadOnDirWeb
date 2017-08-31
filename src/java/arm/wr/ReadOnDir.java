@@ -47,13 +47,13 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
 //    static List<String> histTitle = new ArrayList<>();
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -66,24 +66,24 @@ public class ReadOnDir extends Thread {
     private static void pathListener() {
 // init composite reader - register all reader types
 //        tableReader.registerReader(new Spravka02Reader());
-//        tableReader.registerReader(new Spravka1296Reader());
-//        tableReader.registerReader(new Spravka3290Reader());
-//        tableReader.registerReader(new Spravka5065Reader());
-//        tableReader.registerReader(new Spravka5072Reader());
-//        tableReader.registerReader(new Spravka57Reader());
-//        tableReader.registerReader(new Spravka64Reader());
-//        tableReader.registerReader(new Spravka7401Reader());
+        tableReader.registerReader(new Spravka1296Reader());
+        tableReader.registerReader(new Spravka3290Reader());
+        tableReader.registerReader(new Spravka5065Reader());
+        tableReader.registerReader(new Spravka5072Reader());
+        tableReader.registerReader(new Spravka57Reader());
+        tableReader.registerReader(new Spravka64Reader());
+        tableReader.registerReader(new Spravka7401Reader());
         tableReader.registerReader(new Spravka91Reader());
         tableReader.registerReader(new Spravka92Reader());
         tableReader.registerReader(new Spravka93Reader());
-//        tableReader.registerReader(new Spravka95Reader());
+        tableReader.registerReader(new Spravka95Reader());
         ////////Работа с Поездами
-//        tableReader.registerReader(new Spravka12Reader());
-//        tableReader.registerReader(new Spravka104Reader());
-//        tableReader.registerReader(new Spravka216Reader());
-//        tableReader.registerReader(new Spravka42Reader());
-//        tableReader.registerReader(new Spravka60Reader());
-//        tableReader.registerReader(new Spravka902Reader());
+        tableReader.registerReader(new Spravka12Reader());
+        tableReader.registerReader(new Spravka104Reader());
+        tableReader.registerReader(new Spravka216Reader());
+        tableReader.registerReader(new Spravka42Reader());
+        tableReader.registerReader(new Spravka60Reader());
+        tableReader.registerReader(new Spravka902Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
@@ -207,14 +207,11 @@ public class ReadOnDir extends Thread {
 //                WriteToHist.writeToDB(user, str);
                 StringBuilder s = new StringBuilder();
                 if (result != null) {
-                    WriteToHist wth = new WriteToHist();
-                    wth.writeToDB(user, str);
                     String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
                             try {
                                 x.getBasicRemote().sendText(spr + "\u0003" + answer);
-                                return;
                             } catch (IOException ex) {
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -222,9 +219,9 @@ public class ReadOnDir extends Thread {
 
                     });
 
-                } else {
                     WriteToHist wth = new WriteToHist();
                     wth.writeToDB(user, str);
+                } else {
                     StringBuilder moreSprs = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
 //                    System.out.println("list.size() ---->>>> "+list.size());
@@ -245,6 +242,8 @@ public class ReadOnDir extends Thread {
                                 }
                             }
                         });
+                        WriteToHist wth = new WriteToHist();
+                        wth.writeToDB(user, str);
                     } else {
                         System.out.println("mi tuda zawli!!!");
                         String answer = readNotDetectedFile(filePath);

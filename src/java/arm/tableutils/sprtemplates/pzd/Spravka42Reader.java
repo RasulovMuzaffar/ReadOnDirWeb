@@ -4,11 +4,15 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,39 +34,19 @@ public class Spravka42Reader implements TableReaderInterface {
 //    regexTBody
     final static String RTB = "";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
-//        String str = null;
-//        String f = null;
-//        String f1 = "";
+
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
         boolean docHead = false;
         boolean tHead = false;
         boolean tBody = false;
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-//        try (FileInputStream fis = new FileInputStream(fileName)) {
-//
-//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-//
-//            byte[] buffer = new byte[fis.available()];
-//
-//            // считаем файл в буфер
-//            fis.read(buffer, 0, fis.available());
-//
-//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//
-//            f1 = TextReplace.getText(str);
-//            f = TextReplace.getSha(f1);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Spravka42Reader.class.getName()).log(Level.SEVERE, null, ex);
-//            System.out.println("exception in Spravka42Reader : " + ex);
-//        }
+
+
         String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
@@ -74,6 +58,8 @@ public class Spravka42Reader implements TableReaderInterface {
         pattern = Pattern.compile(RDH);
         matcher = pattern.matcher(f);
 
+        String obj = "";
+        
         while (matcher.find()) {
             vcdor = matcher.group("vcdor");
 
@@ -86,13 +72,7 @@ public class Spravka42Reader implements TableReaderInterface {
                 }
             }
 
-            History h = new History();
-            h.setSprN(matcher.group("spr"));
-            h.setDate(matcher.group("date"));
-            h.setTime(matcher.group("time"));
-            System.out.println("obj42--- "+matcher.group("idx").replace("+0", "+").replace(" ", ""));
-            h.setObj(plusToSpace(matcher.group("idx").replace("+0", "+").replace(" ", "")));
-            hist.infoFromSpr(h);
+            obj = plusToSpace(matcher.group("idx").replace("+ ", "+"));
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -103,6 +83,19 @@ public class Spravka42Reader implements TableReaderInterface {
             docHead = true;
         }
 
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("42");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
+        }
+        
         System.out.println("docHead42 === " + docHead);
         if (reading == true && docHead == true) {
             System.out.println("can reading SPR42 ");

@@ -4,10 +4,14 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +55,7 @@ public class Spravka5072Reader implements TableReaderInterface {
             + "(?<tbvkv>[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}(\\s+"
             + "(?<tbobwk>[A-ZА-Я]{5}:[A-ZА-Я]{10}\\s[A-ZА-Я]{7}\\s+\\d{1,4})){0,1}";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
@@ -92,17 +96,14 @@ public class Spravka5072Reader implements TableReaderInterface {
 
         boolean tableHeaderProcessed = false;
 
+        String obj = "";
+        
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
 
-            History h = new History();
-            h.setSprN(matcher.group("spr"));
-            h.setDate(matcher.group("date"));
-            h.setTime(matcher.group("time"));
-            h.setObj(matcher.group("st"));
-            hist.infoFromSpr(h);
+            obj = matcher.group("st");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -110,6 +111,19 @@ public class Spravka5072Reader implements TableReaderInterface {
             }
             docHead = true;
             result.advanceToNextRow();
+        }
+
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("5072");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
         }
 
         pattern = Pattern.compile(RTH);

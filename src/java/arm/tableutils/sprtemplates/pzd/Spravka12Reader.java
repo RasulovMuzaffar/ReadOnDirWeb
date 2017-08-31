@@ -4,11 +4,15 @@ import arm.ent.History;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.forPopup;
+import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,13 +43,10 @@ public class Spravka12Reader implements TableReaderInterface {
             + "(?<tbnapr>[A-ZА-Я]{0,6}\\-?\\.?[A-ZА-Я]{0,5}\\d{0,2}\\.?)\\s+"
             + "(?<tbnp>\\d{4}\\s?\\+?\\-?\\d{0,3})";
 
-    final WriteToHist hist = new WriteToHist();
+    final HistoryInterface hi = new WriteToHist();
 
     @Override
     public HtmlTable processFile(String fileName) {
-//        String str = null;
-//        String f = null;
-//        String f1 = "";
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -53,27 +54,6 @@ public class Spravka12Reader implements TableReaderInterface {
         boolean tHead = false;
         boolean tBody = false;
 
-        /*
-        * пока условно будем считать что файл всегда есть!
-         */
-//        try (FileInputStream fis = new FileInputStream(fileName)) {
-//
-//            System.out.println("Размер файла: " + fis.available() + " байт(а)");
-//
-//            byte[] buffer = new byte[fis.available()];
-//
-//            // считаем файл в буфер
-//            fis.read(buffer, 0, fis.available());
-//
-//            str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-//
-//            f1 = TextReplace.getText(str);
-//            f = TextReplace.getSha(f1);
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(Spravka12Reader.class.getName()).log(Level.SEVERE, null, ex);
-//            System.out.println("exception in Spravka12Reader : " + ex);
-//        }
         String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
@@ -81,22 +61,14 @@ public class Spravka12Reader implements TableReaderInterface {
         matcher = pattern.matcher(f);
 
         boolean tableHeaderProcessed = false;
+        String obj = "";
 
         while (matcher.find()) {
-//            for (int i = 1; i <= matcher.groupCount(); i++) {
-//                result.addCell(matcher.group(i));
-//            }
+
             result.addCell(matcher.group("title"));
             result.addCell("<b>" + plusToSpace(matcher.group("idx")) + "</b>");
 
-            History h = new History();
-            h.setSprN(matcher.group("spr"));
-            h.setDate(matcher.group("date"));
-            h.setTime(matcher.group("time"));
-            String obj = matcher.group("idx").replace("+0", "+").replace(" ", "");
-            System.out.println("obj12 "+obj);
-            h.setObj(plusToSpace(obj));
-            hist.infoFromSpr(h);
+            obj = plusToSpace(matcher.group("idx"));
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -105,6 +77,19 @@ public class Spravka12Reader implements TableReaderInterface {
 
             docHead = true;
             result.advanceToNextRow();
+        }
+
+        if (docHead == false) {
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("12");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
         }
 
         pattern = Pattern.compile(RTH);
