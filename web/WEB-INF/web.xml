@@ -10,7 +10,7 @@
     </servlet-mapping>-->
     <session-config>
         <session-timeout>
-            5
+            15
         </session-timeout>
     </session-config>
     <welcome-file-list>

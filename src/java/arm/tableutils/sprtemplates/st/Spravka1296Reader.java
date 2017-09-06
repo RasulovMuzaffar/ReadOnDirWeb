@@ -43,13 +43,13 @@ public class Spravka1296Reader implements TableReaderInterface {
     final static String RTB1 = "\\n(?<tdnp1>\\d{4})\\s+"
             + "(?<tdidx1>\\d{4,6}\\+\\d{3}\\+\\d{4,6})\\s+"
             + "(?<tdkv1>\\d{2})\\s+"
-            + "(?<tddate1>\\d{2}\\.\\d{2})\\s+"
+            + "(?<tddate1>\\d{1,2}\\.\\d{1,2})\\s+"
             + "(?<tdtime1>\\d{1,2}\\-\\d{1,2})";
 //regexTBody2
     final static String RTB2 = " (?<tdnp2>\\d{4})\\s+"
             + "(?<tdidx2>\\d{4,6}\\+\\d{3}\\+\\d{4,6})\\s+"
             + "(?<tdkv2>\\d{2})\\s+"
-            + "(?<tddate2>\\d{2}\\.\\d{2})\\s+"
+            + "(?<tddate2>\\d{1,2}\\.\\d{1,2})\\s+"
             + "(?<tdtime2>\\d{1,2}\\-\\d{1,2})";
 
     final HistoryInterface hi = new WriteToHist();
