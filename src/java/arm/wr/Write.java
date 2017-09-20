@@ -17,8 +17,8 @@ public class Write {
 //    WriteToHist wth = new WriteToHist();
 
     public static boolean forPopup = false;
-//    static String path = "c:\\testFolder\\out";
-    static String path = "c:\\soob\\out";
+    static String path = "c:\\testFolder\\out";
+//    static String path = "c:\\soob\\out";
     String autoNo;
     public static boolean fromDB = false;
 
@@ -47,6 +47,9 @@ public class Write {
 //                (:213 0: ' + idx + ' 12 42 60 902 104:)
                 forPopup = true;
                 createFile("(:213 0:" + s[1] + " 12 42 60 902 104:)");
+                break;
+            case "freeSpr":
+                createFile(s[1]);
                 break;
         }
 

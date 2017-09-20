@@ -45,6 +45,7 @@
                             <option value="1">Станции и стыки</option>
                             <option value="2">Поезда</option>
                             <option value="3">Вагоны</option>
+                            <option value="4">Свободный запрос</option>
                         </select>
                         <label class="sr-only" for="numSpr">Spr</label>
                         <select class="form-control" id="numSpr" disabled="true" onchange="getForm(this);">
@@ -62,6 +63,9 @@
                     </div>
                     <div class="form-group">
                         <div id="inptIdx"></div>
+                    </div>
+                    <div class="form-group">
+                        <div id="inpFreeQuery"></div>
                     </div>
                     <div class="form-group">                  
                         <div>
@@ -141,10 +145,14 @@
                     }
                     var rg = /^([a-z_0-9.]{1,})\|([\s\S]*)/;
                     function writing() {
-                        console.log("spr\u0003" + getMess());
-                        webSocket.send("spr\u0003" + getMess());
-                        if (document.getElementById('stations')) {
-                            document.getElementById('stations').style.display = 'none';
+                        if (document.getElementById('free') != null) {
+                            webSocket.send("freeSpr\u0003" + document.getElementById('free').value);
+                        } else {
+                            console.log("spr\u0003" + getMess());
+                            webSocket.send("spr\u0003" + getMess());
+                            if (document.getElementById('stations')) {
+                                document.getElementById('stations').style.display = 'none';
+                            }
                         }
                     }
 
@@ -269,6 +277,9 @@
 //                                'pf33': 'ПФ33 - Карточные данные о вагоне',
 //                                'pf34': 'ПФ34 - Поиск вагонов'
                             }
+//                            4: {
+//                                'freeQuery': 'Свободный запрос'
+//                            }
                         };
                         callback(data[val]);
                     }
@@ -280,19 +291,28 @@
                         if (!val) {
                             return;
                         }
-
-                        if (val != 0) {
-                            document.querySelector('#numSpr').disabled = false;
+                        console.log(val);
+                        if (val != 0 && val != 4) {
+//                            document.querySelector('#numSpr').disabled = false;
+                            document.getElementById('numSpr').disabled = false;
                             document.getElementById('inptSt').innerHTML = "";
                             document.getElementById('inptTime').innerHTML = "";
                             document.getElementById('inptVg').innerHTML = "";
                             document.getElementById('inptIdx').innerHTML = "";
+                            document.getElementById('inpFreeQuery').innerHTML = "";
+                        } else if (val == 4) {
+                            document.getElementById('numSpr').disabled = true;
+                            var inpt = '<label class="sr-only" for="free">Свободный запрос</label>';
+                            inpt += '<input type="text" class="form-control" id="free" placeholder="Строка для свободного запроса" style="width:300px;"/>';
+                            document.getElementById('inpFreeQuery').innerHTML = inpt;
                         } else {
-                            document.querySelector('#numSpr').disabled = true;
+//                            document.querySelector('#numSpr').disabled = true;
+                            document.getElementById('numSpr').disabled = true;
                             document.getElementById('inptSt').innerHTML = "";
                             document.getElementById('inptTime').innerHTML = "";
                             document.getElementById('inptVg').innerHTML = "";
                             document.getElementById('inptIdx').innerHTML = "";
+                            document.getElementById('inpFreeQuery').innerHTML = "";
                         }
 
                         getDataAbstaraction(val, function (data) {

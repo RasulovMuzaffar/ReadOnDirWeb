@@ -51,9 +51,9 @@ public class ReadOnDir extends Thread {
     static String p = "C:\\soob\\in";
 
 //    static List<String> histTitle = new ArrayList<>();
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
