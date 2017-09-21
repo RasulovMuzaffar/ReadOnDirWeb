@@ -51,9 +51,9 @@ public class ReadOnDir extends Thread {
     static String p = "C:\\soob\\in";
 
 //    static List<String> histTitle = new ArrayList<>();
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -276,25 +276,40 @@ public class ReadOnDir extends Thread {
     }
 
     private static String readNotDetectedFile(String filePath) {
+        StringBuilder sb = new StringBuilder();
         String f = null;
         try (FileInputStream fis = new FileInputStream(filePath)) {
 
+//        // читаем первый символ в байтах (ASCII)
+//        int data = fis.read();
+//        char content;
+//        // по байтово читаем весь файл
+//        while(data != -1) {
+//            // преобразуем полученный байт в символ
+//            content = (char) data;
+//            // выводим посимвольно
+//            sb.append(content);
+//            System.out.print(content);
+//            data = fis.read();
+//        }
             byte[] buffer = new byte[fis.available()];
 
             // считаем файл в буфер
             fis.read(buffer, 0, fis.available());
 
-            String str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+//            String str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
+            String str = new String((buffer), "CP866");
 
-            f = TextReplace.getText(str);
+            f = TextReplace.getText(str).replace("\r\n", "<br/>").replace(" ", "&ensp;");
+//            sb.append(f);
 
-            int i = -1;
-            while ((i = fis.read()) != -1) {
-                System.out.print((char) i);
-            }
+//int i = -1;
+//            while ((i = fis.read()) != -1) {
+//                System.out.print((char) i);
+//            }
 
         } catch (IOException ex) {
-            Logger.getLogger(Spravka93Reader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReadOnDir.class.getName()).log(Level.SEVERE, null, ex);
         }
         return f;
     }

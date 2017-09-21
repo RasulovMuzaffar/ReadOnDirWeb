@@ -17,8 +17,8 @@ public class Write {
 //    WriteToHist wth = new WriteToHist();
 
     public static boolean forPopup = false;
-    static String path = "c:\\testFolder\\out";
-//    static String path = "c:\\soob\\out";
+//    static String path = "c:\\testFolder\\out";
+    static String path = "c:\\soob\\out";
     String autoNo;
     public static boolean fromDB = false;
 
