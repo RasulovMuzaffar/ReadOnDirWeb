@@ -81,7 +81,7 @@ public class Auth extends HttpServlet {
                 httpSession.setAttribute("user", u);
                 httpSession.setAttribute("usrname", u);
 
-                request.getRequestDispatcher("index1.jsp").forward(request, response);
+                request.getRequestDispatcher("index2.jsp").forward(request, response);
             }
         } else {
             response.sendRedirect("auth.html");

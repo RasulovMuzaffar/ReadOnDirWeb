@@ -302,6 +302,10 @@
                             document.getElementById('inpFreeQuery').innerHTML = "";
                         } else if (val == 4) {
                             document.getElementById('numSpr').disabled = true;
+                            document.getElementById('inptSt').innerHTML = "";
+                            document.getElementById('inptTime').innerHTML = "";
+                            document.getElementById('inptVg').innerHTML = "";
+                            document.getElementById('inptIdx').innerHTML = "";
                             var inpt = '<label class="sr-only" for="free">Свободный запрос</label>';
                             inpt += '<input type="text" class="form-control" id="free" placeholder="Строка для свободного запроса" style="width:300px;"/>';
                             document.getElementById('inpFreeQuery').innerHTML = inpt;
