@@ -47,13 +47,13 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-//    static String p = "c:\\testFolder\\in";
-    static String p = "C:\\soob\\in";
+    static String p = "c:\\testFolder\\in";
+//    static String p = "C:\\soob\\in";
 
 //    static List<String> histTitle = new ArrayList<>();
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     public void run() {
@@ -163,7 +163,8 @@ public class ReadOnDir extends Thread {
         Users u = null;
         try {
 
-            String sql = "select * from users where auto_no='" + usrAutoN + "'";
+            String sql = "select * from users INNER JOIN spr_org"
+                    + "ON users.id_org = spr_org.id where auto_no='" + usrAutoN + "'";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                     PreparedStatement pstmt = con.prepareStatement(sql);
                     ResultSet rs = pstmt.executeQuery()) {
@@ -171,7 +172,7 @@ public class ReadOnDir extends Thread {
                     u = new Users(rs.getLong("id"), rs.getString("firstname"),
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
-                            rs.getString("login"), rs.getString("password"));
+                            rs.getString("login"), rs.getString("password"),rs.getString("name"));
                 }
             }
 

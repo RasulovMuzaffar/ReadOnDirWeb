@@ -27,9 +27,9 @@ import javax.websocket.Session;
 
 public class WriteToHist implements HistoryInterface {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     final static List<String> lspr = new ArrayList<>();
     final static Set<String> sinf = new HashSet<>();
@@ -89,10 +89,19 @@ public class WriteToHist implements HistoryInterface {
             Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
         }
         StringBuilder sb = new StringBuilder();
-        for (InMessages i : lim) {
-            sb.append("<li class='c-menu__item'>").append("<a href='#' class='c-menu__link' ")
-                    .append("data-idmess='").append(i.getId()).append("' onclick='getHist(this);'>")
-                    .append(i.getHeader()).append("</a></li>");
+        if (user.getOrg().equalsIgnoreCase("edc")) {
+            for (InMessages i : lim) {
+//                <li tabIndex="0" class="hist" data-idmess="${h.id}" onclick="getHist(this);">${h.header}</li>
+                sb.append("<li tabIndex='0' class='hist' data-idmess=")
+                        .append(i.getId()).append("' onclick='getHist(this);'>")
+                        .append(i.getHeader()).append("</li>");
+            }
+        } else {
+            for (InMessages i : lim) {
+                sb.append("<li class='c-menu__item'>").append("<a href='#' class='c-menu__link' ")
+                        .append("data-idmess='").append(i.getId()).append("' onclick='getHist(this);'>")
+                        .append(i.getHeader()).append("</a></li>");
+            }
         }
 
         armUsers.stream().forEach((Session x) -> {
@@ -150,32 +159,32 @@ public class WriteToHist implements HistoryInterface {
                 StringBuilder moreSprs = new StringBuilder();
                 List<HtmlTable> list = tableReader.readersResult();
                 if (list.size() != 0) {
-                        for (HtmlTable l : list) {
-                            moreSprs.append(l.generateHtml());
-                            moreSprs.append("<br/>");
-                        }
-                        armUsers.stream().forEach((Session x) -> {
-                            if (x.getUserProperties().containsValue(user)) {
-                                try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003" + moreSprs);
-                                    CompositeReader.lht.removeAll(list);
-                                } catch (IOException ex) {
-                                    Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        });
-                    } else {
-                        String answer = im.getBody();
-                        armUsers.stream().forEach((Session x) -> {
-                            if (x.getUserProperties().containsValue(user)) {
-                                try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer + "</h3></label>");
-                                } catch (IOException ex) {
-                                    Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        });
+                    for (HtmlTable l : list) {
+                        moreSprs.append(l.generateHtml());
+                        moreSprs.append("<br/>");
                     }
+                    armUsers.stream().forEach((Session x) -> {
+                        if (x.getUserProperties().containsValue(user)) {
+                            try {
+                                x.getBasicRemote().sendText("sprDefault\u0003" + moreSprs);
+                                CompositeReader.lht.removeAll(list);
+                            } catch (IOException ex) {
+                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                } else {
+                    String answer = im.getBody();
+                    armUsers.stream().forEach((Session x) -> {
+                        if (x.getUserProperties().containsValue(user)) {
+                            try {
+                                x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer + "</h3></label>");
+                            } catch (IOException ex) {
+                                Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                }
             }
 
         } catch (MultipleResultsException ex) {

@@ -13,6 +13,8 @@ public class Users {
     String autoNo;
     String login;
     String password;
+    
+    String org;
 
     public Users() {
     }
@@ -28,6 +30,7 @@ public class Users {
         hash = 47 * hash + Objects.hashCode(this.autoNo);
         hash = 47 * hash + Objects.hashCode(this.login);
         hash = 47 * hash + Objects.hashCode(this.password);
+        hash = 47 * hash + Objects.hashCode(this.org);
         return hash;
     }
 
@@ -67,10 +70,13 @@ public class Users {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
+        if (!Objects.equals(this.org, other.org)) {
+            return false;
+        }
         return true;
     }
 
-    public Users(Long id, String fName, String lName, int idRole, int idOrg, String autoNo, String login, String password) {
+    public Users(Long id, String fName, String lName, int idRole, int idOrg, String autoNo, String login, String password, String org) {
         this.id = id;
         this.fName = fName;
         this.lName = lName;
@@ -79,6 +85,7 @@ public class Users {
         this.autoNo = autoNo;
         this.login = login;
         this.password = password;
+        this.org = org;
     }
 
     public Long getId() {
@@ -143,6 +150,14 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getOrg() {
+        return org;
+    }
+
+    public void setOrg(String org) {
+        this.org = org;
     }
 
 }
