@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-md-2 sprsHist">
                     <p>История</p>
-                    <ul class="sprH">
+                    <ul id="sprHid" class="sprH">
                         <c:forEach items="${hl}" var="h">
                             <li tabIndex="0" class="hist" data-idmess="${h.id}" onclick="getHist(this);">${h.header}</li>
                             </c:forEach>
@@ -117,6 +117,7 @@
         <script src="resources/js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="resources/js/bootstrap.js"></script>
+        <script src="resources/js/expToExcel.js"></script>
 
 
         <!--<script src="resources/js/modalwin.js"></script>-->
@@ -143,13 +144,13 @@
                                     console.log(message.valueOf());
                                 }
 
-                                function writing(p) {
-                                    if (document.getElementById('inptFree') != null) {
-                                        webSocket.send("freeSpr\u0003" + document.getElementById('inptFree').value);
-                                    } else {
-                                        webSocket.send("spr\u0003" + p);
-                                    }
-                                }
+//                                function writing(p) {
+//                                    if (document.getElementById('inptFree') != null) {
+//                                        webSocket.send("freeSpr\u0003" + document.getElementById('inptFree').value);
+//                                    } else {
+//                                        webSocket.send("spr\u0003" + p);
+//                                    }
+//                                }
 
 
             <%-- получаем натурлий лист поезда  --%>
@@ -188,16 +189,23 @@
                                     }
                                 }
                                 function sendPopup(p) {
+                                    document.getElementById('popupWin').style.width = '600px';
+                                    document.getElementById('popupWin').style.height = '150px';
+                                    document.getElementById('popupWin').style.top = '25%';
                                     showModalWin();
+                                    debugger;
                                     document.getElementById("popup").innerHTML = p;
                                 }
 
                                 function sprPopup(p) {
+
                                     document.getElementById('popupWin').style.width = '90%';
                                     document.getElementById('popupWin').style.height = '90%';
                                     document.getElementById('popupWin').style.top = '5%';
 //                                document.getElementById('popupWin').style.overflow-y='auto';
+
                                     showModalWin();
+                                    debugger;
                                     document.getElementById("popup").innerHTML = p;
                                 }
 
@@ -208,7 +216,11 @@
 
 //    Формируем лист истории
                                 function histList(p) {
-                                    document.getElementById('history').innerHTML = p;
+                                    if (document.getElementById('sprHid') !== null) {
+                                        document.getElementById('sprHid').innerHTML = p;
+                                    } else {
+                                        document.getElementById('history').innerHTML = p;
+                                    }
                                 }
 
                                 function warning(p) {
@@ -283,12 +295,14 @@
                                                 document.activeElement.nextElementSibling.focus();
                                                 break;
                                             case 13: //enter
-                                                debugger;
                                                 console.log(document.activeElement.getAttribute('class'));
                                                 if (document.activeElement.getAttribute('class') === "hist") {
                                                     getHist(document.activeElement);
                                                 } else {
-                                                    console.log(evt.target.innerHTML);
+//                                                    console.log(evt.target.innerHTML);
+                                                    document.getElementById('popupWin').style.width = '600px';
+                                                    document.getElementById('popupWin').style.height = '150px';
+                                                    document.getElementById('popupWin').style.top = '25%';
                                                     sendPopup(evt.target);
                                                 }
                                                 break;
@@ -302,6 +316,7 @@
                                     } else {
                                         switch (evt.keyCode) {
                                             case 13: //enter
+                                            case 9: //tab
 
                                                 var elms = document.getElementById('popup').getElementsByTagName('input');
                                                 var c = elms.length;
@@ -309,8 +324,8 @@
                                                     if (document.activeElement.getAttribute('id').toLowerCase() === "inptfree") {
                                                         document.getElementById('inptfree').innerText = document.activeElement.value;
 
-                                                        console.log(document.getElementById('fullMess').innerText);
-
+//                                                        console.log(document.getElementById('fullMess').innerText);
+                                                        webSocket.send("freeSpr\u0003" + document.activeElement.value);
                                                         document.getElementById('shadow').parentNode.removeChild(darkLayer);
                                                         document.getElementById('popupWin').style.display = 'none';
                                                         isPopupOpen = false;
@@ -334,11 +349,11 @@
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptvg") {
                                                                     document.getElementById('inptvg').innerText = document.activeElement.value;
                                                                 }
-
-                                                                writing(document.getElementById('fullMess').innerText);
-
+//                                                                debugger;
+//                                                                writing(document.getElementById('fullMess').innerText);
+                                                                webSocket.send("spr\u0003" + document.getElementById('fullMess').innerText);
 //                                                            webSocket.send("getSt\u0003" + document.getElementById('fullMess').innerText);
-//                                                            console.log("getSt\u0003" + document.getElementById('fullMess').innerText);
+                                                                console.log("getSt\u0003" + document.getElementById('fullMess').innerText);
 
                                                                 document.getElementById('shadow').parentNode.removeChild(darkLayer);
                                                                 document.getElementById('popupWin').style.display = 'none';
@@ -367,8 +382,8 @@
                                                         }
                                                     }
                                                 } else {
-                                                    debugger;
-
+//                                                    debugger;
+                                                    webSocket.send("spr\u0003" + document.getElementById('fullMess').innerText);
                                                     console.log(document.getElementById('fullMess').innerText);
 
                                                     document.getElementById('shadow').parentNode.removeChild(darkLayer);
@@ -384,6 +399,11 @@
 
                                 function sendPopup(p) {
                                     isPopupOpen = true;
+                                    
+                                    document.getElementById('popupWin').style.width = '600px';
+                                    document.getElementById('popupWin').style.height = '150px';
+                                    document.getElementById('popupWin').style.top = '25%';
+                                    
                                     var s = p.getAttribute('value');
                                     console.log(p.getAttribute('value'));
                                     var m = "";

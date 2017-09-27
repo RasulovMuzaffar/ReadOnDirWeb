@@ -27,9 +27,9 @@ import javax.websocket.Session;
 
 public class WriteToHist implements HistoryInterface {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     final static List<String> lspr = new ArrayList<>();
     final static Set<String> sinf = new HashSet<>();
@@ -55,6 +55,7 @@ public class WriteToHist implements HistoryInterface {
         lspr.clear();
         sinf.clear();
         if (!"".equals(inf) && !"".equals(sprs)) {
+        System.out.println("writing to db!");
             String sql = "INSERT INTO in_messages (header, body, id_user) VALUES(?,?,?);";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                     PreparedStatement pstmt = con.prepareStatement(sql);) {
@@ -89,11 +90,11 @@ public class WriteToHist implements HistoryInterface {
             Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
         }
         StringBuilder sb = new StringBuilder();
-        if (user.getOrg().equalsIgnoreCase("edc")) {
+        if (user.getOrg().equalsIgnoreCase("едц")) {
             for (InMessages i : lim) {
 //                <li tabIndex="0" class="hist" data-idmess="${h.id}" onclick="getHist(this);">${h.header}</li>
                 sb.append("<li tabIndex='0' class='hist' data-idmess=")
-                        .append(i.getId()).append("' onclick='getHist(this);'>")
+                        .append(i.getId()).append(" onclick='getHist(this);'>")
                         .append(i.getHeader()).append("</li>");
             }
         } else {
@@ -103,6 +104,7 @@ public class WriteToHist implements HistoryInterface {
                         .append(i.getHeader()).append("</a></li>");
             }
         }
+        
 
         armUsers.stream().forEach((Session x) -> {
             if (x.getUserProperties().containsValue(user)) {

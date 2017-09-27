@@ -80,9 +80,10 @@ xmlns="http://www.w3.org/TR/REC-html40">\n\
 //        var currD = dd + '.' + MM + '.' + yyyy + '_' + HH + ':' + mm + ':' + ss;
         var currD = dd + MM + yyyy + HH + mm + ss;
         // window.location.href = uri + base64(format(template, d));
-        document.getElementById('dlink').href = uri + base64(format(template, d));
-        document.getElementById('dlink').download = "report" + currD + ".xls";
-        document.getElementById('dlink').click();
+            document.getElementById('dlink').href = uri + base64(format(template, d));
+            document.getElementById('dlink').download = "report" + currD + ".xls";
+            document.getElementById('dlink').click();
+        
 //        window.location.href = uri + base64(format(template, d));
 //        window.location.download = 'qwe.xls';
     }

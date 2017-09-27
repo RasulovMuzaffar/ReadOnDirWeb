@@ -32,9 +32,9 @@ import org.xml.sax.SAXException;
 public class Auth extends HttpServlet {
 
     public static String sessionTimeoutFromWebXml;
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -82,13 +82,14 @@ public class Auth extends HttpServlet {
                 System.out.println("this person is online!");
                 response.sendRedirect("errorPage.html");
             } else {
+                System.out.println(""+u.getLogin() +" "+u.getOrg());
                 System.out.println("new person!");
                 HttpSession httpSession = request.getSession(true);
                 System.out.println("auth httpSession ==> " + login + " " + httpSession.getId());
                 httpSession.setAttribute("user", u);
                 httpSession.setAttribute("usrname", u);
 
-                request.setAttribute("lh", histList(u));
+                request.setAttribute("hl", histList(u));
                 
                 request.getRequestDispatcher("index2.jsp").forward(request, response);
             }

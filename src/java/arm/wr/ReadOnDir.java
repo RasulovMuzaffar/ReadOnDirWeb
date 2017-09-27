@@ -47,13 +47,13 @@ public class ReadOnDir extends Thread {
      * @param args the command line arguments
      */
     public static String spr;
-    static String p = "c:\\testFolder\\in";
-//    static String p = "C:\\soob\\in";
+//    static String p = "c:\\testFolder\\in";
+    static String p = "C:\\soob\\in";
 
 //    static List<String> histTitle = new ArrayList<>();
-    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
-    private static final String USER = "root";
-    private static final String PASS = "123456";
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
 
     @Override
     public void run() {
@@ -163,8 +163,7 @@ public class ReadOnDir extends Thread {
         Users u = null;
         try {
 
-            String sql = "select * from users INNER JOIN spr_org"
-                    + "ON users.id_org = spr_org.id where auto_no='" + usrAutoN + "'";
+            String sql = "select * FROM users u INNER JOIN spr_org AS o ON u.id_org = o.id where auto_no='" + usrAutoN + "'";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                     PreparedStatement pstmt = con.prepareStatement(sql);
                     ResultSet rs = pstmt.executeQuery()) {
@@ -207,7 +206,9 @@ public class ReadOnDir extends Thread {
 
 //                WriteToHist.writeToDB(user, str);
                 StringBuilder s = new StringBuilder();
+                
                 if (result != null) {
+                    System.out.println("========1====="+result);
                     String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
@@ -223,6 +224,7 @@ public class ReadOnDir extends Thread {
                     WriteToHist wth = new WriteToHist();
                     wth.writeToDB(user, str);
                 } else {
+                    System.out.println("=======2======"+result);
                     StringBuilder moreSprs = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
 //                    System.out.println("list.size() ---->>>> "+list.size());
@@ -251,7 +253,7 @@ public class ReadOnDir extends Thread {
                         armUsers.stream().forEach((Session x) -> {
                             if (x.getUserProperties().containsValue(user)) {
                                 try {
-                                    x.getBasicRemote().sendText("sprDefault\u0003<label><h3>" + answer + "</h3></label>");
+                                    x.getBasicRemote().sendText("sprDefault\u0003<label class='col-md-10 tTitle'><h3>" + answer + "</h3></label>");
                                     return;
                                 } catch (IOException ex) {
                                     Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
