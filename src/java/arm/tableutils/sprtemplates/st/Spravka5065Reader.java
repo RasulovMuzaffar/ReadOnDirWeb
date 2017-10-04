@@ -45,7 +45,7 @@ public class Spravka5065Reader implements TableReaderInterface {
     final static String RTB = "(?<tbnv>\\d{8})\\s+"
             + "(?<tbnazn>\\d{5})\\s+(?<tbves>\\d{3})\\s+"
             + "(?<tbgruz>\\d{5})\\s+(?<tbpoluch>\\d{5})\\s+"
-            + "(?<tboper>[A-ZА-Я]{2,4}\\d{0,3})\\s+(?<tbdate>\\d{2}\\s\\d{2})\\s+(?<tbtime>\\d{2}\\s\\d{2}\\s\\d{2})\\s{0,}"
+            + "(?<tboper>[A-ZА-Я]{2,4}\\d{0,3})\\s+(?<tbdate>\\d{2}\\s\\d{2}\\s\\d{2})\\s+(?<tbtime>\\d{2}\\s\\d{2})\\s{0,}"
             + "(?<tbsobst>\\d{2}){0,1}\\s+(?<tbidx>\\d{0,5}\\+{0,1}\\s{0,5}\\d{0,3}\\+{0,1}\\s{0,1}\\d{0,6})";
 
     final HistoryInterface hi = new WriteToHist();
