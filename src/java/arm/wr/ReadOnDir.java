@@ -2,6 +2,7 @@ package arm.wr;
 
 import arm.tableutils.sprtemplates.st.*;
 import arm.tableutils.sprtemplates.pzd.*;
+import arm.tableutils.sprtemplates.nod.*;
 import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
@@ -84,6 +85,9 @@ public class ReadOnDir extends Thread {
         tableReader.registerReader(new Spravka42Reader());
         tableReader.registerReader(new Spravka60Reader());
         tableReader.registerReader(new Spravka902Reader());
+        ////////НОДы
+        tableReader.registerReader(new Spravka62Reader());
+        tableReader.registerReader(new Spravka4060Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {

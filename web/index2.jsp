@@ -389,14 +389,14 @@ function logoff(p) {
 
                                     // (:213 0: idx 12 42 60 902:) OK
                                     'pf101': '<h3>(:213 0: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 42 60 902 104:)</h3>' +
-                                    '<span id="fullMess" hidden>(:213 0 <span id="inptidx"></span> 12 42 60 902 104:)</span>'
+                                    '<span id="fullMess" hidden>(:213 0 <span id="inptidx"></span> 12 42 60 902 104:)</span>',
 
                                     // (:212 0 0:62:) NO
-                                    'pf102': '<h3>(:212 00:62:)</h3>' +
-                                    '<span id="fullMess" hidden>(:212 00:62:)</span>'
+                                    'pf102': '<h3>(:212 0 0:62:)</h3>' +
+                                    '<span id="fullMess" hidden>(:212 0 0:62:)</span>',
 
                                     // (:212 0 хх:4060:) NO
-                                    'pf103': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="Время."/>:4060:)</h3>' +
+                                    'pf103': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="РЖУ"/>:4060:)</h3>' +
                                     '<span id="fullMess" hidden>(:212 0 <span id="inpttm"></span>:4060:)</span>',
 
                                     // (:215:) NO
@@ -405,23 +405,23 @@ function logoff(p) {
 
                                     // (:3122 68: пзд 12 902:) OK
                                     'pf105': '<h3>(:3122 68: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                    '<span id="fullMess" hidden>(:3122 68 <span id="inptidx"></span> 12 902:)</span>'
+                                    '<span id="fullMess" hidden>(:3122 68 <span id="inptidx"></span> 12 902:)</span>',
 
                                     // (:3122 75: пзд 12 902:) OK
                                     'pf106': '<h3>(:3122 75: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                    '<span id="fullMess" hidden>(:3122 75 <span id="inptidx"></span> 12 902:)</span>'
+                                    '<span id="fullMess" hidden>(:3122 75 <span id="inptidx"></span> 12 902:)</span>',
 
                                     // (:3122 74: пзд 12 902:) OK
                                     'pf107': '<h3>(:3122 74: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                    '<span id="fullMess" hidden>(:3122 74 <span id="inptidx"></span> 12 902:)</span>'       
+                                    '<span id="fullMess" hidden>(:3122 74 <span id="inptidx"></span> 12 902:)</span>',      
 
                                     // (:3122 70: пзд 12 902:) OK
                                     'pf108': '<h3>(:3122 70: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                    '<span id="fullMess" hidden>(:3122 70 <span id="inptidx"></span> 12 902:)</span>'
+                                    '<span id="fullMess" hidden>(:3122 70 <span id="inptidx"></span> 12 902:)</span>',
 ///////////////////////////////////////////////////////////
                                     // (:1367 0 2610:вг.:) NO
                                     'pf201': '<h3>(:1367 0 2610: <input type="text" id="inptVg" placeholder="№ ваг."/>:)</h3>' +
-                                    '<span id="fullMess" hidden>(:1367 0 2610 <span id="inptvg"></span>:)</span>'
+                                    '<span id="fullMess" hidden>(:1367 0 2610 <span id="inptvg"></span>:)</span>',
 
                                     // (:212 0 хх:1574 1:) NO
                                     'pf202': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="Время."/>:1574 1:)</h3>' +
@@ -657,8 +657,95 @@ function sendPopup(p) {
         case "pf15":
         m += listSprs.pf15;
         break;
+        case "pf16":
+        m += listSprs.pf16;
+        break;
+        case "pf17":
+        m += listSprs.pf17;
+        break;
+        case "pf18":
+        m += listSprs.pf18;
+        break;
+        case "pf19":
+        m += listSprs.pf19;
+        break;
+        case "pf20":
+        m += listSprs.pf20;
+        break;
+        case "pf21":
+        m += listSprs.pf21;
+        break;
+        case "pf22":
+        m += listSprs.pf22;
+        break;
+        case "pf23":
+        m += listSprs.pf23;
+        break;
+        case "pf24":
+        m += listSprs.pf24;
+        break;
         case "pf25":
         m += listSprs.pf25;
+        break;
+        case "pf101":
+        m += listSprs.pf101;
+        break;
+        case "pf102":
+        m += listSprs.pf102;
+        break;
+        case "pf103":
+        m += listSprs.pf103;
+        break;
+        case "pf104":
+        m += listSprs.pf104;
+        break;
+        case "pf105":
+        m += listSprs.pf105;
+        break;
+        case "pf106":
+        m += listSprs.pf106;
+        break;
+        case "pf107":
+        m += listSprs.pf107;
+        break;
+        case "pf108":
+        m += listSprs.pf108;
+        break;
+        case "pf109":
+        m += listSprs.pf109;
+        break;
+        case "pf110":
+        m += listSprs.pf110;
+        break;
+        case "pf201":
+        m += listSprs.pf201;
+        break;
+        case "pf202":
+        m += listSprs.pf202;
+        break;
+        case "pf203":
+        m += listSprs.pf203;
+        break;
+        case "pf204":
+        m += listSprs.pf204;
+        break;
+        case "pf205":
+        m += listSprs.pf205;
+        break;
+        case "pf206":
+        m += listSprs.pf206;
+        break;
+        case "pf207":
+        m += listSprs.pf207;
+        break;
+        case "pf208":
+        m += listSprs.pf208;
+        break;
+        case "pf209":
+        m += listSprs.pf209;
+        break;
+        case "pf210":
+        m += listSprs.pf210;
         break;
     }
     showModalWin();
