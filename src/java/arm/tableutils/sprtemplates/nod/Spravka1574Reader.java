@@ -15,27 +15,31 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Spravka4060Reader implements TableReaderInterface {
+public class Spravka1574Reader implements TableReaderInterface {
 
 //    RDH
     final static String RDH = "(?<vc>\\S{2,3}\\s+\\S{2,4})\\s+"
-            + "(?<spr>4060)\\s+(?<date>\\d{2}.\\d{2})\\s+"
+            + "(?<spr>1574)\\s+(?<date>\\d{2}.\\d{2})\\s+"
             + "(?<time>\\d{2}-\\d{2})\\s+(?<brp>\\S{2,3}\\s+\\S{2,4})\\s+"
             + "(?<per>\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+\\S+)\\s+(?<nod>\\S+)";
 
 //    RTH
-    final static String RTH = "(?<np>[A-ZА-Я]{4})\\s+(?<idx>[A-ZА-Я]{6})\\s+"
-            + "(?<vag>[A-ZА-Я]{3})\\s+(?<ud>[A-ZА-Я]{3})\\s+"
-            + "(?<brt>[A-ZА-Я]{5})\\s+(?<st>[A-ZА-Я]{5})\\s+"
-            + "(?<date>[A-ZА-Я]{4})\\s+(?<time>[A-ZА-Я]{5})\\s+"
-            + "(?<pr>[A-ZА-Я]{2})\\s+(?<otv>[A-ZА-Я]{3})\\s+(?<ott>[A-ZА-Я]{3})";
+    final static String RTH = "\\s{2}(?<vsg>[A-ZА-Я]{2,3})\\s{3,7}";
 
-//    RTB
-    final static String RTB = "(?<np>\\d{4})\\s+"
-            + "(?<idx>\\d{4,5}\\+\\s?\\d{2,3}\\+\\d{4,5})\\s+(?<vag>\\d{2})\\s+"
-            + "(?<ud>\\d{2})\\s+(?<brt>\\d{1,5})\\s+(?<st>\\S+)\\s+"
-            + "(?<date>\\d{2}.\\d{2})\\s+(?<time>\\d{2}.\\d{2})\\s+"
-            + "(?<pr>\\S+)\\s{0,4}(?<otv>\\d{0,3})\\s{0,4}(?<ott>\\d{0,4})";
+//    RTB column not 1
+    final static String RTB = "[A-ZА-Я]\\s{3,9}(?<vsg>\\d{0,4})\\s{1,6}"
+            + "(?<st1>\\d{0,4})\\s{1,6}(?<st2>\\d{0,4})\\s{1,6}"
+            + "(?<st3>\\d{0,4})\\s{1,6}(?<st4>\\d{0,4})\\s{1,6}"
+            + "(?<st5>\\d{0,4})\\s{1,6}(?<st6>\\d{0,4})\\s{1,6}"
+            + "(?<st7>\\d{0,4})\\s{1,6}(?<st8>\\d{0,4})\\s{1,6}(?<st9>\\d{0,4})";
+
+//stations column 1
+    final static String RTB1 = "(?<vsg>[A-ZА-Я]{5})\\s{1,3}"
+            + "(?<st1>\\S{4,6})?\\s{1,3}(?<st2>\\S{4,6})?\\s{1,3}"
+            + "(?<st3>\\S{4,6})?\\s{1,3}(?<st4>\\S{4,6})?\\s{1,3}"
+            + "(?<st5>\\S{4,6})?\\s{1,3}(?<st6>\\S{4,6})?\\s{1,3}"
+            + "(?<st7>\\S{4,6})?\\s{1,3}(?<st8>\\S{4,6})?\\s{1,3}"
+            + "(?<st9>\\S{4,6})?(?<st10>\\S{4,6})?";
 
     final HistoryInterface hi = new WriteToHist();
 
@@ -84,7 +88,7 @@ public class Spravka4060Reader implements TableReaderInterface {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
             Date currDate = new Date();
             History h = new History();
-            h.setSprN("4060");
+            h.setSprN("1574");
             h.setDate("" + dateFormat.format(currDate));
             h.setTime("");
             h.setObj(obj);
@@ -133,11 +137,11 @@ public class Spravka4060Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
-        System.out.println("docHead4060 === " + docHead);
-        System.out.println("tHead4060 === " + tHead);
-        System.out.println("tBody4060 === " + tBody);
+        System.out.println("docHead1574 === " + docHead);
+        System.out.println("tHead1574 === " + tHead);
+        System.out.println("tBody1574 === " + tBody);
         if (reading == true && (docHead == true && tHead == true && tBody == true)) {
-            System.out.println("can reading SPR4060 ");
+            System.out.println("can reading SPR1574 ");
             if (forPopup == true) {
                 ReadOnDir.spr = "sprPopup";
             } else {
@@ -146,7 +150,7 @@ public class Spravka4060Reader implements TableReaderInterface {
             forPopup = false;
             return result;
         } else {
-            System.out.println("can not reading SPR4060 ");
+            System.out.println("can not reading SPR1574 ");
             return null;
         }
 
