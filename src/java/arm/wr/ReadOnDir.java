@@ -88,6 +88,7 @@ public class ReadOnDir extends Thread {
         ////////НОДы
         tableReader.registerReader(new Spravka62Reader());
         tableReader.registerReader(new Spravka4060Reader());
+        tableReader.registerReader(new Spravka1574Reader());
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {

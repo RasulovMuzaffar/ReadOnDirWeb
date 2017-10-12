@@ -26,20 +26,20 @@ public class Spravka1574Reader implements TableReaderInterface {
 //    RTH
     final static String RTH = "\\s{2}(?<vsg>[A-ZА-Я]{2,3})\\s{3,7}";
 
+//stations column 1
+    final static String RTB1 = "(?<vsg>[A-ZА-Я]{4,6})\\s{1,3}"
+            + "(?<st1>\\S{4,6})?\\s{1,3}(?<st2>\\S{4,6})?\\s{1,3}"
+            + "(?<st3>\\S{4,6})?\\s{1,3}(?<st4>\\S{4,6})?\\s{1,3}"
+            + "(?<st5>\\S{4,6})?\\s{1,3}(?<st6>\\S{4,6})?\\s{1,3}"
+            + "(?<st7>\\S{4,6})?\\s{1,3}(?<st8>\\S{4,6})?\\s{1,3}"
+            + "(?<st9>\\S{4,6})?(?<st10>\\S{4,6})?";
+
 //    RTB column not 1
     final static String RTB = "[A-ZА-Я]\\s{3,9}(?<vsg>\\d{0,4})\\s{1,6}"
             + "(?<st1>\\d{0,4})\\s{1,6}(?<st2>\\d{0,4})\\s{1,6}"
             + "(?<st3>\\d{0,4})\\s{1,6}(?<st4>\\d{0,4})\\s{1,6}"
             + "(?<st5>\\d{0,4})\\s{1,6}(?<st6>\\d{0,4})\\s{1,6}"
             + "(?<st7>\\d{0,4})\\s{1,6}(?<st8>\\d{0,4})\\s{1,6}(?<st9>\\d{0,4})";
-
-//stations column 1
-    final static String RTB1 = "(?<vsg>[A-ZА-Я]{5})\\s{1,3}"
-            + "(?<st1>\\S{4,6})?\\s{1,3}(?<st2>\\S{4,6})?\\s{1,3}"
-            + "(?<st3>\\S{4,6})?\\s{1,3}(?<st4>\\S{4,6})?\\s{1,3}"
-            + "(?<st5>\\S{4,6})?\\s{1,3}(?<st6>\\S{4,6})?\\s{1,3}"
-            + "(?<st7>\\S{4,6})?\\s{1,3}(?<st8>\\S{4,6})?\\s{1,3}"
-            + "(?<st9>\\S{4,6})?(?<st10>\\S{4,6})?";
 
     final HistoryInterface hi = new WriteToHist();
 
@@ -94,6 +94,28 @@ public class Spravka1574Reader implements TableReaderInterface {
             h.setObj(obj);
             hi.infoFromSpr(h);
         }
+
+        pattern = Pattern.compile(RTB);
+        matcher = pattern.matcher(f);
+
+        Pattern pattern1 = Pattern.compile(RTB1);
+        Matcher matcher1 = pattern1.matcher(f);
+
+        String[][] m = new String[11][matcher1.groupCount()];
+        System.out.println("i =====>>>> " + m.length);
+        int j = 0;
+        while (matcher1.find()) {
+            for (int i = 0; i < matcher1.groupCount(); i++) {
+                if (matcher1.group(i) != null || !"null".equals(matcher1.group(i)) || !" ".equals(matcher1.group(i)) || !"".equals(matcher1.group(i))) {
+                    j++;
+                }
+                System.out.println("RTB1 ---> +" + matcher1.group(i) != null + " - "
+                        + !"null".equals(matcher1.group(i)) + " - "
+                        + !" ".equals(matcher1.group(i)) + " - "
+                        + !"".equals(matcher1.group(i)));
+            }
+        }
+        System.out.println("j =====>>>> " + j);
 
         pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
