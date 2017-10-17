@@ -40,6 +40,8 @@ public class Spravka1574Reader implements TableReaderInterface {
             + "(?<st3>\\d{0,4})\\s{1,6}(?<st4>\\d{0,4})\\s{1,6}"
             + "(?<st5>\\d{0,4})\\s{1,6}(?<st6>\\d{0,4})\\s{1,6}"
             + "(?<st7>\\d{0,4})\\s{1,6}(?<st8>\\d{0,4})\\s{1,6}(?<st9>\\d{0,4})";
+    
+    final static String QWERTY = "QWERTYUIOP";
 
     final HistoryInterface hi = new WriteToHist();
 
