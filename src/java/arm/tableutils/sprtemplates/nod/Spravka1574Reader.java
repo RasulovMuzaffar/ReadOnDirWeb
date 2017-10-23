@@ -146,16 +146,23 @@ public class Spravka1574Reader implements TableReaderInterface {
         }
 //        System.out.println("j =====>>>> " + row1.size());
 
-       
+///////////////
+        List<String> row = new ArrayList<>();
+        pattern = Pattern.compile(RTB);
+        matcher = pattern.matcher(f);
 
+        while (matcher.find()) {
+            for (int j = 1; j <= matcher.groupCount(); j++) {
+                row.add(matcher.group(j));
+            }
+        }
+            System.out.println(" - " + row.get(0) + " - ");
 
-String[][] m = new String[14][row1.size()];
+/////////////////
+        String[][] m = new String[14][row1.size()];
         System.out.println("i =====>>>> " + m.length);
         System.out.println("j =====>>>> " + m[0].length);
 
-        
-        
-        
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j < m[i].length; j++) {
                 if (i == 0) {
