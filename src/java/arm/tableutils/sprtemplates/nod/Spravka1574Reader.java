@@ -10,6 +10,7 @@ import static arm.wr.Write.forPopup;
 import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -27,7 +28,13 @@ public class Spravka1574Reader implements TableReaderInterface {
     final static String RTH = "\\s{2}(?<vsg>[A-ZА-Я]{2,3})\\s{3,7}";
 
 //stations column 1
-    final static String RTB1 = "(?<vsg>[A-ZА-Я]{4,6})\\s{1,3}"
+//    final static String RTB1 = "(?<vsg>[A-ZА-Я]{4,6})\\s{1,3}"
+//            + "(?<st1>\\S{4,6})?\\s{1,3}(?<st2>\\S{4,6})?\\s{1,3}"
+//            + "(?<st3>\\S{4,6})?\\s{1,3}(?<st4>\\S{4,6})?\\s{1,3}"
+//            + "(?<st5>\\S{4,6})?\\s{1,3}(?<st6>\\S{4,6})?\\s{1,3}"
+//            + "(?<st7>\\S{4,6})?\\s{1,3}(?<st8>\\S{4,6})?\\s{1,3}"
+//            + "(?<st9>\\S{4,6})?(?<st10>\\S{4,6})?";
+    final static String RTB1 = "\\s(?<vsg>[A-ZА-Я]{4,6}-?.?[A-ZА-Я]{0,3}\\d{0,2}.?)\\s{1,3}"
             + "(?<st1>\\S{4,6})?\\s{1,3}(?<st2>\\S{4,6})?\\s{1,3}"
             + "(?<st3>\\S{4,6})?\\s{1,3}(?<st4>\\S{4,6})?\\s{1,3}"
             + "(?<st5>\\S{4,6})?\\s{1,3}(?<st6>\\S{4,6})?\\s{1,3}"
@@ -40,8 +47,6 @@ public class Spravka1574Reader implements TableReaderInterface {
             + "(?<st3>\\d{0,4})\\s{1,6}(?<st4>\\d{0,4})\\s{1,6}"
             + "(?<st5>\\d{0,4})\\s{1,6}(?<st6>\\d{0,4})\\s{1,6}"
             + "(?<st7>\\d{0,4})\\s{1,6}(?<st8>\\d{0,4})\\s{1,6}(?<st9>\\d{0,4})";
-    
-    final static String QWERTY = "QWERTYUIOP";
 
     final HistoryInterface hi = new WriteToHist();
 
@@ -97,37 +102,25 @@ public class Spravka1574Reader implements TableReaderInterface {
             hi.infoFromSpr(h);
         }
 
-        pattern = Pattern.compile(RTB);
-        matcher = pattern.matcher(f);
-
-        Pattern pattern1 = Pattern.compile(RTB1);
-        Matcher matcher1 = pattern1.matcher(f);
-
-        String[][] m = new String[11][matcher1.groupCount()];
-        System.out.println("i =====>>>> " + m.length);
-        int j = 0;
-        while (matcher1.find()) {
-            for (int i = 0; i < matcher1.groupCount(); i++) {
-                if (matcher1.group(i) != null || !"null".equals(matcher1.group(i)) || !" ".equals(matcher1.group(i)) || !"".equals(matcher1.group(i))) {
-                    j++;
-                }
-                System.out.println("RTB1 ---> +" + matcher1.group(i) != null + " - "
-                        + !"null".equals(matcher1.group(i)) + " - "
-                        + !" ".equals(matcher1.group(i)) + " - "
-                        + !"".equals(matcher1.group(i)));
-            }
-        }
-        System.out.println("j =====>>>> " + j);
-
         pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
-            result.addCell("№");
-            for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
-            }
+            result.addCell("СТАНЦИИ");
+            result.addCell("ВСЕГО");
+            result.addCell("КР");
+            result.addCell("ПЛ");
+            result.addCell("ПВ");
+            result.addCell("ЦС");
+            result.addCell("ЦСС");
+            result.addCell("РФ");
+            result.addCell("ПР");
+            result.addCell("ЦМВ");
+            result.addCell("ЗРВ");
+            result.addCell("ФТГ");
+            result.addCell("МВЗ");
+            result.addCell("ТР");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -135,30 +128,77 @@ public class Spravka1574Reader implements TableReaderInterface {
             }
             tHead = true;
             result.advanceToNextRow();
+            break;
+        }
+
+        Pattern pattern1 = Pattern.compile(RTB1);
+        Matcher matcher1 = pattern1.matcher(f);
+
+        List<String> row1 = new ArrayList<>();
+
+        while (matcher1.find()) {
+            for (int i = 1; i < matcher1.groupCount(); i++) {
+                if (matcher1.group(i) != null) {
+//                    System.out.println(i + " matcher1 ===> " + matcher1.group(i));
+                    row1.add(matcher1.group(i));
+                }
+            }
+        }
+//        System.out.println("j =====>>>> " + row1.size());
+
+       
+
+
+String[][] m = new String[14][row1.size()];
+        System.out.println("i =====>>>> " + m.length);
+        System.out.println("j =====>>>> " + m[0].length);
+
+        
+        
+        
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[i].length; j++) {
+                if (i == 0) {
+                    m[i][j] = row1.get(j);
+                }
+            }
         }
 
         pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
-        int n = 1;
+        int k = 0;
         while (matcher.find()) {
-            result.addCell("" + n++);
-            for (int i = 1; i <= matcher.groupCount(); i++) {
-                // if (matcher.group(i)==matcher.group("otv")||matcher.group(i)==matcher.group("ott")) {
-                //     result.addCell(matcher.group(i));
-                // }else{
-                result.addCell(matcher.group(i));
-                System.out.println("---->>>>" + matcher.group(i));
-                // }
+            if (k == 0) {
+                k++;
+                continue;
+            }
+            for (int i = 1; i < m.length; i++) {
+                for (int j = 1; j <= matcher.groupCount(); j++) {
+                    m[i][j - 1] = matcher.group(j);
+                }
+            }
+        }
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[i].length; j++) {
+                System.out.print(">> " + m[i][j] + "  ");
+            }
+            System.out.println("");
+        }
+
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[i].length; j++) {
+
+                result.addCell(m[i][j]);
+
+                if (!tableHeaderProcessed) {
+                    tableHeaderProcessed = true;
+                    result.markCurrentRowAsHeader();
+                }
+                reading = true;
+                tBody = true;
+                result.advanceToNextRow();
 
             }
-
-            if (!tableHeaderProcessed) {
-                tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
-            }
-            reading = true;
-            tBody = true;
-            result.advanceToNextRow();
         }
 
         System.out.println("docHead1574 === " + docHead);
