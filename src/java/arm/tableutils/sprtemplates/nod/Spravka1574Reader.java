@@ -154,19 +154,21 @@ public class Spravka1574Reader implements TableReaderInterface {
         while (matcher.find()) {
             for (int j = 1; j <= matcher.groupCount(); j++) {
 //                System.out.print(" )))) "+matcher.group(j));
-                row.add(matcher.group(j));
+                if (j > 9) {
+                    row.add(matcher.group(j));
+                }
             }
         }
-            System.out.println(" - " + row.get(10) + " - ");
+        System.out.println(" - " + row.get(0) + " - ");
 
 /////////////////
-        String[][] m = new String[14][row1.size()];
+        String[][] m = new String[row1.size()][14];
         System.out.println("i =====>>>> " + m.length);
         System.out.println("j =====>>>> " + m[0].length);
 
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j < m[i].length; j++) {
-                if (i == 0) {
+                if (j == 0) {
                     m[i][j] = row1.get(j);
                 }
             }
