@@ -153,10 +153,11 @@ public class Spravka1574Reader implements TableReaderInterface {
 
         while (matcher.find()) {
             for (int j = 1; j <= matcher.groupCount(); j++) {
+//                System.out.print(" )))) "+matcher.group(j));
                 row.add(matcher.group(j));
             }
         }
-            System.out.println(" - " + row.get(0) + " - ");
+            System.out.println(" - " + row.get(10) + " - ");
 
 /////////////////
         String[][] m = new String[14][row1.size()];
