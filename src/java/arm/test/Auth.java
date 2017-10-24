@@ -32,9 +32,9 @@ import org.xml.sax.SAXException;
 public class Auth extends HttpServlet {
 
     public static String sessionTimeoutFromWebXml;
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
