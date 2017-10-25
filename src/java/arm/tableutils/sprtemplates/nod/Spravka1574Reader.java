@@ -12,7 +12,10 @@ import arm.wr.WriteToHist;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,32 +108,58 @@ public class Spravka1574Reader implements TableReaderInterface {
         pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
-
+        int gCount = 0;
+        int colSum = 1;
+        Set<String> th = new LinkedHashSet<>();
         while (matcher.find()) {
-            result.addCell("СТАНЦИИ");
-            result.addCell("ВСЕГО");
-            result.addCell("КР");
-            result.addCell("ПЛ");
-            result.addCell("ПВ");
-            result.addCell("ЦС");
-            result.addCell("ЦСС");
-            result.addCell("РФ");
-            result.addCell("ПР");
-            result.addCell("ЦМВ");
-            result.addCell("ЗРВ");
-            result.addCell("ФТГ");
-            result.addCell("МВЗ");
-            result.addCell("ТР");
-
-            if (!tableHeaderProcessed) {
-                tableHeaderProcessed = true;
-                result.markCurrentRowAsHeader();
+            th.add("СТАНЦИИ");
+            th.add("ВСЕГО");
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                th.add(matcher.group(i));
             }
-            tHead = true;
-            result.advanceToNextRow();
-            break;
         }
 
+        for (String s : th) {
+            result.addCell(s);
+        }
+
+        if (!tableHeaderProcessed) {
+            tableHeaderProcessed = true;
+            result.markCurrentRowAsHeader();
+        }
+        tHead = true;
+        result.advanceToNextRow();
+//            break;
+
+//            result.addCell("СТАНЦИИ");
+//            if (gCount == 0) {
+//                for (int i = 1; i <= matcher.groupCount(); i++) {
+//                    result.addCell(matcher.group(i));
+//                }
+//                gCount++;
+//                colSum++;
+//            }
+//            result.addCell("ВСЕГО");
+//            result.addCell("КР");
+//            result.addCell("ПЛ");
+//            result.addCell("ПВ");
+//            result.addCell("ЦС");
+//            result.addCell("ЦСС");
+//            result.addCell("РФ");
+//            result.addCell("ПР");
+//            result.addCell("ЦМВ");
+//            result.addCell("ЗРВ");
+//            result.addCell("ФТГ");
+//            result.addCell("МВЗ");
+//            result.addCell("ТР");
+//            if (!tableHeaderProcessed) {
+//                tableHeaderProcessed = true;
+//                result.markCurrentRowAsHeader();
+//            }
+//            tHead = true;
+//            result.advanceToNextRow();
+//            break;
+//        }
         Pattern pattern1 = Pattern.compile(RTB1);
         Matcher matcher1 = pattern1.matcher(f);
 
@@ -140,15 +169,21 @@ public class Spravka1574Reader implements TableReaderInterface {
             tCount++;
             for (int i = 1; i < matcher1.groupCount(); i++) {
 
-                if (matcher1.group(i) != null) {
+//                if (matcher1.group(i) != null) {
 //                    System.out.println(i + " matcher1 ===> " + matcher1.group(i));
-                    row1.add(matcher1.group(i));
-                }
+                row1.add(matcher1.group(i));
+//                }
             }
         }
+        String endElem = "";
         for (String s : row1) {
-            System.out.println(" - " + s + " - ");
+//            System.out.println(" - " + s + " - ");
+            if (s != null) {
+                endElem = s;
+            }
         }
+        System.out.println("endElem ===>>> " + endElem);
+        f = f.replace(endElem, endElem + ".");
         System.out.println("==============");
 //        System.out.println("j =====>>>> " + row1.size());
 
@@ -157,99 +192,66 @@ public class Spravka1574Reader implements TableReaderInterface {
         matcher = pattern.matcher(f);
 
 //        }
-        List<Spr1574Ent> lspr = new ArrayList<>();
         List<String> lst = new ArrayList<>();
         int badline = 0;
-//        int count = matcher.groupCount();
 
         while (matcher.find()) {
             if (badline == 0) {
                 badline++;
                 continue;
             }
-//            System.out.println("777 "+matcher.group("vsg") + " " + matcher.group("st1") + " " + matcher.group("st2")
-//                    + " " + matcher.group("st3") + " " + matcher.group("st4") + " " + matcher.group("st5")
-//                    + " " + matcher.group("st6") + " " + matcher.group("st7") + " " + matcher.group("st8")
-//                    + " " + matcher.group("st9"));
-//            Spr1574Ent se = new Spr1574Ent();
             for (int j = 1; j <= matcher.groupCount(); j++) {
                 lst.add(matcher.group(j));
-//            lspr.add(new Spr1574Ent(matcher.group("vsg"), matcher.group("st1"), matcher.group("st2"), matcher.group("st3"),
-//                    matcher.group("st4"), matcher.group("st5"), matcher.group("st6"), 
-//                    matcher.group("st7"), matcher.group("st8"), matcher.group("st9")));
-//            se.setVsg(matcher.group("vsg"));
-//            se.setSt1(matcher.group("st1"));
-//            se.setSt2(matcher.group("st2"));
-//            se.setSt3(matcher.group("st3"));
-//            se.setSt4(matcher.group("st4"));
-//            se.setSt5(matcher.group("st5"));
-//            se.setSt6(matcher.group("st6"));
-//            se.setSt7(matcher.group("st7"));
-//            se.setSt8(matcher.group("st8"));
-//            se.setSt9(matcher.group("st9"));
-//            lspr.add(se);
-//            System.out.println("====>>> " + lspr.get(0));
             }
         }
-//        for (int i = 0; i < lspr.size(); i++) {
-//            System.out.println(i + " ----->>>> " + lspr.get(i));
-//        }
-//        int tCount = row1.size();
-//        System.out.println("tCount " + tCount * 13);
-//        System.out.println("qq " + matcher.groupCount());
-//        String[][] arr = new String[row1.size()][13];
-//        int q = 0;
-//        for (int i = 0; i < arr.length; i++) {
-//            System.out.print(i + " ");
-//            for (int j = 0; j < arr[i].length; j++) {
-//                arr[j][i] = lst.get(q);
-//                System.out.print(lst.get(q) + "[" + j + "]" + "[" + i + "]  ");
-//                q++;
-//            }
-//            System.out.println("");
-//        }
 
-        String[][] m = new String[row1.size()][14];
-//        while (matcher.find()) {
+        int row = row1.size();
+//        int col = 14;
+//        int col = colSum + 1;
+        int col = th.size();
+
+        String[][] m = new String[row][col];
+        System.out.println("tCount = " + tCount);
+        System.out.println("row1.size = " + row1.size());
+        System.out.println("lst.size = " + lst.size());
+//        for (int i = 0; i < lst.size(); i++) {
+//            if (i % 10 != 0 || i == 0) {
+//                System.out.print("".equals(lst.get(i)) ? "0 " : lst.get(i) + " ");
+//            } else {
+//                System.out.print("".equals(lst.get(i)) ? "0 " : lst.get(i) + " ");
+//                System.out.println("");
+//            }
+//        }
         int a = 0;
-        for (int i = 0; i < m.length; i++) {
-            for (int j = 0; j < m[i].length; j++) {
-                if (j == 0) {
-                    m[i][j] = row1.get(i);
-                } else if(i<13&&j!=0){
-                    m[j][i] = lst.get(a++);
-
-                } else {
-////                        for (int k = 1; k < matcher.groupCount(); k++) {
-////                            System.out.println("======? " + matcher.group(k));
-////                            m[i][j] = matcher.group(k);
-//                        }
-                    m[i][j] = "";
+        int b = 0;
+        int q = 0;
+        while (q < tCount) {
+//            System.out.println("q");
+            for (int j = 0; j < col; j++) {
+//                System.out.println("f1");
+                for (int i = 10 * q; i < (q + 1) * 10; i++) {
+//                    System.out.println("f2");
+                    if (j == 0) {
+                        m[i][j] = row1.get(a++);
+                    } else {
+                        m[i][j] = lst.get(b);
+                        b++;
+                    }
                 }
-//                a++;
             }
+            q++;
         }
 
-//        for (int t = 0; t < m.length; t++) {
-//            for (int j = 0; j < m[t].length; j++) {
-//                System.out.print(m[t][j] + " ");
-//            }
-//            System.out.println("");
-//        }
-/////////////////
-//        pattern = Pattern.compile(RTB);
-//        matcher = pattern.matcher(f);
-//
-//        while (matcher.find()) {
-//            for (int i = 1; i < m.length; i++) {
-//                for (int j = 1; j <= matcher.groupCount(); j++) {
-//                    m[i][j] = matcher.group(j);
-//                }
-//            }
-//        }
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j < m[i].length; j++) {
-                result.addCell(m[i][j]);
+                if (m[i][0] == null) {
+                    break;
+                }
+                if (j == 0) {
+                    result.addCell("<b>" + m[i][j] + "</b>");
+                } else {
+                    result.addCell(m[i][j]);
+                }
             }
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

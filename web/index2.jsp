@@ -389,7 +389,7 @@
 
                                     // (:213 0: idx 12 42 60 902:) OK
                                     'pf101': '<h3>(:213 0: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 42 60 902 104:)</h3>' +
-                                            '<span id="fullMess" hidden>(:213 0 <span id="inptidx"></span> 12 42 60 902 104:)</span>',
+                                            '<span id="fullMess" hidden>(:213 0: <span id="inptidx"></span> 12 42 60 902 104:)</span>',
 
                                     // (:212 0 0:62:) NO
                                     'pf102': '<h3>(:212 0 0:62:)</h3>' +
@@ -421,7 +421,7 @@
 ///////////////////////////////////////////////////////////
                                     // (:1367 0 2610:вг.:) NO
                                     'pf201': '<h3>(:1367 0 2610: <input type="text" id="inptVg" placeholder="№ ваг."/>:)</h3>' +
-                                            '<span id="fullMess" hidden>(:1367 0 2610 <span id="inptvg"></span>:)</span>',
+                                            '<span id="fullMess" hidden>(:1367 0 2610: <span id="inptvg"></span>:)</span>',
 
                                     // (:212 0 хх:1574 1:) NO
                                     'pf202': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="Время."/>:1574 1:)</h3>' +
