@@ -38,6 +38,8 @@ public class Spravka2610Reader implements TableReaderInterface{
             + "(?<rem>[A-ZА-Я]{0,2}\\d{2}\\.\\d{2}\\.\\d{2})\\s+"
             + "(?<prbg>[A-ZА-Я]{0,2}\\s?\\d{1,6})\\s+"
             + "(?<prznk>[A-ZА-Я]{0,4}\\s+\\d{0,7})";
+    
+    
 
     final HistoryInterface hi = new WriteToHist();
 
