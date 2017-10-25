@@ -27,9 +27,9 @@ import javax.websocket.Session;
 
 public class WriteToHist implements HistoryInterface {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/arm";
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = "jdbc:mysql://localhost:3306/armasoup";
+    private static final String USER = "root";
+    private static final String PASS = "123456";
 
     final static List<String> lspr = new ArrayList<>();
     final static Set<String> sinf = new HashSet<>();

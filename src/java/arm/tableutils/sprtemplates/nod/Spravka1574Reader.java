@@ -172,11 +172,11 @@ public class Spravka1574Reader implements TableReaderInterface {
 //                    + " " + matcher.group("st6") + " " + matcher.group("st7") + " " + matcher.group("st8")
 //                    + " " + matcher.group("st9"));
 //            Spr1574Ent se = new Spr1574Ent();
-//            for (int j = 1; j <= matcher.groupCount(); j++) {
-//                lst.add(matcher.group(j));
-            lspr.add(new Spr1574Ent(matcher.group("vsg"), matcher.group("st1"), matcher.group("st2"), matcher.group("st3"),
-                    matcher.group("st4"), matcher.group("st5"), matcher.group("st6"), 
-                    matcher.group("st7"), matcher.group("st8"), matcher.group("st9")));
+            for (int j = 1; j <= matcher.groupCount(); j++) {
+                lst.add(matcher.group(j));
+//            lspr.add(new Spr1574Ent(matcher.group("vsg"), matcher.group("st1"), matcher.group("st2"), matcher.group("st3"),
+//                    matcher.group("st4"), matcher.group("st5"), matcher.group("st6"), 
+//                    matcher.group("st7"), matcher.group("st8"), matcher.group("st9")));
 //            se.setVsg(matcher.group("vsg"));
 //            se.setSt1(matcher.group("st1"));
 //            se.setSt2(matcher.group("st2"));
@@ -189,21 +189,21 @@ public class Spravka1574Reader implements TableReaderInterface {
 //            se.setSt9(matcher.group("st9"));
 //            lspr.add(se);
 //            System.out.println("====>>> " + lspr.get(0));
-//            }
+            }
         }
-        for (int i = 0; i < lspr.size(); i++) {
-            System.out.println(i + " ----->>>> " + lspr.get(i));
-        }
+//        for (int i = 0; i < lspr.size(); i++) {
+//            System.out.println(i + " ----->>>> " + lspr.get(i));
+//        }
 //        int tCount = row1.size();
 //        System.out.println("tCount " + tCount * 13);
 //        System.out.println("qq " + matcher.groupCount());
-//        String[][] arr = new String[tCount * 13][matcher.groupCount()];
+//        String[][] arr = new String[row1.size()][13];
 //        int q = 0;
 //        for (int i = 0; i < arr.length; i++) {
 //            System.out.print(i + " ");
 //            for (int j = 0; j < arr[i].length; j++) {
-//                arr[i][j] = lst.get(q);
-//                System.out.print(lst.get(q) + "[" + i + "]" + "[" + j + "]  ");
+//                arr[j][i] = lst.get(q);
+//                System.out.print(lst.get(q) + "[" + j + "]" + "[" + i + "]  ");
 //                q++;
 //            }
 //            System.out.println("");
@@ -216,16 +216,17 @@ public class Spravka1574Reader implements TableReaderInterface {
             for (int j = 0; j < m[i].length; j++) {
                 if (j == 0) {
                     m[i][j] = row1.get(i);
-                } else {
-                    m[i][j] = lst.get(a++);
+                } else if(i<13&&j!=0){
+                    m[j][i] = lst.get(a++);
 
-//                } else {
+                } else {
 ////                        for (int k = 1; k < matcher.groupCount(); k++) {
 ////                            System.out.println("======? " + matcher.group(k));
 ////                            m[i][j] = matcher.group(k);
-////                        }
-//                    m[i][j] = "";
+//                        }
+                    m[i][j] = "";
                 }
+//                a++;
             }
         }
 
