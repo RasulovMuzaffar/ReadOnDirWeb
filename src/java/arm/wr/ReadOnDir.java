@@ -3,6 +3,7 @@ package arm.wr;
 import arm.tableutils.sprtemplates.st.*;
 import arm.tableutils.sprtemplates.pzd.*;
 import arm.tableutils.sprtemplates.nod.*;
+import arm.tableutils.sprtemplates.vag.*;
 import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.CompositeReader;
