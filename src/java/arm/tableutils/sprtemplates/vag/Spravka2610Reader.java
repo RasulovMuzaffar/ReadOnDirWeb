@@ -78,6 +78,7 @@ public class Spravka2610Reader implements TableReaderInterface {
 
         String sost = "";
         String obj = "";
+        String delStr = "";
         while (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
@@ -106,18 +107,21 @@ public class Spravka2610Reader implements TableReaderInterface {
             hi.infoFromSpr(h);
         }
 
+        //меняем ДокХидер на пробел
+        delStr = matcher.group(0);
+        f = f.replace(delStr, "");
+
         pattern = Pattern.compile(RTH);
         matcher = pattern.matcher(f);
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
-
             result.addCell("№");
 
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                if (matcher.group(i) != null) {
+//                if (matcher.group(i) != null) {
                     result.addCell(matcher.group(i));
-                }
+//                }
             }
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -128,6 +132,10 @@ public class Spravka2610Reader implements TableReaderInterface {
             result.advanceToNextRow();
         }
 
+        //меняем ТабХидер на пробел
+        delStr = matcher.group(0);
+        f = f.replace(delStr, "");
+
         pattern = Pattern.compile(RTB);
         matcher = pattern.matcher(f);
 
@@ -136,10 +144,10 @@ public class Spravka2610Reader implements TableReaderInterface {
             result.addCell("" + n++);
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 if (matcher.group("nvag") != null) {
-                    result.addCell(matcher.group(i));
+                    result.addCell(delNull(matcher.group(i)));
                     result.markCurrentRowAsRegularUnderlining();
-                }else{
-                    result.addCell(matcher.group(i));
+                } else {
+                    result.addCell(delNull(matcher.group(i)));
                 }
             }
 
@@ -165,6 +173,13 @@ public class Spravka2610Reader implements TableReaderInterface {
         }
     }
 
+    private String delNull(String s) {
+		if (s != null) {
+			return s;
+		} else {
+			return "";
+		}
+	}
     @Override
     public List<HtmlTable> readersResult() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
