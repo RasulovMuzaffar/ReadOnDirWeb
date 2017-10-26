@@ -162,13 +162,14 @@ public class ReadOnDir extends Thread {
         String usrAutoN = null;
 //        String rx = "^\\d{4}";
 //        String rx = "01[\\dA-Fa-f\\d]{2}";
-        String rx = "0\\d([\\dA-Fa-f\\d]{2})\\d+";;
-        final Pattern pattern = Pattern.compile(rx);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        while (matcher.find()) {
-            usrAutoN = matcher.group(1);
-        }
+//        String rx = "0\\d([\\dA-Fa-f\\d]{2})\\d+";;
+//        final Pattern pattern = Pattern.compile(rx);
+//        final Matcher matcher = pattern.matcher(fileName);
+//
+//        while (matcher.find()) {
+//            usrAutoN = matcher.group(1);
+//        }
+usrAutoN=fileName.substring(2,4);
         System.out.println("USER AUTO NUMBER --->>> "+usrAutoN);
         Users u = null;
         try {
