@@ -56,12 +56,15 @@ public class Write {
     }
 
     private void createFile(String text) {
-        String nz = text.substring(3,6);
+        System.out.println("TTTTTTTTEEEEEEXXXXXTTTTTTTT"+text);
+        String nz = text.substring(2,5);
         if ("215".equals(nz)) {
             //sending to another server
+            System.out.println("sending to another server 215");
             writingFile(path + "\\02" + autoNo + "a0" + reading(text) + ".txt", text);
         }else{
             //sending to ASOUP server
+            System.out.println("sending to ASOUP server!");
             writingFile(path + "\\01" + autoNo + "a0" + reading(text) + ".txt", text);
         }
         System.out.println("Message is sending!");
