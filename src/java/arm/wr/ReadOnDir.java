@@ -162,7 +162,7 @@ public class ReadOnDir extends Thread {
         String usrAutoN = null;
 //        String rx = "^\\d{4}";
 //        String rx = "01[\\dA-Fa-f\\d]{2}";
-        String rx = "0\\d([\\dA-Fa-f\\d]{2})";;
+        String rx = "0\\d([\\dA-Fa-f\\d]{2})\\d+";;
         final Pattern pattern = Pattern.compile(rx);
         final Matcher matcher = pattern.matcher(fileName);
 
