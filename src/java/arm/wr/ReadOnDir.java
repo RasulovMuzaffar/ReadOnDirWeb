@@ -92,6 +92,7 @@ public class ReadOnDir extends Thread {
         tableReader.registerReader(new Spravka1574Reader());
         ///////ВАГОНЫ
         tableReader.registerReader(new Spravka2610Reader());
+        tableReader.registerReader(new Spravka215vReader());
         
 
         ///////////////////////////////////////////
