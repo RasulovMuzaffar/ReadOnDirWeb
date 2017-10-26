@@ -102,6 +102,7 @@ public class Spravka215vReader  implements TableReaderInterface {
         result.addCell("№");
         result.addCell("№ вагона");
         result.addCell("Индекс поезда");
+        result.addCell("Дата");
         result.addCell("Ст. приема");
         result.addCell("Ст. назн");
         result.addCell("Дорога сд.");
