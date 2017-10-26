@@ -161,12 +161,13 @@ public class ReadOnDir extends Thread {
         /////////////////////////////////
         String usrAutoN = null;
 //        String rx = "^\\d{4}";
-        String rx = "01[\\dA-Fa-f\\d]{2}";
+//        String rx = "01[\\dA-Fa-f\\d]{2}";
+        String rx = "\\d{2}([\\dA-Fa-f\\d]{2})";;
         final Pattern pattern = Pattern.compile(rx);
         final Matcher matcher = pattern.matcher(fileName);
 
         while (matcher.find()) {
-            usrAutoN = matcher.group(0);
+            usrAutoN = matcher.group(1);
         }
 
         Users u = null;
@@ -180,7 +181,7 @@ public class ReadOnDir extends Thread {
                     u = new Users(rs.getLong("id"), rs.getString("firstname"),
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
-                            rs.getString("login"), rs.getString("password"),rs.getString("name"));
+                            rs.getString("login"), rs.getString("password"),rs.getString("auto_otv"),rs.getString("name"));
                 }
             }
 
@@ -211,6 +212,8 @@ public class ReadOnDir extends Thread {
                 }
 
                 HtmlTable result = tableReader.processFile(str);
+                System.out.println("RESULT "+result);
+                System.out.println("STR "+str);
 //                HtmlTable result = tableReader.processFile(filePath);
 
 //                WriteToHist.writeToDB(user, str);

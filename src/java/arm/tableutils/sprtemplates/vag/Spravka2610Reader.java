@@ -49,13 +49,13 @@ public class Spravka2610Reader implements TableReaderInterface {
 //            + "(?<p2>[A-ZА-Я]{2,8}\\.?\\s?[A-ZА-Я]{0,5})?\\s+"
 //            + "(?<p3>[A-ZА-Я]{2,8}\\.?\\s?[A-ZА-Я]{0,5})?";
 //надо удалить RDH и RTH
-    final static String RTB = "((?<nvag>\\d{8})\\s+"
-            + "(?<sobs>\\d{2}[A-ZА-Я]{2,4})\\s+"
-            + "(?<prip>[A-ZА-Я]{2,4}\\s{0,10}[A-ZА-Я]{0,12})?\\s+"
-            + "(?<gp>\\d{0,2})\\s+"
-            + "(?<rem>[A-ZА-Я]{0,2}\\d{2}\\.\\d{2}\\.\\d{2})\\s+"
-            + "(?<prbg>[A-ZА-Я]{0,2}\\s?\\d{1,6})?)?"
-            + "(\\s+(?<p1>[A-ZА-Я]{2,8}\\.?\\ {0,6}\\d{0,7}[A-ZА-Я]{0,5}))";
+    final static String RTB = "(?<nvag>\\d{8})?\\s{1,2}"
+                + "(?<sobs>\\d{2}[A-ZА-Я]{2,4})?\\s{1,3}"
+                + "(?<prip>[A-ZА-Я]{2,4}\\ {0,10}[A-ZА-Я]{0,12})?\\s+"
+                + "(?<gp>\\d{0,2})?\\s+"
+                + "(?<rem>[A-ZА-Я]{0,2}\\d{2}\\.\\d{2}\\.\\d{2})?\\s+"
+                + "(?<prbg>[A-ZА-Я]{0,2}\\s?\\d{1,6})?\\s+"
+                + "(?<p1>[A-ZА-Я]{2,8}\\.?\\ {0,6}\\d{0,7}[A-ZА-Я]{0,5})";
 
     final HistoryInterface hi = new WriteToHist();
 
@@ -80,6 +80,7 @@ public class Spravka2610Reader implements TableReaderInterface {
         String obj = "";
         String delStr = "";
         while (matcher.find()) {
+            delStr = matcher.group(0);
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
@@ -108,7 +109,7 @@ public class Spravka2610Reader implements TableReaderInterface {
         }
 
         //меняем ДокХидер на пробел
-        delStr = matcher.group(0);
+//        delStr = matcher.group(0);
         f = f.replace(delStr, "");
 
         pattern = Pattern.compile(RTH);
@@ -116,11 +117,12 @@ public class Spravka2610Reader implements TableReaderInterface {
         tableHeaderProcessed = false;
 
         while (matcher.find()) {
+            delStr = matcher.group(0);
             result.addCell("№");
 
             for (int i = 1; i <= matcher.groupCount(); i++) {
 //                if (matcher.group(i) != null) {
-                    result.addCell(matcher.group(i));
+                result.addCell(matcher.group(i));
 //                }
             }
             if (!tableHeaderProcessed) {
@@ -133,7 +135,7 @@ public class Spravka2610Reader implements TableReaderInterface {
         }
 
         //меняем ТабХидер на пробел
-        delStr = matcher.group(0);
+//        delStr = matcher.group(0);
         f = f.replace(delStr, "");
 
         pattern = Pattern.compile(RTB);
@@ -141,11 +143,15 @@ public class Spravka2610Reader implements TableReaderInterface {
 
         int n = 1;
         while (matcher.find()) {
-            result.addCell("" + n++);
+            if (matcher.group("nvag") != null) {
+                result.addCell("" + n++);
+            }else{
+                result.addCell("");
+            }
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 if (matcher.group("nvag") != null) {
                     result.addCell(delNull(matcher.group(i)));
-                    result.markCurrentRowAsRegularUnderlining();
+                    result.markCurrentRowAsRegularUnderscore();
                 } else {
                     result.addCell(delNull(matcher.group(i)));
                 }
@@ -174,12 +180,13 @@ public class Spravka2610Reader implements TableReaderInterface {
     }
 
     private String delNull(String s) {
-		if (s != null) {
-			return s;
-		} else {
-			return "";
-		}
-	}
+        if (s != null) {
+            return s;
+        } else {
+            return "";
+        }
+    }
+
     @Override
     public List<HtmlTable> readersResult() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

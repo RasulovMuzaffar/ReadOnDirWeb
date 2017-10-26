@@ -399,37 +399,37 @@
                                     'pf103': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="РЖУ"/>:4060:)</h3>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inpttm"></span>:4060:)</span>',
 
-                                    // (:215:) NO
-                                    'pf104': '<h3>(:215:)</h3>' +
-                                            '<span id="fullMess" hidden>(:215:)</span>',
+                                    // (:215*idx*autootv:) NO
+                                    'pf104': '<h3>(:215 * <input type="text" id="inptIdx" placeholder="Индекс поезда"/> * ${user.autoOtv}:)-----</h3>' +
+                                            '<span id="fullMess" hidden>(:215*<span id="inptidx"></span>*${user.autoOtv}:)</span>',
 
                                     // (:3122 68: пзд 12 902:) OK
                                     'pf105': '<h3>(:3122 68: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                            '<span id="fullMess" hidden>(:3122 68 <span id="inptidx"></span> 12 902:)</span>',
+                                            '<span id="fullMess" hidden>(:3122 68: <span id="inptidx"></span> 12 902:)</span>',
 
                                     // (:3122 75: пзд 12 902:) OK
                                     'pf106': '<h3>(:3122 75: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                            '<span id="fullMess" hidden>(:3122 75 <span id="inptidx"></span> 12 902:)</span>',
+                                            '<span id="fullMess" hidden>(:3122 75: <span id="inptidx"></span> 12 902:)</span>',
 
                                     // (:3122 74: пзд 12 902:) OK
                                     'pf107': '<h3>(:3122 74: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                            '<span id="fullMess" hidden>(:3122 74 <span id="inptidx"></span> 12 902:)</span>',
+                                            '<span id="fullMess" hidden>(:3122 74: <span id="inptidx"></span> 12 902:)</span>',
 
                                     // (:3122 70: пзд 12 902:) OK
                                     'pf108': '<h3>(:3122 70: <input type="text" id="inptIdx" placeholder="Индекс поезда"/> 12 902:)</h3>' +
-                                            '<span id="fullMess" hidden>(:3122 70 <span id="inptidx"></span> 12 902:)</span>',
+                                            '<span id="fullMess" hidden>(:3122 70: <span id="inptidx"></span> 12 902:)</span>',
 ///////////////////////////////////////////////////////////
                                     // (:1367 0 2610:вг.:) NO
                                     'pf201': '<h3>(:1367 0 2610: <input type="text" id="inptVg" placeholder="№ ваг."/>:)</h3>' +
                                             '<span id="fullMess" hidden>(:1367 0 2610: <span id="inptvg"></span>:)</span>',
 
                                     // (:212 0 хх:1574 1:) NO
-                                    'pf202': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="Время."/>:1574 1:)</h3>' +
+                                    'pf202': '<h3>(:212 0 <input type="text" id="inptTm" placeholder="РЖУ."/>:1574 1:)</h3>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inpttm"></span>:1574 1:)</span>',
 
-                                    // (:215:) NO
-                                    'pf203': '<h3>(:215:)</h3>' +
-                                            '<span id="fullMess" hidden>(:215:)</span>',
+                                    // (:215*vag*autootv:) NO
+                                    'pf203': '<h3>(:215 * <input type="text" id="inptVg" placeholder="№ ваг."/> * ${user.autoOtv}:)</h3>' +
+                                            '<span id="fullMess" hidden>(:215*<span id="inptvg"></span>*${user.autoOtv}:)</span>',
 
                                     // (:2790 вг. Dt-хххххх-хххххх:) NO
                                     'pf204': '<h3>(:2790 <input type="text" id="inptVg" placeholder="№ ваг."/> dt-<input type="text" id="inptDt1" placeholder="Дата1"/>-<input type="text" id="inptDt2" placeholder="Дата2"/>:)</h3>' +

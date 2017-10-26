@@ -56,7 +56,14 @@ public class Write {
     }
 
     private void createFile(String text) {
-        writingFile(path + "\\" + autoNo + "a0" + reading(text) + ".txt", text);
+        String nz = text.substring(3,6);
+        if ("215".equals(nz)) {
+            //sending to another server
+            writingFile(path + "\\02" + autoNo + "a0" + reading(text) + ".txt", text);
+        }else{
+            //sending to ASOUP server
+            writingFile(path + "\\01" + autoNo + "a0" + reading(text) + ".txt", text);
+        }
         System.out.println("Message is sending!");
     }
 

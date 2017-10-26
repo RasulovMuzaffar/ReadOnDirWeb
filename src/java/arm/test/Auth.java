@@ -69,7 +69,7 @@ public class Auth extends HttpServlet {
                     u = new Users(rs.getLong("id"), rs.getString("firstname"),
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
-                            rs.getString("login"), rs.getString("password"),rs.getString("name"));
+                            rs.getString("login"), rs.getString("password"),rs.getString("auto_otv"),rs.getString("name"));
                 }
             }
 

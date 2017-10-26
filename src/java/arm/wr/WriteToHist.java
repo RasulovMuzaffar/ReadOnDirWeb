@@ -56,6 +56,7 @@ public class WriteToHist implements HistoryInterface {
         sinf.clear();
         if (!"".equals(inf) && !"".equals(sprs)) {
         System.out.println("writing to db!");
+        
             String sql = "INSERT INTO in_messages (header, body, id_user) VALUES(?,?,?);";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                     PreparedStatement pstmt = con.prepareStatement(sql);) {
@@ -63,7 +64,7 @@ public class WriteToHist implements HistoryInterface {
                 pstmt.setString(2, str);
                 pstmt.setLong(3, user.getId());
                 pstmt.executeUpdate();
-
+System.out.println("fine!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             } catch (SQLException ex) {
                 System.out.println("exexexexex " + ex);
                 Logger.getLogger(WriteToHist.class.getName()).log(Level.SEVERE, null, ex);
