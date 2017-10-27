@@ -95,7 +95,7 @@
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf1">Наличие поездов сформированных с назначением и находящихся на ст.</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf2">подход поездов к станцию</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf3">Пономерное наличие груженные вагонов "УТЙ"</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf4">Пономерное наличие груженные вагонов "УТЙ"</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf4">Пономерное наличие порожных вагонов "УТЙ"</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf5">Пономерное наличие чужих вагонов</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf201">Картотечные данные о вагоне</li>   
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf6">Наличие поездов находящихся на станциях дороги</li>
@@ -400,7 +400,7 @@
                                             '<span id="fullMess" hidden>(:212 0 <span id="inpttm"></span>:4060:)</span>',
 
                                     // (:215*idx*autootv:) NO
-                                    'pf104': '<h3>(:215 * <input type="text" id="inptIdx" placeholder="Индекс поезда"/> * ${user.autoOtv}:)-----</h3>' +
+                                    'pf104': '<h3>(:215 * <input type="text" id="inptIdx" placeholder="Индекс поезда"/> * ${user.autoOtv}:)</h3>' +
                                             '<span id="fullMess" hidden>(:215*<span id="inptidx"></span>*${user.autoOtv}:)</span>',
 
                                     // (:3122 68: пзд 12 902:) OK
@@ -456,7 +456,7 @@
                                             '<span id="fullMess" hidden>(:212 0 73071:1296 1 18 <span id="inpttm"></span>:)</span>',
 
                                     'pf15': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/>:5072 01:)</h3>' +
-                                            '<span id="fullMess" hidden>(:212 0<span id="inptst"></span>:5072 01:)</span>',
+                                            '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span>:5072 01:)</span>',
 
                                     'pf16': '<h3>(:3121 68 6983:57:64:)</h3>' +
                                             '<span id="fullMess" hidden>(:3121 68 6983:57:64:)</span>',
