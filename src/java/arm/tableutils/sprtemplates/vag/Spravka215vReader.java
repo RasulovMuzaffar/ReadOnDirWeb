@@ -34,11 +34,14 @@ public class Spravka215vReader  implements TableReaderInterface {
     final static String RTH = "";
 
 //    RTB
-    final static String RTB = "(?<nv>\\d{8})?\\s?\\-?\\>?\\s+"
+    final static String RTB = "(?<nv>\\d{8})?\\s?\\-?\\>?\\s"
+            + "(?<sbst>\\d{2})?\\s+"
             + "(?<idx>\\d{4,5}\\+\\s?\\d{2,3}\\+\\d{4,5})\\s+\\:\\s+"
             + "(?<date>\\d{2}\\/\\d{2}\\/\\d{2})\\s+\\:\\s+"
-            + "(?<stp>\\d{4,6})\\s+\\:\\s+(?<stn>\\d{4,6})\\s+\\:\\s+"
-            + "(?<dsd>\\d{2})\\s(?<dpr>\\d{2})";
+            + "(?<stp>\\d{4,6})\\s+\\:\\s+"
+            + "(?<stn>\\d{4,6})\\s+\\:\\s+"
+            + "(?<dsd>\\d{2})\\s"
+            + "(?<dpr>\\d{2})";
 
     final HistoryInterface hi = new WriteToHist();
 
@@ -101,6 +104,7 @@ public class Spravka215vReader  implements TableReaderInterface {
 
         result.addCell("№");
         result.addCell("№ вагона");
+        result.addCell("Собственник");
         result.addCell("Индекс поезда");
         result.addCell("Дата");
         result.addCell("Ст. приема");
