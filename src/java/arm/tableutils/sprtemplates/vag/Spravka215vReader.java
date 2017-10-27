@@ -26,8 +26,10 @@ import java.util.regex.Pattern;
 public class Spravka215vReader  implements TableReaderInterface {
 //regexDocHead
 
-    final static String RDH = "(?<sp>\\S{3})\\s+(?<sprn>215:)\\s+"
+    final static String RDH = "(?<sp>\\S{3})\\s+"
+            + "(?<sprn>215:)\\s+"
             + "(?<dt>\\d{2}\\/\\d{2}\\/\\d{2}\\-\\d{2}\\:\\d{2}\\:\\d{2})\\s+"
+            + "(?<idx>\\d{4,6}\\s?\\+\\d{2,3}\\+\\d{4,6})?\\s+"
             + "(?<ao>\\(\\d{2}\\s\\d{4}\\s\\d{1,2}\\)\\d{1,3})";
 
 //    RTH
