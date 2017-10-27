@@ -70,7 +70,7 @@ public class Spravka215vReader  implements TableReaderInterface {
         while (matcher.find()) {
             delStr = matcher.group(0);
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
+                result.addCell(delNull(matcher.group(i)));
             }
 
 //            sost = matcher.group("sost");
