@@ -72,8 +72,11 @@ public class Spravka215vReader  implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(delNull(matcher.group(i)));
             }
-
-//            sost = matcher.group("sost");
+            if (matcher.group("idx")!=null) {
+                sost = matcher.group("idx");
+            }else{
+                sost = "";
+            }
 //            obj = matcher.group("st");
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;
@@ -92,7 +95,7 @@ public class Spravka215vReader  implements TableReaderInterface {
             h.setSprN("215 : Вагон");
             h.setDate("" + dateFormat.format(currDate));
             h.setTime("");
-            h.setObj("");
+            h.setObj(sost);
             hi.infoFromSpr(h);
         }
 
