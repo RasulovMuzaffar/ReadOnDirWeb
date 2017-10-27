@@ -34,6 +34,8 @@ public class Spravka215vReader  implements TableReaderInterface {
 
 //    RTH
     final static String RTH = "";
+    
+    
 
 //    RTB
     final static String RTB = "(?<nv>\\d{8})?\\s?\\-?\\>?\\s"
