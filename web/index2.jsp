@@ -433,7 +433,7 @@
 
                                     // (:2790 вг. Dt-хххххх-хххххх:) NO
                                     'pf204': '<h3>(:2790 <input type="text" id="inptVg" placeholder="№ ваг."/> dt-<input type="text" id="inptDt1" placeholder="Дата1"/>-<input type="text" id="inptDt2" placeholder="Дата2"/>:)</h3>' +
-                                            '<span id="fullMess" hidden>(:2790 <span id="inptvg"></span> dt-<span id="inptdt1"></span>-<span id="inptdt2"></span>:1574 1:)</span>',
+                                            '<span id="fullMess" hidden>(:2790 <span id="inptvg"></span> dt-<span id="inptdt1"></span>-<span id="inptdt2"></span>:)</span>',
 
                                     // (:216 пзд:) NO
                                     'pf205': '<h3>(:216 <input type="text" id="inptIdx" placeholder="Индекс поезда"/>:)</h3>' +
@@ -546,6 +546,12 @@
                                                                     document.getElementById('inptidx').innerText = document.activeElement.value;
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptvg") {
                                                                     document.getElementById('inptvg').innerText = document.activeElement.value;
+                                                                } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt1") {
+                                                                    document.getElementById('inptdt1').innerText = document.activeElement.value;
+                                                                    console.log("yuyuyuyuy -->>> "+document.activeElement.value);
+                                                                }else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt2") {
+                                                                    document.getElementById('inptdt2').innerText = document.activeElement.value;
+                                                                    console.log(document.activeElement.value);
                                                                 }
 //                                                                debugger;
 //                                                                writing(document.getElementById('fullMess').innerText);
@@ -572,6 +578,12 @@
                                                                     document.getElementById('inptidx').innerText = document.activeElement.value;
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptvg") {
                                                                     document.getElementById('inptvg').innerText = document.activeElement.value;
+                                                                }else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt1") {
+                                                                    document.getElementById('inptdt1').innerText = document.activeElement.value;
+                                                                    console.log("yuyuyuyuy -->>> "+document.activeElement.value);
+                                                                }else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt2") {
+                                                                    document.getElementById('inptdt2').innerText = document.activeElement.value;
+                                                                    console.log(document.activeElement.value);
                                                                 }
                                                                 document.activeElement.nextElementSibling.focus();
                                                             }

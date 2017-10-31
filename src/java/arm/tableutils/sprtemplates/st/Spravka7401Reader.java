@@ -45,7 +45,17 @@ public class Spravka7401Reader implements TableReaderInterface {
             + "(?<thvroj>[A-ZА-Я]{2}.[A-ZА-Я]{2})";
 
 //    regexTBody
-    final static String RTB = "((?<poluch>\\d{4}){0,1}\\s+)(\\D+\\s){0,1}(?<vg>\\d{8})\\s+(?<ves>\\d{1,2})(\\s(?<gr>\\d{5})\\s+(?<np>\\d{4})\\s+(?<idx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+(?<disl>\\d{5})\\s+(?<oper>[A-ZА-Я]{4})\\s+(?<vrop>\\d{2}\\s+\\d{2}\\-\\d{2})(?<vroj>\\s+\\d{2}\\s+\\d{2}\\-\\d{2}){0,1}){0,1}";
+    final static String RTB = "((?<poluch>\\d{4}){0,1}\\s+)"
+            + "(\\D+\\s){0,1}"
+            + "(?<vg>\\d{8})\\s+"
+            + "(?<ves>\\d{1,2})"
+            + "(\\s(?<gr>\\d{5})\\s+"
+            + "(?<np>\\d{4})\\s+"
+            + "(?<idx>\\d{4}\\+\\d{3}\\+\\d{4})\\s+"
+            + "(?<disl>\\d{6})\\s+"
+            + "(?<oper>[A-ZА-Я]{4})\\s+"
+            + "(?<vrop>\\d{2}\\s+\\d{2}\\-\\d{2})"
+            + "(?<vroj>\\s+\\d{2}\\s+\\d{2}\\-\\d{2}){0,1}){0,1}";
 
     final HistoryInterface hi = new WriteToHist();
 
