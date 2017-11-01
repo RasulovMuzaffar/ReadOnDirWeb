@@ -8,9 +8,12 @@ import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +21,7 @@ public class Spravka2790Reader implements TableReaderInterface {
 //regexDocHead
 //СТРОКА  1 : 21298948  DT-010117-279017
 
-    final static String RDH = "\\s+\\d+\\s+\\:\\s+(?<nv>\\d{8})\\s+[DT]{2}\\-(?<s>\\d{6})\\-(?<po>\\d{6})";
+    final static String RDH = "\\d{1,2}\\s+\\:\\s+(?<nv>\\d{8})\\s+[A-ZА-Я]{2}\\-(?<s>\\d{6})\\-(?<po>\\d{6})";
 
 //    RTH
     final static String RTH = "";
@@ -39,8 +42,6 @@ public class Spravka2790Reader implements TableReaderInterface {
 
     @Override
     public HtmlTable processFile(String fileName) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2790 " + this.getClass().getName());
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2790 " + this.getClass().getName());
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -58,13 +59,10 @@ public class Spravka2790Reader implements TableReaderInterface {
 
         String sost = "";
         String obj = "";
-        System.out.println("==============================");
         while (matcher.find()) {
-            result.addCell(matcher.group("nv"));
-            result.addCell("от " + matcher.group("s"));
-            result.addCell("по " + matcher.group("po"));
-            System.out.println(matcher.group("nv") + " " + "от " + matcher.group("s") + " " + "по " + matcher.group("po"));
-            System.out.println("==============================");
+            result.addCell("Вагон №:<b>" + matcher.group("nv") + "</b>,");
+            result.addCell("период (с <b>" + parseToDate(matcher.group("s")) + "</b>");
+            result.addCell("по <b>" + parseToDate(matcher.group("po")) + "</b>)");
 
 //            sost = matcher.group("sost");
             obj = matcher.group("nv");
@@ -73,6 +71,7 @@ public class Spravka2790Reader implements TableReaderInterface {
                 result.markCurrentRowAsDocHeader();
             }
 
+            break;
         }
         docHead = true;
         result.advanceToNextRow();
@@ -183,8 +182,8 @@ public class Spravka2790Reader implements TableReaderInterface {
             }
             result.advanceToNextRow();
         }
-            reading = true;
-            tBody = true;
+        reading = true;
+        tBody = true;
 
         System.out.println("docHead2790 === " + docHead);
         System.out.println("tHead2790 === " + tHead);
@@ -205,6 +204,19 @@ public class Spravka2790Reader implements TableReaderInterface {
         } else {
             return "";
         }
+    }
+
+    private String parseToDate(String s) {
+        String outputText = "";
+        try {
+            SimpleDateFormat inputDateformat = new SimpleDateFormat("ddMMyy");
+            SimpleDateFormat outputDateformat = new SimpleDateFormat("dd.MM.yyyy");
+            Date date = inputDateformat.parse(s);
+            outputText = outputDateformat.format(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return outputText;
     }
 
     @Override
