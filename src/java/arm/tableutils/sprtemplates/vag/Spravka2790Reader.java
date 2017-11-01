@@ -1,0 +1,214 @@
+package arm.tableutils.sprtemplates.vag;
+
+import arm.ent.History;
+import arm.tableutils.HtmlTable;
+import arm.tableutils.tablereaders.TableReaderInterface;
+import arm.tableutils.tablereaders.utils.TextReplace;
+import arm.wr.HistoryInterface;
+import arm.wr.ReadOnDir;
+import static arm.wr.Write.fromDB;
+import arm.wr.WriteToHist;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Spravka2790Reader implements TableReaderInterface {
+//regexDocHead
+//СТРОКА  1 : 21298948  DT-010117-279017
+
+    final static String RDH = "\\s+\\d+\\s+\\:\\s+(?<nv>\\d{8})\\s+[DT]{2}\\-(?<s>\\d{6})\\-(?<po>\\d{6})";
+
+//    RTH
+    final static String RTH = "";
+
+    final static String RTB = "((?<a>\\d{8})\\s+(?<b>\\d{2})\\s+"
+            + "(?<c>[A-ZА-Я]?\\d{0,3})\\s+(?<d>\\d{4}\\s+)?"
+            + "(?<e>\\d{5}\\s+)?(?<f>\\d{4}\\s+)?)?"
+            + "(?<g>\\+?\\-?[A-ZА-Я]?\\s?[A-ZА-Я]{2,5})\\s+"
+            + "(?<h>\\d{2}\\/\\d{2}\\/\\d{2})\\s+"
+            + "(?<i>\\d{2}\\:\\d{2})(?<j>\\s{1}\\d{5}\\s)?"
+            + "(?<k>\\s{0,7}\\d{2}\\/\\d{2}\\s)?"
+            + "(?<l>\\s{0,13}\\d{4}\\s)?"
+            + "(?<m>\\s{0,18}\\d{4}\\-\\d{3}\\-\\d{4}\\s)?"
+            + "(?<n>\\s{0,32}\\d{1,2}\\/\\d{1,2}\\s)?"
+            + "(?<o>\\s{0,38}\\d{8}\\-\\d{8})?";
+
+    final HistoryInterface hi = new WriteToHist();
+
+    @Override
+    public HtmlTable processFile(String fileName) {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2790 " + this.getClass().getName());
+        Pattern pattern;
+        Matcher matcher;
+        boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
+
+        String f = TextReplace.getSha(TextReplace.getText(fileName));
+        HtmlTable result = new HtmlTable();
+
+        pattern = Pattern.compile(RDH);
+        matcher = pattern.matcher(f);
+
+        boolean tableHeaderProcessed = false;
+
+        String sost = "";
+        String obj = "";
+        System.out.println("==============================");
+        while (matcher.find()) {
+            result.addCell(matcher.group("nv"));
+            result.addCell("от " + matcher.group("s"));
+            result.addCell("по " + matcher.group("po"));
+            System.out.println(matcher.group("nv") + " " + "от " + matcher.group("s") + " " + "по " + matcher.group("po"));
+            System.out.println("==============================");
+
+//            sost = matcher.group("sost");
+            obj = matcher.group("nv");
+            if (!tableHeaderProcessed) {
+                tableHeaderProcessed = true;
+                result.markCurrentRowAsDocHeader();
+            }
+
+        }
+        docHead = true;
+        result.advanceToNextRow();
+        if (docHead == false) {
+            System.out.println("docHead == false");
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("2790 : Вагоны");
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj(obj);
+            hi.infoFromSpr(h);
+        }
+
+//        pattern = Pattern.compile(RTH);
+//        matcher = pattern.matcher(f);
+        tableHeaderProcessed = false;
+
+//        while (matcher.find()) {
+        result.addCell("a");
+        result.addCell("b");
+        result.addCell("c");
+        result.addCell("d");
+        result.addCell("e");
+        result.addCell("f");
+        result.addCell("g");
+        result.addCell("h");
+        result.addCell("i");
+        result.addCell("j");
+        result.addCell("k");
+        result.addCell("l");
+        result.addCell("m");
+        result.addCell("n");
+        result.addCell("o");
+
+//            for (int i = 1; i <= matcher.groupCount(); i++) {
+////                if (matcher.group(i) != null) {
+//                result.addCell(matcher.group(i));
+////                }
+//            }
+        if (!tableHeaderProcessed) {
+            tableHeaderProcessed = true;
+            result.markCurrentRowAsHeader();
+        }
+
+        tHead = true;
+        result.advanceToNextRow();
+//        }
+
+        pattern = Pattern.compile(RTB);
+        matcher = pattern.matcher(f);
+
+        int n = 1;
+        while (matcher.find()) {
+            System.out.println(matcher.group("a") + " " + matcher.group("b") + " " + matcher.group("c") + " "
+                    + " " + matcher.group("d") + " " + " " + matcher.group("e") + " " + " " + matcher.group("f") + " "
+                    + " " + matcher.group("g") + " " + " " + matcher.group("h") + " " + " " + matcher.group("i") + " "
+                    + " " + matcher.group("j") + " " + " " + matcher.group("k") + " " + " " + matcher.group("l") + " "
+                    + " " + matcher.group("m") + " " + " " + matcher.group("n") + " " + " " + matcher.group("o") + " ");
+//            if (matcher.group("nvag") != null) {
+//                result.addCell("" + n++);
+//            }else{
+//                result.addCell("");
+//            }
+//            for (int i = 1; i <= matcher.groupCount(); i++) {
+            if (matcher.group("a") != null) {
+                result.addCell(delNull(matcher.group("a")));
+                result.addCell(delNull(matcher.group("b")));
+                result.addCell(delNull(matcher.group("c")));
+                result.addCell(delNull(matcher.group("d")));
+                result.addCell(delNull(matcher.group("e")));
+                result.addCell(delNull(matcher.group("f")));
+                result.addCell(delNull(matcher.group("g")));
+                result.addCell(delNull(matcher.group("h")));
+                result.addCell(delNull(matcher.group("i")));
+                result.addCell(delNull(matcher.group("j")));
+                result.addCell(delNull(matcher.group("k")));
+                result.addCell(delNull(matcher.group("l")));
+                result.addCell(delNull(matcher.group("m")));
+                result.addCell(delNull(matcher.group("n")));
+                result.addCell(delNull(matcher.group("o")));
+                result.markCurrentRowAsRegularUnderscore();
+            } else {
+                result.addCell(delNull(matcher.group("a")));
+                result.addCell(delNull(matcher.group("b")));
+                result.addCell(delNull(matcher.group("c")));
+                result.addCell(delNull(matcher.group("d")));
+                result.addCell(delNull(matcher.group("e")));
+                result.addCell(delNull(matcher.group("f")));
+                result.addCell(delNull(matcher.group("g")));
+                result.addCell(delNull(matcher.group("h")));
+                result.addCell(delNull(matcher.group("i")));
+                result.addCell(delNull(matcher.group("j")));
+                result.addCell(delNull(matcher.group("k")));
+                result.addCell(delNull(matcher.group("l")));
+                result.addCell(delNull(matcher.group("m")));
+                result.addCell(delNull(matcher.group("n")));
+                result.addCell(delNull(matcher.group("o")));
+            }
+//            }
+
+            if (!tableHeaderProcessed) {
+                tableHeaderProcessed = true;
+                result.markCurrentRowAsHeader();
+            }
+            result.advanceToNextRow();
+        }
+            reading = true;
+            tBody = true;
+
+        System.out.println("docHead2790 === " + docHead);
+        System.out.println("tHead2790 === " + tHead);
+        System.out.println("tBody2790 === " + tBody);
+        if (reading == true && (docHead == true && tHead == true && tBody == true)) {
+            System.out.println("can reading SPR2790 ");
+            ReadOnDir.spr = "sprDefault";
+            return result;
+        } else {
+            System.out.println("can not reading SPR2790 ");
+            return null;
+        }
+    }
+
+    private String delNull(String s) {
+        if (s != null) {
+            return s;
+        } else {
+            return "";
+        }
+    }
+
+    @Override
+    public List<HtmlTable> readersResult() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+}
