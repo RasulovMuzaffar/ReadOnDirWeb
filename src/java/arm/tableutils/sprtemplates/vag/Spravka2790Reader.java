@@ -40,6 +40,7 @@ public class Spravka2790Reader implements TableReaderInterface {
     @Override
     public HtmlTable processFile(String fileName) {
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2790 " + this.getClass().getName());
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2790 " + this.getClass().getName());
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
