@@ -71,10 +71,10 @@ public class Spravka2790Reader implements TableReaderInterface {
                 result.markCurrentRowAsDocHeader();
             }
 
+            docHead = true;
+            result.advanceToNextRow();
             break;
         }
-        docHead = true;
-        result.advanceToNextRow();
         if (docHead == false) {
             System.out.println("docHead == false");
             return null;
@@ -82,10 +82,10 @@ public class Spravka2790Reader implements TableReaderInterface {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
             Date currDate = new Date();
             History h = new History();
-            h.setSprN("2790 : Вагоны");
+            h.setSprN("2790 : " + obj);
             h.setDate("" + dateFormat.format(currDate));
             h.setTime("");
-            h.setObj(obj);
+            h.setObj("");
             hi.infoFromSpr(h);
         }
 
@@ -94,21 +94,21 @@ public class Spravka2790Reader implements TableReaderInterface {
         tableHeaderProcessed = false;
 
 //        while (matcher.find()) {
-        result.addCell("a");
-        result.addCell("b");
-        result.addCell("c");
-        result.addCell("d");
-        result.addCell("e");
-        result.addCell("f");
-        result.addCell("g");
-        result.addCell("h");
-        result.addCell("i");
-        result.addCell("j");
-        result.addCell("k");
-        result.addCell("l");
-        result.addCell("m");
-        result.addCell("n");
-        result.addCell("o");
+        result.addCell("№ вагона");
+        result.addCell("Сбст.");
+        result.addCell("Тон.");
+        result.addCell("Ст.н.");
+        result.addCell("К.гр.");
+        result.addCell("Получ.");
+        result.addCell("Опер.");
+        result.addCell("Дата");
+        result.addCell("Время");
+        result.addCell("Ст.опер.");
+        result.addCell("П/П");
+        result.addCell("НП");
+        result.addCell("ИП");
+        result.addCell("Р/кВ");
+        result.addCell("Г/Х");
 
 //            for (int i = 1; i <= matcher.groupCount(); i++) {
 ////                if (matcher.group(i) != null) {
@@ -129,11 +129,11 @@ public class Spravka2790Reader implements TableReaderInterface {
 
         int n = 1;
         while (matcher.find()) {
-            System.out.println(matcher.group("a") + " " + matcher.group("b") + " " + matcher.group("c") + " "
-                    + " " + matcher.group("d") + " " + " " + matcher.group("e") + " " + " " + matcher.group("f") + " "
-                    + " " + matcher.group("g") + " " + " " + matcher.group("h") + " " + " " + matcher.group("i") + " "
-                    + " " + matcher.group("j") + " " + " " + matcher.group("k") + " " + " " + matcher.group("l") + " "
-                    + " " + matcher.group("m") + " " + " " + matcher.group("n") + " " + " " + matcher.group("o") + " ");
+//            System.out.println(matcher.group("a") + " " + matcher.group("b") + " " + matcher.group("c") + " "
+//                    + " " + matcher.group("d") + " " + " " + matcher.group("e") + " " + " " + matcher.group("f") + " "
+//                    + " " + matcher.group("g") + " " + " " + matcher.group("h") + " " + " " + matcher.group("i") + " "
+//                    + " " + matcher.group("j") + " " + " " + matcher.group("k") + " " + " " + matcher.group("l") + " "
+//                    + " " + matcher.group("m") + " " + " " + matcher.group("n") + " " + " " + matcher.group("o") + " ");
 //            if (matcher.group("nvag") != null) {
 //                result.addCell("" + n++);
 //            }else{
