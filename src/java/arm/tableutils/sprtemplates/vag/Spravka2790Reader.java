@@ -358,8 +358,8 @@ public class Spravka2790Reader implements TableReaderInterface {
                 String kodSt = delNull(matcher.group("d"));
                 result.addCell(kodSt);
                 for (Map.Entry<String, String> o : ms.entrySet()) {
-                    if (o.getKey().equals(kodSt)) {
-                        System.out.println("STATION--->>>>>"+o.getValue());
+                    if (kodSt.equalsIgnoreCase(o.getKey())) {
+                        System.out.println("STATION--->>>>>" + o.getValue());
                         result.addCell(o.getValue());
                     }
                 }
@@ -368,7 +368,7 @@ public class Spravka2790Reader implements TableReaderInterface {
                 result.addCell(kodGr);
                 for (Map.Entry<String, String> o : mg.entrySet()) {
                     if (o.getKey().equals(kodGr)) {
-                        System.out.println("GRUZ--->>>>>"+o.getValue());
+                        System.out.println("GRUZ--->>>>>" + o.getValue());
                         result.addCell(o.getValue());
                     }
                 }
@@ -464,7 +464,15 @@ public class Spravka2790Reader implements TableReaderInterface {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        int i = 0;
+        for (Map.Entry<String, String> entry : m.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            System.out.println(key + " : " + value);
+            if (i == 10) {
+                break;
+            }
+        }
         return m;
     }
 
@@ -485,6 +493,15 @@ public class Spravka2790Reader implements TableReaderInterface {
         } catch (SQLException ex) {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int i = 0;
+        for (Map.Entry<String, String> entry : m.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            System.out.println(key + " : " + value);
+            if (i == 10) {
+                break;
+            }
         }
 
         return m;
