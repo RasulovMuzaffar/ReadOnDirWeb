@@ -52,14 +52,14 @@ public class Spravka2790Reader implements TableReaderInterface {
     @Override
     public HtmlTable processFile(String fileName, Users u) {
         String f = TextReplace.getSha(TextReplace.getText(fileName));
-        HtmlTable htResult = null;
+//        HtmlTable htResult = null;
         if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
-            htResult = getResultToArch(f);
+            return getResultToArch(f);
         } else {
-            htResult = getResult(f);
+            return getResult(f);
         }
 
-        return htResult;
+//        return htResult;
     }
 
     public HtmlTable getResult(String f) {
@@ -248,7 +248,8 @@ public class Spravka2790Reader implements TableReaderInterface {
     private HtmlTable getResultToArch(String f) {
         Map<String, String> ms = getStationsMap();
         Map<String, String> mg = getGruzsMap();
-
+        System.out.println("STATIONS COUNT" + ms.size());
+        System.out.println("GRUZS COUNT" + mg.size());
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
