@@ -505,6 +505,9 @@ public class Spravka2790Reader implements TableReaderInterface {
             String value = entry.getValue();
             if (key.equals("72000")) {
                 System.out.println(key + " : " + value);
+            }else
+            if (key.equals("7200")) {
+                System.out.println(key + " : " + value);
             }
         }
 
