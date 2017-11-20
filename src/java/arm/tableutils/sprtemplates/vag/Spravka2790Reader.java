@@ -223,5 +223,8 @@ public class Spravka2790Reader implements TableReaderInterface {
     public List<HtmlTable> readersResult() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+private String getUserOgrn(){
+    
+    return null;
+}
 }

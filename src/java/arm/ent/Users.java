@@ -15,12 +15,14 @@ public class Users {
     String password;
     String autoOtv;
     
+    String typeOgr;
+    
     String org;
 
     public Users() {
     }
 
-    public Users(Long id, String fName, String lName, int idRole, int idOrg, String autoNo, String login, String password, String autoOtv, String org) {
+    public Users(Long id, String fName, String lName, int idRole, int idOrg, String autoNo, String login, String password, String autoOtv, String typeOgr, String org) {
         this.id = id;
         this.fName = fName;
         this.lName = lName;
@@ -30,6 +32,7 @@ public class Users {
         this.login = login;
         this.password = password;
         this.autoOtv = autoOtv;
+        this.typeOgr = typeOgr;
         this.org = org;
     }
 
@@ -105,6 +108,14 @@ public class Users {
         this.autoOtv = autoOtv;
     }
 
+    public String getTypeOgr() {
+        return typeOgr;
+    }
+
+    public void setTypeOgr(String typeOgr) {
+        this.typeOgr = typeOgr;
+    }
+
     public String getOrg() {
         return org;
     }
@@ -114,23 +125,19 @@ public class Users {
     }
 
     @Override
-    public String toString() {
-        return "Users{" + "id=" + id + ", fName=" + fName + ", lName=" + lName + ", idRole=" + idRole + ", idOrg=" + idOrg + ", autoNo=" + autoNo + ", login=" + login + ", password=" + password + ", autoOtv=" + autoOtv + ", org=" + org + '}';
-    }
-
-    @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + Objects.hashCode(this.id);
-        hash = 89 * hash + Objects.hashCode(this.fName);
-        hash = 89 * hash + Objects.hashCode(this.lName);
-        hash = 89 * hash + this.idRole;
-        hash = 89 * hash + this.idOrg;
-        hash = 89 * hash + Objects.hashCode(this.autoNo);
-        hash = 89 * hash + Objects.hashCode(this.login);
-        hash = 89 * hash + Objects.hashCode(this.password);
-        hash = 89 * hash + Objects.hashCode(this.autoOtv);
-        hash = 89 * hash + Objects.hashCode(this.org);
+        int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.id);
+        hash = 31 * hash + Objects.hashCode(this.fName);
+        hash = 31 * hash + Objects.hashCode(this.lName);
+        hash = 31 * hash + this.idRole;
+        hash = 31 * hash + this.idOrg;
+        hash = 31 * hash + Objects.hashCode(this.autoNo);
+        hash = 31 * hash + Objects.hashCode(this.login);
+        hash = 31 * hash + Objects.hashCode(this.password);
+        hash = 31 * hash + Objects.hashCode(this.autoOtv);
+        hash = 31 * hash + Objects.hashCode(this.typeOgr);
+        hash = 31 * hash + Objects.hashCode(this.org);
         return hash;
     }
 
@@ -170,6 +177,9 @@ public class Users {
         if (!Objects.equals(this.autoOtv, other.autoOtv)) {
             return false;
         }
+        if (!Objects.equals(this.typeOgr, other.typeOgr)) {
+            return false;
+        }
         if (!Objects.equals(this.org, other.org)) {
             return false;
         }
@@ -178,7 +188,5 @@ public class Users {
         }
         return true;
     }
-
-    
 
 }

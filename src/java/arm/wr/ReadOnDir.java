@@ -56,7 +56,7 @@ public class ReadOnDir extends Thread {
     private static final String URL = "jdbc:mysql://localhost:3306/arm";
     private static final String USER = "test";
     private static final String PASS = "test";
-
+    
     @Override
     public void run() {
         System.out.println("thread!!!!");
@@ -64,7 +64,7 @@ public class ReadOnDir extends Thread {
         pathListener();
 //        }
     }
-
+    
     private static void pathListener() {
 // init composite reader - register all reader types
 //        tableReader.registerReader(new Spravka02Reader());
@@ -94,31 +94,30 @@ public class ReadOnDir extends Thread {
         tableReader.registerReader(new Spravka2610Reader());
         tableReader.registerReader(new Spravka215vReader());
         tableReader.registerReader(new Spravka2790Reader());
-        
 
         ///////////////////////////////////////////
         try (WatchService service = FileSystems.getDefault().newWatchService()) {
             Map<WatchKey, Path> keyMap = new HashMap<>();
             Path path = Paths.get(p);
             System.out.println("blablablablabla");
-
+            
             keyMap.put(path.register(service,
                     StandardWatchEventKinds.ENTRY_CREATE
             //                  ,StandardWatchEventKinds.ENTRY_DELETE
             //                  ,StandardWatchEventKinds.ENTRY_MODIFY
             ), path);
-
+            
             WatchKey watchKey;
             do {
                 watchKey = service.take();
                 Path eventDir = keyMap.get(watchKey);
-
+                
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
                     WatchEvent.Kind<?> kind = event.kind();
                     Path eventPath = (Path) event.context();
                     System.out.println(eventDir + " : " + kind + " : " + eventPath);
                     File f = new File(eventDir + "\\" + eventPath);
-
+                    
                     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
                     ScheduledFuture scheduledFuture
                             = scheduledExecutorService.schedule(new Callable() {
@@ -143,7 +142,7 @@ public class ReadOnDir extends Thread {
                             b = false;
                         }
                     } while (!b);
-
+                    
                     scheduledExecutorService.shutdown();
                 }
             } while (watchKey.reset());
@@ -152,10 +151,10 @@ public class ReadOnDir extends Thread {
         }
         ///////////////////////////////////////////           
     }
-
+    
     static final CompositeReader tableReader = new CompositeReader();
     HistoryInterface hi = new WriteToHist();
-
+    
     private static void readingFile(String path, Path fName) {
         // test
         String filePath = path;
@@ -171,11 +170,11 @@ public class ReadOnDir extends Thread {
 //        while (matcher.find()) {
 //            usrAutoN = matcher.group(1);
 //        }
-usrAutoN=fileName.substring(2,4);
-        System.out.println("USER AUTO NUMBER --->>> "+usrAutoN);
+        usrAutoN = fileName.substring(2, 4);
+        System.out.println("USER AUTO NUMBER --->>> " + usrAutoN);
         Users u = null;
         try {
-
+            
             String sql = "select * FROM users u INNER JOIN spr_org AS o ON u.id_org = o.id where auto_no='" + usrAutoN + "'";
             try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
                     PreparedStatement pstmt = con.prepareStatement(sql);
@@ -184,10 +183,10 @@ usrAutoN=fileName.substring(2,4);
                     u = new Users(rs.getLong("id"), rs.getString("firstname"),
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
-                            rs.getString("login"), rs.getString("password"),rs.getString("auto_otv"),rs.getString("name"));
+                            rs.getString("login"), rs.getString("password"), rs.getString("auto_otv"), rs.getString("type_ogr"), rs.getString("name"));
                 }
             }
-
+            
         } catch (SQLException ex) {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
@@ -200,30 +199,30 @@ usrAutoN=fileName.substring(2,4);
             if (f.exists()) {
                 String str = null;
                 try (FileInputStream fis = new FileInputStream(filePath)) {
-
+                    
                     System.out.println("File size: " + fis.available() + " bytes");
-
+                    
                     byte[] buffer = new byte[fis.available()];
 
                     // считаем файл в буфер
                     fis.read(buffer, 0, fis.available());
-
+                    
                     str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
-
+                    
                 } catch (IOException ex) {
                     System.out.println("exception in ReadOnDir : " + ex);
                 }
-
+                
                 HtmlTable result = tableReader.processFile(str);
-                System.out.println("RESULT "+result);
-                System.out.println("STR "+str);
+                System.out.println("RESULT " + result);
+                System.out.println("STR " + str);
 //                HtmlTable result = tableReader.processFile(filePath);
 
 //                WriteToHist.writeToDB(user, str);
                 StringBuilder s = new StringBuilder();
                 
                 if (result != null) {
-                    System.out.println("========1====="+result);
+                    System.out.println("========1=====" + result);
                     String answer = result.generateHtml();
                     armUsers.stream().forEach((Session x) -> {
                         if (x.getUserProperties().containsValue(user)) {
@@ -233,18 +232,18 @@ usrAutoN=fileName.substring(2,4);
                                 Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-
+                        
                     });
-
+                    
                     WriteToHist wth = new WriteToHist();
                     wth.writeToDB(user, str);
                 } else {
-                    System.out.println("=======2======"+result);
+                    System.out.println("=======2======" + result);
                     StringBuilder moreSprs = new StringBuilder();
                     List<HtmlTable> list = tableReader.readersResult();
 //                    System.out.println("list.size() ---->>>> "+list.size());
                     if (list.size() != 0) {
-
+                        
                         for (HtmlTable l : list) {
                             moreSprs.append(l.generateHtml());
                             moreSprs.append("<br/>");
@@ -285,14 +284,14 @@ usrAutoN=fileName.substring(2,4);
             System.out.println("Error: multiple results");
         }
     }
-
+    
     private static void deletingFile(String path) {
         System.out.println("File " + path + " deleting!!!");
         File file = new File(path);
         file.delete();
         System.out.println("File deleting!!!");
     }
-
+    
     private static String readNotDetectedFile(String filePath) {
         StringBuilder sb = new StringBuilder();
         String f = null;
@@ -317,7 +316,7 @@ usrAutoN=fileName.substring(2,4);
 
 //            String str = new String(new String(buffer, "CP1251").getBytes(), "CP866");
             String str = new String((buffer), "CP866");
-
+            
             f = TextReplace.getText(str).replace("\r\n", "<br/>").replace(" ", "&ensp;");
 //            sb.append(f);
 
@@ -325,7 +324,6 @@ usrAutoN=fileName.substring(2,4);
 //            while ((i = fis.read()) != -1) {
 //                System.out.print((char) i);
 //            }
-
         } catch (IOException ex) {
             Logger.getLogger(ReadOnDir.class.getName()).log(Level.SEVERE, null, ex);
         }

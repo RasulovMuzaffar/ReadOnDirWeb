@@ -69,7 +69,7 @@ public class Auth extends HttpServlet {
                     u = new Users(rs.getLong("id"), rs.getString("firstname"),
                             rs.getString("lastname"), rs.getInt("id_role"),
                             rs.getInt("id_org"), rs.getString("auto_no"),
-                            rs.getString("login"), rs.getString("password"),rs.getString("auto_otv"),rs.getString("name"));
+                            rs.getString("login"), rs.getString("password"), rs.getString("auto_otv"), rs.getString("type_ogr"), rs.getString("name"));
                 }
             }
 
@@ -82,7 +82,7 @@ public class Auth extends HttpServlet {
                 System.out.println("this person is online!");
                 response.sendRedirect("errorPage.html");
             } else {
-                System.out.println(""+u.getLogin() +" "+u.getOrg());
+                System.out.println("" + u.getLogin() + " " + u.getOrg());
                 System.out.println("new person!");
                 HttpSession httpSession = request.getSession(true);
                 System.out.println("auth httpSession ==> " + login + " " + httpSession.getId());
@@ -90,8 +90,11 @@ public class Auth extends HttpServlet {
                 httpSession.setAttribute("usrname", u);
 
                 request.setAttribute("hl", histList(u));
-                
-                request.getRequestDispatcher("index2.jsp").forward(request, response);
+                if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
+                    request.getRequestDispatcher("userArchWag.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("index2.jsp").forward(request, response);
+                }
             }
         } else {
             response.sendRedirect("auth.html");
@@ -117,7 +120,7 @@ public class Auth extends HttpServlet {
         }
         return b;
     }
-    
+
     private List<InMessages> histList(Users user) {
         String sql = "SELECT * FROM in_messages WHERE id_user=" + user.getId() + " ORDER BY id DESC LIMIT 20";
         List<InMessages> lim = new ArrayList<>();
@@ -141,8 +144,8 @@ public class Auth extends HttpServlet {
 //                    .append("data-idmess='").append(i.getId()).append("' onclick='getHist(this);'>")
 //                    .append(i.getHeader()).append("</a></li>");
 //        }
-return lim;
-       
+        return lim;
+
     }
 
 }
