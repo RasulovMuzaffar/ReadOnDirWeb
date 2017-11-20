@@ -359,6 +359,7 @@ public class Spravka2790Reader implements TableReaderInterface {
                 result.addCell(kodSt);
                 for (Map.Entry<String, String> o : ms.entrySet()) {
                     if (o.getKey().equals(kodSt)) {
+                        System.out.println("STATION--->>>>>"+o.getValue());
                         result.addCell(o.getValue());
                     }
                 }
@@ -367,6 +368,7 @@ public class Spravka2790Reader implements TableReaderInterface {
                 result.addCell(kodGr);
                 for (Map.Entry<String, String> o : mg.entrySet()) {
                     if (o.getKey().equals(kodGr)) {
+                        System.out.println("GRUZ--->>>>>"+o.getValue());
                         result.addCell(o.getValue());
                     }
                 }
