@@ -392,8 +392,13 @@ public class Spravka2790Reader implements TableReaderInterface {
                 String kodSt = delNull(matcher.group("d"));
                 result.addCell(kodSt);
                 for (Map.Entry<String, String> o : ms.entrySet()) {
+                    System.out.println("8888888888888888888888888>>>>>> "+o.getKey().substring(1, 4));
                     if (o.getKey().equals(kodSt)) {
                         result.addCell(o.getValue());
+                    }else if(o.getKey().substring(1, 4).equalsIgnoreCase(kodSt)){
+                        result.addCell(o.getValue());
+                    }else{
+                        result.addCell("");
                     }
                 }
 
@@ -498,7 +503,7 @@ public class Spravka2790Reader implements TableReaderInterface {
         for (Map.Entry<String, String> entry : m.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            if (key.equals(72000)) {
+            if (key.equals("72000")) {
                 System.out.println(key + " : " + value);
             }
         }
