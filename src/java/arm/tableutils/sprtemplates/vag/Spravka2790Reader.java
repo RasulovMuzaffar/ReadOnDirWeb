@@ -471,7 +471,7 @@ public class Spravka2790Reader implements TableReaderInterface {
             System.out.println(key + " : " + value);
             if (i == 10) {
                 break;
-            }
+            }i++;
         }
         return m;
     }
@@ -498,9 +498,8 @@ public class Spravka2790Reader implements TableReaderInterface {
         for (Map.Entry<String, String> entry : m.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            System.out.println(key + " : " + value);
-            if (i == 10) {
-                break;
+            if (key.equals(72000)) {
+                System.out.println(key + " : " + value);
             }
         }
 
