@@ -1,6 +1,7 @@
 package arm.tableutils.sprtemplates;
 
 import arm.ent.History;
+import arm.ent.Users;
 import arm.tableutils.sprtemplates.st.Spravka93Reader;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
@@ -58,7 +59,7 @@ public class Spravka902Reader implements TableReaderInterface {
     final HistoryInterface hi = new WriteToHist();
 
     @Override
-    public HtmlTable processFile(String fileName) {
+    public HtmlTable processFile(String fileName, Users u) {
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;

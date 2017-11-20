@@ -141,7 +141,7 @@ public class WriteToHist implements HistoryInterface {
             System.out.println("im.getHead " + im.getHeader());
             System.out.println("im.getBody " + im.getBody());
 
-            HtmlTable result = tableReader.processFile(im.getBody());
+            HtmlTable result = tableReader.processFile(im.getBody(), user);
 
             if (result != null) {
                 String answer = result.generateHtml();

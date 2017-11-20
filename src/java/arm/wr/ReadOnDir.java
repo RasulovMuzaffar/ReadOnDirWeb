@@ -213,7 +213,7 @@ public class ReadOnDir extends Thread {
                     System.out.println("exception in ReadOnDir : " + ex);
                 }
                 
-                HtmlTable result = tableReader.processFile(str);
+                HtmlTable result = tableReader.processFile(str, u);
                 System.out.println("RESULT " + result);
                 System.out.println("STR " + str);
 //                HtmlTable result = tableReader.processFile(filePath);

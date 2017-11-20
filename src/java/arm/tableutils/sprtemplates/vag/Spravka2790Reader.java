@@ -1,6 +1,8 @@
 package arm.tableutils.sprtemplates.vag;
 
 import arm.ent.History;
+import arm.ent.Station;
+import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
@@ -8,19 +10,26 @@ import arm.wr.HistoryInterface;
 import arm.wr.ReadOnDir;
 import static arm.wr.Write.fromDB;
 import arm.wr.WriteToHist;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Spravka2790Reader implements TableReaderInterface {
+
 //regexDocHead
 //СТРОКА  1 : 21298948  DT-010117-279017
-
     final static String RDH = "\\d{1,2}\\s+\\:\\s+(?<nv>\\d{8})\\s+[A-ZА-Я]{2}\\-(?<s>\\d{6})\\-(?<po>\\d{6})";
 
 //    RTH
@@ -41,7 +50,19 @@ public class Spravka2790Reader implements TableReaderInterface {
     final HistoryInterface hi = new WriteToHist();
 
     @Override
-    public HtmlTable processFile(String fileName) {
+    public HtmlTable processFile(String fileName, Users u) {
+        String f = TextReplace.getSha(TextReplace.getText(fileName));
+        HtmlTable htResult = null;
+        if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
+            htResult = getResultToArch(f);
+        } else {
+            htResult = getResult(f);
+        }
+
+        return htResult;
+    }
+
+    public HtmlTable getResult(String f) {
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;
@@ -49,7 +70,7 @@ public class Spravka2790Reader implements TableReaderInterface {
         boolean tHead = false;
         boolean tBody = false;
 
-        String f = TextReplace.getSha(TextReplace.getText(fileName));
+//        String f = TextReplace.getSha(TextReplace.getText(fileName));
         HtmlTable result = new HtmlTable();
 
         pattern = Pattern.compile(RDH);
@@ -223,8 +244,246 @@ public class Spravka2790Reader implements TableReaderInterface {
     public List<HtmlTable> readersResult() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-private String getUserOgrn(){
-    
-    return null;
-}
+
+    private HtmlTable getResultToArch(String f) {
+        Map<String, String> ms = getStationsMap();
+        Map<String, String> mg = getGruzsMap();
+
+        Pattern pattern;
+        Matcher matcher;
+        boolean reading = false;
+        boolean docHead = false;
+        boolean tHead = false;
+        boolean tBody = false;
+
+//        String f = TextReplace.getSha(TextReplace.getText(fileName));
+        HtmlTable result = new HtmlTable();
+
+        pattern = Pattern.compile(RDH);
+        matcher = pattern.matcher(f);
+
+        boolean tableHeaderProcessed = false;
+
+        String sost = "";
+        String obj = "";
+        while (matcher.find()) {
+            result.addCell("Вагон №:<b>" + matcher.group("nv") + "</b>,");
+            result.addCell("период (с <b>" + parseToDate(matcher.group("s")) + "</b>");
+            result.addCell("по <b>" + parseToDate(matcher.group("po")) + "</b>)");
+
+//            sost = matcher.group("sost");
+            obj = matcher.group("nv");
+            if (!tableHeaderProcessed) {
+                tableHeaderProcessed = true;
+                result.markCurrentRowAsDocHeader();
+            }
+
+            docHead = true;
+            result.advanceToNextRow();
+            break;
+        }
+        if (docHead == false) {
+            System.out.println("docHead == false");
+            return null;
+        } else if (fromDB != true) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm");
+            Date currDate = new Date();
+            History h = new History();
+            h.setSprN("2790 : " + obj);
+            h.setDate("" + dateFormat.format(currDate));
+            h.setTime("");
+            h.setObj("");
+            hi.infoFromSpr(h);
+        }
+
+//        pattern = Pattern.compile(RTH);
+//        matcher = pattern.matcher(f);
+        tableHeaderProcessed = false;
+
+//        while (matcher.find()) {
+        result.addCell("№ вагона");
+        result.addCell("Сбст.");
+        result.addCell("Тон.");
+        result.addCell("Ст.н.");
+        result.addCell("Наим.Ст.");
+        result.addCell("К.гр.");
+        result.addCell("Наим.гр.");
+        result.addCell("Получ.");
+        result.addCell("Опер.");
+        result.addCell("Дата");
+        result.addCell("Время");
+        result.addCell("Ст.опер.");
+        result.addCell("П/П");
+        result.addCell("НП");
+        result.addCell("ИП");
+        result.addCell("Р/кВ");
+        result.addCell("Г/Х");
+
+//            for (int i = 1; i <= matcher.groupCount(); i++) {
+////                if (matcher.group(i) != null) {
+//                result.addCell(matcher.group(i));
+////                }
+//            }
+        if (!tableHeaderProcessed) {
+            tableHeaderProcessed = true;
+            result.markCurrentRowAsHeader();
+        }
+
+        tHead = true;
+        result.advanceToNextRow();
+//        }
+
+        pattern = Pattern.compile(RTB);
+        matcher = pattern.matcher(f);
+
+        int n = 1;
+        while (matcher.find()) {
+//            System.out.println(matcher.group("a") + " " + matcher.group("b") + " " + matcher.group("c") + " "
+//                    + " " + matcher.group("d") + " " + " " + matcher.group("e") + " " + " " + matcher.group("f") + " "
+//                    + " " + matcher.group("g") + " " + " " + matcher.group("h") + " " + " " + matcher.group("i") + " "
+//                    + " " + matcher.group("j") + " " + " " + matcher.group("k") + " " + " " + matcher.group("l") + " "
+//                    + " " + matcher.group("m") + " " + " " + matcher.group("n") + " " + " " + matcher.group("o") + " ");
+//            if (matcher.group("nvag") != null) {
+//                result.addCell("" + n++);
+//            }else{
+//                result.addCell("");
+//            }
+//            for (int i = 1; i <= matcher.groupCount(); i++) {
+            if (matcher.group("a") != null) {
+                result.addCell(delNull(matcher.group("a")));
+                result.addCell(delNull(matcher.group("b")));
+                result.addCell(delNull(matcher.group("c")));
+
+                String kodSt = delNull(matcher.group("d"));
+                result.addCell(kodSt);
+                for (Map.Entry<String, String> o : ms.entrySet()) {
+                    if (o.getKey().equals(kodSt)) {
+                        result.addCell(o.getValue());
+                    }
+                }
+
+                String kodGr = delNull(matcher.group("e"));
+                result.addCell(kodGr);
+                for (Map.Entry<String, String> o : mg.entrySet()) {
+                    if (o.getKey().equals(kodGr)) {
+                        result.addCell(o.getValue());
+                    }
+                }
+
+                result.addCell(delNull(matcher.group("f")));
+                result.addCell(delNull(matcher.group("g")));
+                result.addCell(delNull(matcher.group("h")));
+                result.addCell(delNull(matcher.group("i")));
+                result.addCell(delNull(matcher.group("j")));
+                result.addCell(delNull(matcher.group("k")));
+                result.addCell(delNull(matcher.group("l")));
+                result.addCell(delNull(matcher.group("m")));
+                result.addCell(delNull(matcher.group("n")));
+                result.addCell(delNull(matcher.group("o")));
+                result.markCurrentRowAsRegularUnderscore();
+            } else {
+                result.addCell(delNull(matcher.group("a")));
+                result.addCell(delNull(matcher.group("b")));
+                result.addCell(delNull(matcher.group("c")));
+
+                String kodSt = delNull(matcher.group("d"));
+                result.addCell(kodSt);
+                for (Map.Entry<String, String> o : ms.entrySet()) {
+                    if (o.getKey().equals(kodSt)) {
+                        result.addCell(o.getValue());
+                    }
+                }
+
+                String kodGr = delNull(matcher.group("e"));
+                result.addCell(kodGr);
+                for (Map.Entry<String, String> o : mg.entrySet()) {
+                    if (o.getKey().equals(kodGr)) {
+                        result.addCell(o.getValue());
+                    }
+                }
+
+                result.addCell(delNull(matcher.group("f")));
+                result.addCell(delNull(matcher.group("g")));
+                result.addCell(delNull(matcher.group("h")));
+                result.addCell(delNull(matcher.group("i")));
+                result.addCell(delNull(matcher.group("j")));
+                result.addCell(delNull(matcher.group("k")));
+                result.addCell(delNull(matcher.group("l")));
+                result.addCell(delNull(matcher.group("m")));
+                result.addCell(delNull(matcher.group("n")));
+                result.addCell(delNull(matcher.group("o")));
+            }
+//            }
+
+            if (!tableHeaderProcessed) {
+                tableHeaderProcessed = true;
+                result.markCurrentRowAsHeader();
+            }
+            result.advanceToNextRow();
+        }
+        reading = true;
+        tBody = true;
+
+        System.out.println("docHead2790 === " + docHead);
+        System.out.println("tHead2790 === " + tHead);
+        System.out.println("tBody2790 === " + tBody);
+        if (reading == true && (docHead == true && tHead == true && tBody == true)) {
+            System.out.println("can reading SPR2790 ");
+            ReadOnDir.spr = "sprDefault";
+            return result;
+        } else {
+            System.out.println("can not reading SPR2790 ");
+            return null;
+        }
+    }
+
+    private static final String URL = "jdbc:mysql://localhost:3306/arm";
+    private static final String USER = "test";
+    private static final String PASS = "test";
+
+    private Map<String, String> getStationsMap() {
+        System.out.println("============================== getStationsMap");
+
+        Station s = null;
+        Map<String, String> m = new HashMap<>();
+        try {
+            String sql = "select * from spr_stations";
+            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                    PreparedStatement pstmt = con.prepareStatement(sql);
+                    ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+//                    s = new Station(rs.getLong("id"), rs.getString("code_station"), rs.getString("name_station"));
+                    m.put(rs.getString("code_station"), rs.getString("name_station"));
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("exexexexex " + ex);
+            Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return m;
+    }
+
+    private Map<String, String> getGruzsMap() {
+        System.out.println("============================== getGruzsMap");
+        Map<String, String> m = new HashMap<>();
+        try {
+            String sql = "select * from spr_gruz";
+            try (Connection con = (Connection) DriverManager.getConnection(URL, USER, PASS);
+                    PreparedStatement pstmt = con.prepareStatement(sql);
+                    ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+//                    s = new Station(rs.getLong("id"), rs.getString("code_station"), rs.getString("name_station"));
+                    m.put(rs.getString("code_gruz"), rs.getString("name_gruz"));
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("exexexexex " + ex);
+            Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return m;
+    }
 }

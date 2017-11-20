@@ -1,6 +1,7 @@
 package arm.tableutils.sprtemplates.nod;
 
 import arm.ent.History;
+import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
@@ -40,7 +41,7 @@ public class Spravka4060Reader implements TableReaderInterface {
     final HistoryInterface hi = new WriteToHist();
 
     @Override
-    public HtmlTable processFile(String fileName) {
+    public HtmlTable processFile(String fileName, Users u) {
         Pattern pattern;
         Matcher matcher;
         boolean reading = false;

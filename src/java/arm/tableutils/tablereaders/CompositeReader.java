@@ -1,5 +1,6 @@
 package arm.tableutils.tablereaders;
 
+import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,12 +10,12 @@ public class CompositeReader implements TableReaderInterface {
     public static List<HtmlTable> lht = new ArrayList<>();
 
     @Override
-    public HtmlTable processFile(String fileName) throws MultipleResultsException {
+    public HtmlTable processFile(String fileName, Users u) throws MultipleResultsException {
         List<HtmlTable> results = new ArrayList<>();
         int i = 0;
         System.out.println("---------------)))))))))) "+readersList.size());
         for (TableReaderInterface reader : readersList) {
-            HtmlTable table = reader.processFile(fileName);
+            HtmlTable table = reader.processFile(fileName, u);
             if (table != null) {
                 results.add(table);
 //                break;

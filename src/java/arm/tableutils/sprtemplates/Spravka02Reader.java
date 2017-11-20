@@ -1,5 +1,6 @@
 package arm.tableutils.sprtemplates;
 
+import arm.ent.Users;
 import arm.tableutils.HtmlTable;
 import arm.tableutils.tablereaders.TableReaderInterface;
 import arm.tableutils.tablereaders.utils.TextReplace;
@@ -48,7 +49,7 @@ public class Spravka02Reader implements TableReaderInterface {
             + "(?<thoxr>\\d{3}\\W\\S{0,6} {0,6})";
 
     @Override
-    public HtmlTable processFile(String fileName) {
+    public HtmlTable processFile(String fileName, Users u) {
 //        String str = null;
 //        String f = null;
         Pattern pattern;
