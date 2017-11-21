@@ -511,9 +511,9 @@ public class Spravka2790Reader implements TableReaderInterface {
         for (Map.Entry<String, String> entry : m.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            if (key.equals("72000")) {
+            if (key.equals("73390")) {
                 System.out.println(key + " : " + value);
-            } else if (key.equals("7200")) {
+            } else if (key.equals("7339")) {
                 System.out.println(key + " : " + value);
             }
         }
@@ -537,6 +537,15 @@ public class Spravka2790Reader implements TableReaderInterface {
         } catch (SQLException ex) {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Map.Entry<String, String> entry : m.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (key.equals("28114")) {
+                System.out.println(key + " : " + value);
+            } else if (key.equals("28114")) {
+                System.out.println(key + " : " + value);
+            }
         }
         return m;
     }
