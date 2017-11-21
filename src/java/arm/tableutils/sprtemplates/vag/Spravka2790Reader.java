@@ -469,15 +469,14 @@ public class Spravka2790Reader implements TableReaderInterface {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int i = 0;
         for (Map.Entry<String, String> entry : m.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            System.out.println(key + " : " + value);
-            if (i == 10) {
-                break;
+            if (key.equals("72000")) {
+                System.out.println(key + " : " + value);
+            } else if (key.equals("7200")) {
+                System.out.println(key + " : " + value);
             }
-            i++;
         }
         return m;
     }
@@ -500,17 +499,6 @@ public class Spravka2790Reader implements TableReaderInterface {
             System.out.println("exexexexex " + ex);
             Logger.getLogger(Spravka2790Reader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int i = 0;
-        for (Map.Entry<String, String> entry : m.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if (key.equals("72000")) {
-                System.out.println(key + " : " + value);
-            } else if (key.equals("7200")) {
-                System.out.println(key + " : " + value);
-            }
-        }
-
         return m;
     }
 }
