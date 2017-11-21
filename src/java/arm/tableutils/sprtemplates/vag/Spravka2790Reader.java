@@ -357,21 +357,43 @@ public class Spravka2790Reader implements TableReaderInterface {
 
                 String kodSt = delNull(matcher.group("d"));
                 result.addCell(kodSt);
+                String nSt = "";
                 for (Map.Entry<String, String> o : ms.entrySet()) {
-                    if (kodSt.equalsIgnoreCase(o.getKey())) {
-                        System.out.println("STATION--->>>>>" + o.getValue());
-                        result.addCell(o.getValue());
+//                    System.out.println("8888888888888888888888888>>>>>> " + o.getKey().substring(0, 4));
+                    if (o.getKey().equals(kodSt)) {
+                        nSt = o.getValue();
+                        break;
+                    } else if ((o.getKey().substring(0, 4)).equalsIgnoreCase(kodSt)) {
+                        nSt = o.getValue();
+                        break;
                     }
                 }
+                if (nSt.equalsIgnoreCase(null) || nSt.equalsIgnoreCase("")) {
+                    result.addCell("");
+                } else {
+                    result.addCell(nSt);
+                }
+                
 
                 String kodGr = delNull(matcher.group("e"));
                 result.addCell(kodGr);
+                String nGr = "";
                 for (Map.Entry<String, String> o : mg.entrySet()) {
+//                    System.out.println("8888888888888888888888888>>>>>> " + o.getKey().substring(0, 4));
                     if (o.getKey().equals(kodGr)) {
-                        System.out.println("GRUZ--->>>>>" + o.getValue());
-                        result.addCell(o.getValue());
+                        nGr = o.getValue();
+                        break;
+                    } else if ((o.getKey().substring(0, 4)).equalsIgnoreCase(kodGr)) {
+                        nGr = o.getValue();
+                        break;
                     }
                 }
+                if (nGr.equalsIgnoreCase(null) || nGr.equalsIgnoreCase("")) {
+                    result.addCell("");
+                } else {
+                    result.addCell(nGr);
+                }
+                
 
                 result.addCell(delNull(matcher.group("f")));
                 result.addCell(delNull(matcher.group("g")));
@@ -410,10 +432,21 @@ public class Spravka2790Reader implements TableReaderInterface {
                 
                 String kodGr = delNull(matcher.group("e"));
                 result.addCell(kodGr);
+                String nGr = "";
                 for (Map.Entry<String, String> o : mg.entrySet()) {
+//                    System.out.println("8888888888888888888888888>>>>>> " + o.getKey().substring(0, 4));
                     if (o.getKey().equals(kodGr)) {
-                        result.addCell(o.getValue());
+                        nGr = o.getValue();
+                        break;
+                    } else if ((o.getKey().substring(0, 4)).equalsIgnoreCase(kodGr)) {
+                        nGr = o.getValue();
+                        break;
                     }
+                }
+                if (nGr.equalsIgnoreCase(null) || nGr.equalsIgnoreCase("")) {
+                    result.addCell("");
+                } else {
+                    result.addCell(nGr);
                 }
 
                 result.addCell(delNull(matcher.group("f")));
