@@ -91,10 +91,10 @@ public class Auth extends HttpServlet {
 
                 request.setAttribute("hl", histList(u));
                 System.out.println("TYPE--->>> " + u.getTypeOgr());
-                if (u.getTypeOgr() == null) {
-                    request.getRequestDispatcher("index2.jsp").forward(request, response);
-                }else if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
+                if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
                     request.getRequestDispatcher("userArchWag.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("index2.jsp").forward(request, response);
                 }
             }
         } else {
