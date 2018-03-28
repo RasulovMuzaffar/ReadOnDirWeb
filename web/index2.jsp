@@ -92,53 +92,42 @@
                     <ul class="sprM">
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf0">Свободный запрос</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf101">Расширенная справка о вагонах в поезде</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf1">Наличие поездов сформированных с назначением и находящихся на ст.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf2">подход поездов к станцию</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf3">Пономерное наличие груженные вагонов "УТЙ"</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf1">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf2">подход поездов к станции</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf3">Пономерное наличие груженые вагонов "УТЙ"</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf4">Пономерное наличие порожных вагонов "УТЙ"</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf5">Пономерное наличие чужих вагонов</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf201">Картотечные данные о вагоне</li>   
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf6">Наличие поездов находящихся на станциях дороги</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf6">Наличие поездов, находящихся на станциях дороги</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf102">Брошенные поезда</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf202">Наличие вагонов резерва</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf103">Перечень проследовавщих нпв, тв, нв, … поездов</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf202">Наличие вагонов резерва по отделению</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf103">Перечень проследовавших поездов НПВ, ТВ, НПС, ДС, ПД поездов по отделению</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf203">Стык приема при груженном состоянии по номеру вагона</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf104">Стык приема при груженном состоянии по индексу поезда</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf204">Архивная справка вагона</li>   
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf204">Архивная справка на вагон</li>   
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf205">Арендованные вагоны по индексу поезда</li> 
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf206">Арендованные вагоны по номеру вагона</li>      
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf7">Подход, наличие поездов по станциям КЗХ ж.д.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf8">Подход, наличие поездов по станциям ТРК ж.д.</li>    
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf9">Подход, наличие поездов по станциям ТДЖ ж.д.</li>    
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf10">Подход, наличие поездов по станциям КРТ ж.д.</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf7">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции КЗХ ж.д.</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf8">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции ТРК ж.д.</li>    
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf9">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции ТДЖ ж.д.</li>    
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf10">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции КРТ ж.д.</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf105">Расширенная справка о вагонах в поезде по КЗХ ж.д.</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf106">Расширенная справка о вагонах в поезде по ТРК ж.д.</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf107">Расширенная справка о вагонах в поезде по ТДЖ ж.д.</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf108">Расширенная справка о вагонах в поезде по КРТ ж.д.</li>
 
 
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf11">Передача ваг. по стыку Истыклол</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf12">Передача ваг. по стыку Кудукли</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf13">Принятые и сданные поезда по
-                            Учкурган
-                        </li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf14">Принятые и сданые поезда по
-                            Ходжадавлет
-                        </li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf15">Чужие ваг. на ст. по времени нахож-ия
-                            на дор.
-                        </li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf16">Подход и работа с поездами по ст.
-                            Сарыагач
-                        </li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf17">Подход к ст. Асака</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf18">Подход наличие поездов по ст.Арысь
-                        </li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf11">Передача вагонов по стыку Истыклол</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf12">Передача вагонов по стыку Кудукли</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf13">Принятые и сданные поезда по Учкурган</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf14">Принятые и сданные поезда по Ходжадавлет</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf15">Чужие вагоны на станции по времени нахождения на дороге</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf16">Подход и работа с поездами по ст. Сарыагач</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf17">Подход к ст. Ассаке</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf18">Подход, наличие поездов по ст.Арысь</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf19">Подход поездов к стыку Бекабад</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf20">Работа и налич поездов по ст.
-                            Джала-Абад
-                        </li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf21">Работа ст. с поездами</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf20">Работа и наличие поездов по ст. Джала-Абад</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf21">Работа станции с поездами</li>
                     </ul>
                 </div>
 
@@ -188,7 +177,7 @@
         <!--<script src="resources/js/modalwin.js"></script>-->
 
         <script>
-                                var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/armASOUP//ws");
+                                var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8008/armASOUP//ws");
                                 webSocket.onopen = function (message) {
                                     processOpen(message);
                                     console.log(message);
