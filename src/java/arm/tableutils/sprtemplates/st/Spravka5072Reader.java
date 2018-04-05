@@ -134,11 +134,11 @@ public class Spravka5072Reader implements TableReaderInterface {
         while (matcher.find()) {
 
             result.addCell("№");
-            result.addCell("СОБСТВЕННИК");
+            result.addCell("СОБСТ");
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 result.addCell(matcher.group(i));
             }
-            result.addCell("КОЛИЧЕСТВО");
+            result.addCell("КОЛ-ВО");
 //            result.addCell("ТГНЛ");
 
             if (!tableHeaderProcessed) {

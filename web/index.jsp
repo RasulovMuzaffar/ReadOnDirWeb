@@ -103,7 +103,7 @@
                             console.log("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
                             webSocket.send("spr\u0003" + kodOrg + "," + numMess + "," + numSpr + "," + object + "," + id_user);
 
-                            document.getElementById('stations').style.display = 'none';
+//                            document.getElementById('stations').style.display = 'none';
                         }
                         ;
                         document.querySelector('#stations').addEventListener('click', function (event) {
@@ -127,7 +127,8 @@
                             webSocket.send("getSt\u0003" + p);
                         }
                         ;
-                        var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/MessageToASOUP//ws");
+//                        var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/MessageToASOUP//ws");
+                        var webSocket = new WebSocket("ws://${pageContext.request.localAddr}:8080/armASOUP//ws");
                         webSocket.onopen = function (message) {
                             processOpen(message);
                             console.log(message);

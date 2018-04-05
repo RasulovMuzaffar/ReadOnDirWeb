@@ -129,7 +129,8 @@ body {
     overflow-y: auto;
 }
 
-#expToExc{
+/*#expToExc{*/
+.btn-group{
     margin-right: 20px;
     margin-top: 15px;
     float: right;
@@ -447,9 +448,16 @@ li.hist {
     margin-top: 15px;
 }
 
-#inptSt, #inptTm, #inptDt1,#inptDt2{
+#inptTm, #inptDt1,#inptDt2{
     outline: none;
     width: 80px;
+    border: none;
+    background-color: #c0c0c0;
+}
+#inptSt{
+    /*text-align: center;*/
+    outline: none;
+    width: 250px;
     border: none;
     background-color: #c0c0c0;
 }

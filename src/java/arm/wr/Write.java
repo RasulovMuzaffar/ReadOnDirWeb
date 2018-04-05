@@ -46,7 +46,7 @@ public class Write {
                 System.out.println("Full SPR");
 //                (:213 0: ' + idx + ' 12 42 60 902 104:)
                 forPopup = true;
-                createFile("(:213 0:" + s[1] + " 12 42 60 902 104:)");
+                createFile("(:213 0:" + s[1] + " 12 902 104:)");
                 break;
             case "freeSpr":
                 createFile(s[1]);

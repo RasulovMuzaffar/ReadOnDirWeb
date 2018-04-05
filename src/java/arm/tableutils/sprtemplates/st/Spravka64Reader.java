@@ -102,12 +102,12 @@ public class Spravka64Reader implements TableReaderInterface {
             result.addCell("Время1");
             result.addCell("Сост2");
             result.addCell("Время2");
-            result.addCell("хз1");
-            result.addCell("хз2");
-            result.addCell("хз3");
-            result.addCell("хз4");
-            result.addCell("хз5");
-            result.addCell("хз6");
+            result.addCell("п/п");
+            result.addCell("брутта");
+            result.addCell("кв");
+            result.addCell("псл");
+            result.addCell("нл");
+            result.addCell("нп");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

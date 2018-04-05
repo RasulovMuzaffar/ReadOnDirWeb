@@ -28,6 +28,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 //////////////////////////////////////////////////////////////
+
 @WebServlet(name = "Auth", urlPatterns = {"/auth"})
 public class Auth extends HttpServlet {
 
@@ -91,10 +92,13 @@ public class Auth extends HttpServlet {
 
                 request.setAttribute("hl", histList(u));
                 System.out.println("TYPE--->>> " + u.getTypeOgr());
-                if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
-                    request.getRequestDispatcher("userArchWag.jsp").forward(request, response);
+                if (u.getLogin().equalsIgnoreCase("nzd")) {
+                    request.getRequestDispatcher("newnzdPage.jsp").forward(request, response);
+                } else if (u.getTypeOgr().equalsIgnoreCase("singleArchive")) {
+//                    request.getRequestDispatcher("userArchWag.jsp").forward(request, response);
+                    request.getRequestDispatcher("nzdPage.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("index2.jsp").forward(request, response);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
             }
         } else {

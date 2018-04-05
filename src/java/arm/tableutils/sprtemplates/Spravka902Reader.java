@@ -111,15 +111,15 @@ public class Spravka902Reader implements TableReaderInterface {
 
             result.addCell("№");
             result.addCell("№ вагона");
-            result.addCell("ед.изм");
-            result.addCell("вес груза");
-            result.addCell("ст. назнач");
-            result.addCell("код груза");
-            result.addCell("код получателя");
-            result.addCell("хз");
-            result.addCell("контейнер (гр/пор)");
-            result.addCell("хз");
-            result.addCell("охраняемый");
+            result.addCell("Ед.изм");
+            result.addCell("Вес груза");
+            result.addCell("Ст. назнач");
+            result.addCell("Код груза");
+            result.addCell("Код получателя");
+            result.addCell("Особые отметки");
+            result.addCell("Кон. (гр/пор)");
+            result.addCell("Вых. погр. ст.");
+            result.addCell("Тара/примечание");
 
             if (!tableHeaderProcessed) {
                 tableHeaderProcessed = true;

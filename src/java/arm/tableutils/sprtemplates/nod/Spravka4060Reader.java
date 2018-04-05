@@ -23,6 +23,10 @@ public class Spravka4060Reader implements TableReaderInterface {
             + "(?<spr>4060)\\s+(?<date>\\d{2}.\\d{2})\\s+"
             + "(?<time>\\d{2}-\\d{2})\\s+(?<brp>\\S{2,3}\\s+\\S{2,4})\\s+"
             + "(?<per>\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+\\S+)\\s+(?<nod>\\S+)";
+//    final static String RDH = "(?<vc>\\S{2,3}\\s+\\S{2,4})\\s+(?<spr>4060)\\s+"
+//            + "(?<date>\\d{2}.\\d{2})\\s+(?<time>\\d{2}-\\d{2})\\s+"
+//            + "(?<brp>\\S{2,3}\\s+\\S{2,4})\\s+(?<per>\\S+\\s+\\S+)\\s+"
+//            + "(?<sokr>\\S+)\\s+(?<ppo>\\S+\\s+\\S+\\s+\\S+)\\s+(?<nod>\\S+)";
 
 //    RTH
     final static String RTH = "(?<np>[A-ZА-Я]{4})\\s+(?<idx>[A-ZА-Я]{6})\\s+"
@@ -63,7 +67,9 @@ public class Spravka4060Reader implements TableReaderInterface {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 if (matcher.group(i).equals(matcher.group("nod"))) {
                     result.addCell(htmlParse(matcher.group(i)));
-                } else {
+//                } else if(matcher.group(i).equalsIgnoreCase(matcher.group("нпв,тв,пв,нпс,дс,пд"))){
+//                    result.addCell(" неполновесный, тяжеловесный, неполносоставный, длинносоставный, повышенной длины ");
+                }else{
                     result.addCell(matcher.group(i));
                 }
             }
@@ -99,7 +105,11 @@ public class Spravka4060Reader implements TableReaderInterface {
         while (matcher.find()) {
             result.addCell("№");
             for (int i = 1; i <= matcher.groupCount(); i++) {
-                result.addCell(matcher.group(i));
+                if (matcher.group(i).equalsIgnoreCase("пр")) {
+                    result.addCell("призн");
+                } else {
+                    result.addCell(matcher.group(i));
+                }
             }
 
             if (!tableHeaderProcessed) {

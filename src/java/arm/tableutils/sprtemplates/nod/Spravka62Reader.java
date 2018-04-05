@@ -95,10 +95,10 @@ public class Spravka62Reader implements TableReaderInterface {
 			result.addCell("Станция");
 			result.addCell("Дата");
 			result.addCell("Время");
-			result.addCell("хз1");
-			result.addCell("хз2");
-			result.addCell("хз3");
-			result.addCell("хз4");
+			result.addCell("усд");
+			result.addCell("брт");
+			result.addCell("осей");
+			result.addCell("прим.");
 
 //            if (!tableHeaderProcessed) {
 //                tableHeaderProcessed = true;

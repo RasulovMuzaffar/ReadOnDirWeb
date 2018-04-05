@@ -94,7 +94,7 @@
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf1">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf2">Подход поездов к станции</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf101">Расширенная справка о вагонах в поезде</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf3">Пономерное наличие груженые вагонов "УТЙ"</li>
+                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf3">Пономерное наличие груженых вагонов "УТЙ"</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf4">Пономерное наличие порожных вагонов "УТЙ"</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf5">Пономерное наличие вагонов на станции</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf201">Картотечные данные о вагоне</li>   
@@ -104,17 +104,9 @@
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf103">Перечень проследовавших поездов НПВ, ТВ, НПС, ДС, ПД поездов по отделению</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf203">Стык приема при груженном состоянии по номеру вагона</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf104">Стык приема при груженном состоянии по индексу поезда</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf204">Архивная справка на вагон</li>
+                        <!--<li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf204">Архивная справка на вагон</li>-->
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf205">Арендованные вагоны по индексу поезда</li> 
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf206">Арендованные вагоны по номеру вагона</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf7">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции КЗХ ж.д.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf8">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции ТРК ж.д.</li>    
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf9">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции ТДЖ ж.д.</li>    
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf10">Наличие поездов: сформированных станцией, назначением на станцию и находящихся на станции КРТ ж.д.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf105">Расширенная справка о вагонах в поезде по КЗХ ж.д.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf106">Расширенная справка о вагонах в поезде по ТРК ж.д.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf107">Расширенная справка о вагонах в поезде по ТДЖ ж.д.</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf108">Расширенная справка о вагонах в поезде по КРТ ж.д.</li>
 
 
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf11">Передача вагонов по стыку Истыклол</li>
@@ -122,11 +114,9 @@
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf13">Принятые и сданные поезда по Учкурган</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf14">Принятые и сданные поезда по Ходжадавлет</li>
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf15">Чужие вагоны на станции по времени нахождения на дороге</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf16">Подход и работа с поездами по ст. Сарыагач</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf17">Подход к ст. Ассаке</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf18">Подход, наличие поездов по ст.Арысь</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf19">Подход поездов к стыку Бекабад</li>
-                        <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf20">Работа и наличие поездов по ст. Джала-Абад</li>
+                        <!--<li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf16">Подход и работа с поездами по ст. Сарыагач</li>-->
+                        <!--<li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf19">Подход поездов к стыку Бекабад</li>-->
+                        <!--<li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf20">Работа и наличие поездов по ст. Джалал-Абад</li>-->
                         <li tabIndex="0" class="spr" onclick="sendPopup(this)" value="pf21">Работа станции с поездами</li>
                     </ul>
                 </div>
@@ -138,7 +128,10 @@
                     </div>
                     <div class="tbl">
                         <a id="dlink" style="display: none;"></a>
-                        <button type="button" class="btn btn-info fa fa-download" id="expToExc" style="display: none;" onclick="expToExcel('myTable');"></button>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-info fa fa-file-excel-o" id="expToExc" style="display: none;" onclick="expToExcel('myTable');"></button>
+                            <button type="button" class="btn btn-info fa fa-info" id="information" style="display: none;" onclick="getInformation();"></button>
+                        </div>
                         <div class="row" id="tbl">
                         </div>
                     </div>
@@ -162,9 +155,30 @@
         </div>
 
 
-        <!-- Наше модальное всплывающее окно -->
+        <!-- Наше модальное всплывающее окно для запроса -->
         <div id="popupWin" class="modalwinCom">
             <div id="popup" class="row pt"></div>
+        </div>
+
+        <!-- Modal для справки -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -265,6 +279,7 @@
 
                                 function sprDefault(p) {
                                     document.getElementById("expToExc").style.display = "block";
+                                    document.getElementById("information").style.display = "block";
                                     document.getElementById("tbl").innerHTML = p;
                                 }
 
@@ -276,6 +291,27 @@
                                         document.getElementById('history').innerHTML = p;
                                     }
                                 }
+                                function findSt(p) {
+                                    console.log(p);
+                                    webSocket.send("getSt\u0003" + p);
+                                }
+                                ;
+                                function getSt(p) {
+                                    document.getElementById('stations').style.display = 'table';
+                                    document.getElementById('stations').innerHTML = p;
+                                    zxc();
+
+                                }
+                                ;
+                                function getInformation() {
+                                    var sprs = [];
+                                    for (i = 0; i < document.getElementsByClassName('tTitle').length; i++) {
+                                        sprs[i] = document.getElementsByClassName('tTitle')[i].innerText;
+                                    }
+
+                                    alert(sprs);
+                                }
+
 
                                 function warning(p) {
                                     console.log(p);
@@ -336,24 +372,29 @@
                                             '<span id="fullMess" hidden><span id="inptfree"></span></span>',
 
                                     // (:212 0 ст.:91:92:93:) OK
-                                    'pf1': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/>:91:92:93:)</h3>' +
+                                    'pf1': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:91:92:93:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span>:91:92:93:)</span>',
 
                                     // (:212 0 ст.:57:) OK
-                                    'pf2': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/>:57:)</h3>' +
+                                    'pf2': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:57:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span>:57:)</span>',
 
                                     // (:212 0 ст. 29 0:5065 тип гр:)  OK
-                                    'pf3': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/> 29 0:5065 ' +
+                                    'pf3': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/> 29 0:5065 ' +
                                             '<input type="text" id="inptTm" placeholder="Тип вг."/> гр:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span> 29 0:5065 <span id="inpttm"></span> гр:)</span>',
 
                                     // (:212 0 ст. 29 0:5065 тип пор:) OK
-                                    'pf4': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/> 29 0:5065 <input type="text" id="inptTm" placeholder="Тип вг."/> пор:)</h3>' +
+                                    'pf4': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/> 29 0:5065 <input type="text" id="inptTm" placeholder="Тип вг."/> пор:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span> 29 0:5065 <span id="inpttm"></span> пор:)</span>',
 
                                     // (:212 0 ст.:5065:) OK
-                                    'pf5': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/>:5065:)</h3>' +
+                                    'pf5': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:5065:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span>:5065:)</span>',
 
                                     // (:140:) OK/NO
@@ -361,19 +402,23 @@
                                             '<span id="fullMess" hidden>(:140:)</span>',
 
                                     // (:3121 68 ст.:91:92:93:) OK
-                                    'pf7': '<h3>(:3121 68 <input type="text" id="inptSt" placeholder="Код ст."/>:91:92:93:)</h3>' +
+                                    'pf7': '<h3>(:3121 68 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:91:92:93:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:3121 68 <span id="inptst"></span>:91:92:93:)</span>',
 
                                     // (:3121 75 ст.:91:92:93:) OK
-                                    'pf8': '<h3>(:3121 75 <input type="text" id="inptSt" placeholder="Код ст."/>:91:92:93:)</h3>' +
+                                    'pf8': '<h3>(:3121 75 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:91:92:93:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:3121 75 <span id="inptst"></span>:91:92:93:)</span>',
 
                                     // (:3121 74 ст.:91:92:93:) OK
-                                    'pf9': '<h3>(:3121 74 <input type="text" id="inptSt" placeholder="Код ст."/>:91:92:93:)</h3>' +
+                                    'pf9': '<h3>(:3121 74 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:91:92:93:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:3121 74 <span id="inptst"></span>:91:92:93:)</span>',
 
                                     // (:3121 70 ст.:91:92:93:) OK
-                                    'pf10': '<h3>(:3121 70 <input type="text" id="inptSt" placeholder="Код ст."/>:91:92:93:)</h3>' +
+                                    'pf10': '<h3>(:3121 70 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:91:92:93:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:3121 70 <span id="inptst"></span>:91:92:93:)</span>',
 
                                     // (:213 0: idx 12 42 60 902:) OK
@@ -444,7 +489,8 @@
                                     'pf14': '<h3>(:212 0 73071:1296 1 18 <input type="text" id="inptTm" placeholder="Время."/>:)</h3>' +
                                             '<span id="fullMess" hidden>(:212 0 73071:1296 1 18 <span id="inpttm"></span>:)</span>',
 
-                                    'pf15': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/>:5072 01:)</h3>' +
+                                    'pf15': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:5072 01:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span>:5072 01:)</span>',
 
                                     'pf16': '<h3>(:3121 68 6983:57:64:)</h3>' +
@@ -462,7 +508,8 @@
                                     'pf20': '<h3>(:3121 70 7183:64:91:)</h3>' +
                                             '<span id="fullMess" hidden>(:3121 70 7183:64:91:)</span>',
 
-                                    'pf21': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст."/>:64:)</h3>' +
+                                    'pf21': '<h3>(:212 0 <input type="text" id="inptSt" placeholder="Код ст." oninput="findSt(this.value);" list="stations"/>:64:)</h3>' +
+                                            '<table id="stations" style="display:none"></table>' +
                                             '<span id="fullMess" hidden>(:212 0 <span id="inptst"></span>:64:)</span>'
 
                                 };
@@ -488,7 +535,7 @@
                                                 } else {
 //                                                    console.log(evt.target.innerHTML);
                                                     document.getElementById('popupWin').style.width = '600px';
-                                                    document.getElementById('popupWin').style.height = '150px';
+                                                    document.getElementById('popupWin').style.height = '200px';
                                                     document.getElementById('popupWin').style.top = '25%';
                                                     sendPopup(evt.target);
                                                 }
@@ -528,7 +575,11 @@
                                                                 });
 
                                                                 if (document.activeElement.getAttribute('id').toLowerCase() === "inptst") {
-                                                                    document.getElementById('inptst').innerText = document.activeElement.value;
+                                                                    if (document.activeElement.dataset['stcod'] === undefined) {
+                                                                        document.getElementById('inptst').innerText = document.activeElement.value;
+                                                                    } else {
+                                                                        document.getElementById('inptst').innerText = document.activeElement.dataset['stcod'];//value;
+                                                                    }
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inpttm") {
                                                                     document.getElementById('inpttm').innerText = document.activeElement.value;
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptidx") {
@@ -537,8 +588,8 @@
                                                                     document.getElementById('inptvg').innerText = document.activeElement.value;
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt1") {
                                                                     document.getElementById('inptdt1').innerText = document.activeElement.value;
-                                                                    console.log("yuyuyuyuy -->>> "+document.activeElement.value);
-                                                                }else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt2") {
+                                                                    console.log("yuyuyuyuy -->>> " + document.activeElement.value);
+                                                                } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt2") {
                                                                     document.getElementById('inptdt2').innerText = document.activeElement.value;
                                                                     console.log(document.activeElement.value);
                                                                 }
@@ -560,17 +611,21 @@
                                                                 });
 
                                                                 if (document.activeElement.getAttribute('id').toLowerCase() === "inptst") {
-                                                                    document.getElementById('inptst').innerText = document.activeElement.value;
+                                                                    if (document.activeElement.dataset['stcod'] === undefined) {
+                                                                        document.getElementById('inptst').innerText = document.activeElement.value;
+                                                                    } else {
+                                                                        document.getElementById('inptst').innerText = document.activeElement.dataset['stcod'];//value;
+                                                                    }
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inpttm") {
                                                                     document.getElementById('inpttm').innerText = document.activeElement.value;
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptidx") {
                                                                     document.getElementById('inptidx').innerText = document.activeElement.value;
                                                                 } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptvg") {
                                                                     document.getElementById('inptvg').innerText = document.activeElement.value;
-                                                                }else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt1") {
+                                                                } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt1") {
                                                                     document.getElementById('inptdt1').innerText = document.activeElement.value;
-                                                                    console.log("yuyuyuyuy -->>> "+document.activeElement.value);
-                                                                }else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt2") {
+                                                                    console.log("yuyuyuyuy -->>> " + document.activeElement.value);
+                                                                } else if (document.activeElement.getAttribute('id').toLowerCase() === "inptdt2") {
                                                                     document.getElementById('inptdt2').innerText = document.activeElement.value;
                                                                     console.log(document.activeElement.value);
                                                                 }
@@ -600,7 +655,7 @@
                                     isPopupOpen = true;
 
                                     document.getElementById('popupWin').style.width = '600px';
-                                    document.getElementById('popupWin').style.height = '150px';
+                                    document.getElementById('popupWin').style.height = '200px';
                                     document.getElementById('popupWin').style.top = '25%';
 
                                     var s = p.getAttribute('value');
@@ -783,6 +838,18 @@
                                     };
                                 }
 
+                                function zxc() {
+                                    document.querySelector('#stations').addEventListener('click', function (event) {
+                                        console.log(event.target.closest('tr').dataset['stcod']);
+                                        document.querySelector('#inptSt').value = event.target.closest('tr').querySelector('td').innerText;
+                                        document.querySelector('#inptSt').dataset['stcod'] = event.target.closest('tr').dataset['stcod'];
+                                        document.getElementById('stations').style.display = 'none';
+                                        document.querySelector('#inptSt').focus();
+                                    });
+//                                    document.getElementById('st').addEventListener('focus', function (event) {
+//                                        this.value = "";
+//                                    });
+                                }
         </script>
     </body>
 </html>
